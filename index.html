@@ -81,10 +81,31 @@
         </div>
         <span class="verified-dot" aria-label="Подключено"></span>
       </div>
+      <div class="role-settings">
+        <div class="role-heading">
+          <h3>Как вы хотите пользоваться маркетплейсом?</h3>
+          <p>Можно выбрать одну или обе роли.</p>
+        </div>
+        <div class="role-options">
+          <button class="role-option" type="button" data-role="buyer" aria-pressed="false" disabled>
+            <span class="role-option-icon" aria-hidden="true">↙</span>
+            <span><strong>Покупатель</strong><small>Искать и покупать гигабайты</small></span>
+            <span class="role-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="role-option" type="button" data-role="seller" aria-pressed="false" disabled>
+            <span class="role-option-icon" aria-hidden="true">↗</span>
+            <span><strong>Продавец</strong><small>Предлагать свои гигабайты</small></span>
+            <span class="role-check" aria-hidden="true">✓</span>
+          </button>
+        </div>
+        <button class="primary-button role-save" id="role-save" type="button" disabled>Сохранить выбор</button>
+        <p class="role-status" id="role-status" aria-live="polite">Подключаем профиль Telegram…</p>
+      </div>
+      <div class="profile-row"><span>Мои роли</span><strong id="role-summary">Не выбрана</strong></div>
       <div class="profile-row"><span>Статус</span><strong>Тестовый доступ</strong></div>
       <div class="profile-row"><span>Объявления</span><strong>Пока недоступны</strong></div>
       <div class="profile-row"><span>Сделки</span><strong>Пока недоступны</strong></div>
-      <p class="fine-print">Имя и username загружаются из подтверждённого профиля Telegram.</p>
+      <p class="fine-print">Роли сохраняются в защищённом профиле. Объявления, сделки и платежи пока отключены.</p>
     </section>
 
     <footer class="footer">
