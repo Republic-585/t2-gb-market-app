@@ -95,7 +95,7 @@
   authenticateTelegramUser();
   document.querySelector(".brand").addEventListener("click", (event) => {
     event.preventDefault();
-    openTab("buy");
-    showToast("Вы на главной странице T2 GB MARKET");
+    openTab("profile");
+    showToast("Ваш профиль T2 GB MARKET");
   });
 })();
