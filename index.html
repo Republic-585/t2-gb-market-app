@@ -9,9 +9,9 @@
   <meta name="theme-color" content="#0b0e12">
   <meta name="description" content="T2 GB MARKET — маркетплейс передачи гигабайтов T2.">
   <title>T2 GB MARKET</title>
-  <link rel="stylesheet" href="./styles.css?v=10">
+  <link rel="stylesheet" href="./styles.css?v=11">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script defer src="./app.js?v=11"></script>
+  <script defer src="./app.js?v=12"></script>
 </head>
 <body>
   <main class="app-shell">
@@ -23,19 +23,38 @@
       <span class="beta-tag">ТЕСТОВЫЙ РЕЖИМ</span>
     </header>
 
-    <section class="intro">
-      <p class="eyebrow">МАРКЕТПЛЕЙС ГИГАБАЙТОВ</p>
-      <h1>Гигабайты.<br><span>Когда нужны.</span></h1>
-      <p class="intro-copy">Покупка и передача гигабайтов между абонентами T2 — в одном месте.</p>
+    <section class="market-home-head">
+      <div class="market-welcome">
+        <p class="eyebrow">МАРКЕТПЛЕЙС ГИГАБАЙТОВ</p>
+        <h1>Покупайте и<br><span>продавайте ГБ</span></h1>
+      </div>
+      <div class="home-wallet">
+        <div><span>Доступный баланс</span><strong id="wallet-header-balance">— ₽</strong></div>
+        <button type="button" data-open-tab="profile" aria-label="Открыть кошелёк">↗</button>
+      </div>
+      <div class="home-shortcuts">
+        <button class="shortcut shortcut-primary" type="button" data-open-tab="sell"><span class="shortcut-symbol">＋</span><span>Добавить лот</span></button>
+        <button class="shortcut" type="button" data-open-tab="sell"><span class="shortcut-symbol">▤</span><span>Мои лоты</span></button>
+        <button class="shortcut" type="button" data-open-tab="requests"><span class="shortcut-symbol">◷</span><span>Мои заявки</span></button>
+      </div>
     </section>
 
-    <section class="panel is-hidden" id="buy-panel">
+    <section class="panel" id="buy-panel">
       <div class="section-heading">
         <div>
           <p class="eyebrow">КАТАЛОГ</p>
           <h2>Найти гигабайты</h2>
         </div>
-        <span class="count-pill">Скоро</span>
+        <span class="count-pill" id="catalog-count">0 предложений</span>
+      </div>
+      <div class="catalog-tools">
+        <label class="catalog-search-wrap"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" placeholder="Найти предложение" autocomplete="off"></label>
+        <select id="catalog-sort" aria-label="Сортировка предложений">
+          <option value="recommended">Сначала подходящие</option>
+          <option value="price_asc">Сначала дешевле</option>
+          <option value="price_desc">Сначала дороже</option>
+          <option value="volume_desc">Больше ГБ</option>
+        </select>
       </div>
       <div class="catalog-list is-hidden" id="catalog-list"></div>
       <div class="empty-state" id="catalog-empty">
@@ -106,7 +125,15 @@
       <p class="fine-print">Черновик сохраняется в вашем профиле, но не публикуется. Платежи и передача гигабайтов пока отключены.</p>
     </section>
 
-    <section class="panel" id="profile-panel">
+    <section class="panel is-hidden" id="requests-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">ВАША АКТИВНОСТЬ</p><h2>Мои заявки</h2></div>
+      </div>
+      <div class="listing-list is-hidden" id="requests-list"></div>
+      <div class="listing-empty" id="requests-empty">Пока у вас нет заявок. Когда вы оформите покупку или получите заказ, он появится здесь.</div>
+    </section>
+
+    <section class="panel is-hidden" id="profile-panel">
       <div class="section-heading">
         <div>
           <p class="eyebrow">ВАШ АККАУНТ</p>
@@ -145,15 +172,18 @@
           <span class="profile-action-arrow" aria-hidden="true">›</span>
         </button>
       </div>
-      <h3 class="subsection-heading">Мои сделки</h3>
-      <div class="listing-list is-hidden" id="orders-list"></div>
-      <div class="listing-empty" id="orders-empty">Здесь появится история покупок и продаж после запуска сделок.</div>
       <div class="profile-row"><span>Статус</span><strong>Тестовый доступ</strong></div>
       <div class="profile-row"><span>Объявления</span><strong>Черновики доступны</strong></div>
       <div class="profile-row"><span>Сделки</span><strong>Пока недоступны</strong></div>
       <p class="fine-print">Ваш профиль автоматически связан с аккаунтом Telegram. Объявления, сделки и платежи пока отключены.</p>
     </section>
 
+    <nav class="bottom-nav" aria-label="Основная навигация">
+      <button class="nav-item is-active" type="button" data-tab="buy"><span>⌂</span><small>Маркет</small></button>
+      <button class="nav-item" type="button" data-tab="sell"><span>＋</span><small>Продать</small></button>
+      <button class="nav-item" type="button" data-tab="requests"><span>◷</span><small>Заявки</small></button>
+      <button class="nav-item" type="button" data-tab="profile"><span>◉</span><small>Профиль</small></button>
+    </nav>
     <footer class="footer">
       <span>T2 GB MARKET</span>
       <span>Развиваем маркетплейс вместе</span>
