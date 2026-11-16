@@ -20,7 +20,6 @@
         <span class="brand-mark">T2</span>
         <span class="brand-name">GB MARKET</span>
       </a>
-      <span class="beta-tag">ТЕСТОВЫЙ РЕЖИМ</span>
     </header>
 
     <section class="market-home-head">
@@ -28,10 +27,20 @@
         <p class="eyebrow">МАРКЕТПЛЕЙС ГИГАБАЙТОВ</p>
         <h1>Покупайте и<br><span>продавайте ГБ</span></h1>
       </div>
-      <div class="home-wallet">
-        <div><span>Доступный баланс</span><strong id="wallet-header-balance">— ₽</strong></div>
-        <button type="button" data-open-tab="profile" aria-label="Открыть кошелёк">↗</button>
-      </div>
+      <section class="market-stats" aria-label="Статистика маркетплейса">
+        <article class="market-stat market-stat-main">
+          <span>Средняя цена за 1 ГБ</span>
+          <strong id="market-average-price">— ₽</strong>
+        </article>
+        <article class="market-stat">
+          <span>Лотов в продаже</span>
+          <strong id="market-active-count">0</strong>
+        </article>
+        <article class="market-stat">
+          <span>Продано вчера</span>
+          <strong id="market-sold-yesterday">0 ГБ</strong>
+        </article>
+      </section>
       <div class="home-shortcuts">
         <button class="shortcut shortcut-primary" type="button" data-open-tab="sell"><span class="shortcut-symbol">＋</span><span>Добавить лот</span></button>
         <button class="shortcut" type="button" data-open-tab="sell"><span class="shortcut-symbol">▤</span><span>Мои лоты</span></button>
@@ -50,10 +59,9 @@
       <div class="catalog-tools">
         <label class="catalog-search-wrap"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" placeholder="Найти предложение" autocomplete="off"></label>
         <select id="catalog-sort" aria-label="Сортировка предложений">
-          <option value="recommended">Сначала подходящие</option>
+          <option value="popular">Популярные</option>
           <option value="price_asc">Сначала дешевле</option>
           <option value="price_desc">Сначала дороже</option>
-          <option value="volume_desc">Больше ГБ</option>
         </select>
       </div>
       <div class="catalog-list is-hidden" id="catalog-list"></div>
@@ -83,10 +91,10 @@
       <form class="listing-form" id="listing-form">
         <label class="field-label" for="listing-volume">Объём, ГБ</label>
         <div class="input-wrap">
-          <input id="listing-volume" name="volume" type="number" inputmode="numeric" min="1" max="1000" step="1" placeholder="Например, 50" required>
+          <input id="listing-volume" name="volume" type="number" inputmode="numeric" min="1" max="20" step="1" placeholder="Например, 10" required>
           <span>ГБ</span>
         </div>
-        <p class="field-hint">От 1 до 1 000 ГБ. Указывайте только объём, который действительно можете передать.</p>
+        <p class="field-hint">От 1 до 20 ГБ. Указывайте только объём, который действительно можете передать.</p>
 
         <label class="field-label" for="listing-price">Цена за весь объём</label>
         <div class="input-wrap">
@@ -149,7 +157,7 @@
         <span class="verified-dot" aria-label="Подключено"></span>
       </div>
       <section class="wallet-card" aria-label="Баланс кошелька">
-        <div class="wallet-card-head"><span>ВАШ КОШЕЛЁК</span><span class="wallet-mode">ТЕСТОВЫЙ РЕЖИМ</span></div>
+        <div class="wallet-card-head"><span>ВАШ КОШЕЛЁК</span></div>
         <div class="wallet-main"><span>Доступно</span><strong id="wallet-available">— ₽</strong></div>
         <div class="wallet-metrics">
           <div class="wallet-metric"><span>В резерве</span><strong id="wallet-reserved">— ₽</strong></div>
@@ -172,7 +180,6 @@
           <span class="profile-action-arrow" aria-hidden="true">›</span>
         </button>
       </div>
-      <div class="profile-row"><span>Статус</span><strong>Тестовый доступ</strong></div>
       <div class="profile-row"><span>Объявления</span><strong>Черновики доступны</strong></div>
       <div class="profile-row"><span>Сделки</span><strong>Пока недоступны</strong></div>
       <p class="fine-print">Ваш профиль автоматически связан с аккаунтом Telegram. Объявления, сделки и платежи пока отключены.</p>
