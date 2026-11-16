@@ -231,58 +231,101 @@
     }
   }
 
-  async function authenticateTelegramUser() {
-    const initData = tg?.initData || "";
-    if (!initData) {
-      profileUsername.textContent = "Откройте приложение через Telegram";
-      if (verifiedDot) verifiedDot.style.background = "#9aa4b2";
-      return;
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  function renderTelegramAvatar(photoUrl, fallbackName) {
+    if (!avatar) return;
+    avatar.replaceChildren();
+    avatar.classList.toggle("has-photo", Boolean(photoUrl));
+    if (photoUrl && /^https:\/\//i.test(photoUrl)) {
+      const image = document.createElement("img");
+      image.src = photoUrl;
+      image.alt = "Фото профиля Telegram";
+      image.referrerPolicy = "no-referrer";
+      image.onerror = () => {
+        avatar.classList.remove("has-photo");
+        image.remove();
+        avatar.textContent = (fallbackName || "T2").slice(0, 2).toUpperCase();
+      };
+      avatar.append(image);
+    } else {
+      avatar.textContent = (fallbackName || "T2").slice(0, 2).toUpperCase();
     }
-    const previewUser = tg?.initDataUnsafe?.user;
+  }
+
+  async function authenticateTelegramUser() {
+    let previewUser = tg?.initDataUnsafe?.user || null;
     if (previewUser) {
       const previewFullName = [previewUser.first_name, previewUser.last_name].filter(Boolean).join(" ");
       const previewUsername = typeof previewUser.username === "string" && previewUser.username ? "@" + previewUser.username : "";
       profileName.textContent = previewUsername || previewFullName || "Пользователь Telegram";
       profileUsername.textContent = "Подтверждаем аккаунт…";
-      avatar.textContent = (previewUser.first_name || previewUser.username || "T2").slice(0, 2).toUpperCase();
+      renderTelegramAvatar(previewUser.photo_url, previewUser.first_name || previewUser.username);
     } else {
-      profileUsername.textContent = "Проверяем аккаунт Telegram…";
+      profileUsername.textContent = "Подключаем профиль Telegram…";
     }
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 12000);
-    try {
-      const response = await fetch(AUTH_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ initData }),
-        cache: "no-store",
-        signal: controller.signal,
-      });
-      const result = await response.json();
-      clearTimeout(timeoutId);
-      if (!response.ok || result.ok !== true || result.authenticated !== true || !result.user) {
-        throw new Error(result.error || "authentication_failed");
+
+    let lastError = null;
+    for (let attempt = 0; attempt < 4; attempt++) {
+      // Telegram may finish populating WebApp launch data just after the page script starts.
+      const initData = tg?.initData || "";
+      if (!initData) {
+        lastError = new Error("telegram_init_data_not_ready");
+        await sleep(250 * (attempt + 1));
+        previewUser = tg?.initDataUnsafe?.user || previewUser;
+        continue;
       }
-      const user = result.user;
-      const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ");
-      const username = typeof user.username === "string" && user.username ? "@" + user.username : "";
-      profileName.textContent = username || fullName || "Пользователь Telegram";
-      profileUsername.textContent = username && fullName
-        ? fullName + " · Аккаунт подтверждён"
-        : "Аккаунт Telegram подтверждён";
-      avatar.textContent = (user.first_name || user.username || "T2").slice(0, 2).toUpperCase();
-      if (verifiedDot) {
-        verifiedDot.style.background = "#6b9bff";
-        verifiedDot.setAttribute("aria-label", "Аккаунт подтверждён сервером");
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      try {
+        const response = await fetch(AUTH_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ initData }),
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        const result = await response.json().catch(() => ({}));
+        clearTimeout(timeoutId);
+        if (!response.ok || result.ok !== true || result.authenticated !== true || !result.user) {
+          const error = new Error(result.error || "authentication_failed");
+          // Invalid signatures or expired launch data cannot be fixed by repeating the same request.
+          if (response.status >= 400 && response.status < 500) throw error;
+          lastError = error;
+          await sleep(350 * (attempt + 1));
+          continue;
+        }
+
+        const user = result.user;
+        const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ");
+        const username = typeof user.username === "string" && user.username ? "@" + user.username : "";
+        profileName.textContent = username || fullName || "Пользователь Telegram";
+        profileUsername.textContent = username && fullName
+          ? fullName + " · Аккаунт подтверждён"
+          : "Аккаунт Telegram подтверждён";
+        renderTelegramAvatar(user.photo_url || previewUser?.photo_url, user.first_name || user.username);
+        if (verifiedDot) {
+          verifiedDot.style.background = "#6b9bff";
+          verifiedDot.setAttribute("aria-label", "Аккаунт подтверждён сервером");
+        }
+        document.documentElement.dataset.telegramAuth = "verified";
+        await loadDashboard();
+        return;
+      } catch (error) {
+        clearTimeout(timeoutId);
+        lastError = error;
+        if (error.message === "invalid_signature" || error.message === "auth_data_expired" ||
+            error.message === "invalid_user" || error.message === "origin_not_allowed") break;
+        if (attempt < 3) await sleep(350 * (attempt + 1));
       }
-      document.documentElement.dataset.telegramAuth = "verified";
-      await loadDashboard();
-    } catch (_) {
-      clearTimeout(timeoutId);
-      profileUsername.textContent = "Не удалось подтвердить аккаунт. Проверьте соединение и повторите запуск.";
-      if (verifiedDot) verifiedDot.style.background = "#d94b4b";
-      document.documentElement.dataset.telegramAuth = "failed";
     }
+
+    profileUsername.textContent = lastError?.message === "auth_data_expired"
+      ? "Сессия Telegram устарела. Закройте и снова откройте приложение."
+      : "Не удалось подключить профиль. Повторяемое открытие обычно не требуется — попробуйте обновить экран.";
+    if (verifiedDot) verifiedDot.style.background = "#d94b4b";
+    document.documentElement.dataset.telegramAuth = "failed";
   }
 
   const listingForm = document.getElementById("listing-form");
