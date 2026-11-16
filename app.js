@@ -27,16 +27,99 @@
   const profileUsername = document.getElementById("profile-username");
   const avatar = document.getElementById("avatar");
   const verifiedDot = document.querySelector(".verified-dot");
+  const roleButtons = [...document.querySelectorAll("[data-role]")];
+  const roleSave = document.getElementById("role-save");
+  const roleStatus = document.getElementById("role-status");
+  const roleSummary = document.getElementById("role-summary");
+  const toast = document.getElementById("toast");
+  let toastTimer;
+  let initData = "";
+  let selectedRoles = [];
+  let authenticated = false;
+
+  function showToast(message) {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2600);
+  }
+
+  function renderRoles() {
+    roleButtons.forEach((button) => {
+      const selected = selectedRoles.includes(button.dataset.role);
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+      button.disabled = !authenticated;
+    });
+    if (roleSave) roleSave.disabled = !authenticated || selectedRoles.length === 0;
+    if (roleSummary) {
+      const labels = selectedRoles.map((role) => role === "buyer" ? "Покупатель" : "Продавец");
+      roleSummary.textContent = labels.length ? labels.join(" · ") : "Не выбрана";
+    }
+  }
+
+  async function requestProfile(roles) {
+    const payload = { initData };
+    if (roles) payload.roles = roles;
+    const response = await fetch(
+      "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/miniapp-profile",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        cache: "no-store",
+      }
+    );
+    const result = await response.json();
+    if (!response.ok || result.ok !== true || result.authenticated !== true || !result.profile) {
+      throw new Error(result.error || "profile_request_failed");
+    }
+    return result.profile;
+  }
+
+  roleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!authenticated) return;
+      const role = button.dataset.role;
+      selectedRoles = selectedRoles.includes(role)
+        ? selectedRoles.filter((item) => item !== role)
+        : [...selectedRoles, role];
+      renderRoles();
+      if (roleStatus) roleStatus.textContent = "Изменения не сохранены";
+    });
+  });
+
+  if (roleSave) {
+    roleSave.addEventListener("click", async () => {
+      if (!authenticated || !selectedRoles.length) return;
+      roleSave.disabled = true;
+      roleStatus.textContent = "Сохраняем выбор…";
+      try {
+        const profile = await requestProfile(selectedRoles);
+        selectedRoles = Array.isArray(profile.roles) ? profile.roles : [];
+        renderRoles();
+        roleStatus.textContent = "Выбор сохранён";
+        showToast("Настройки профиля сохранены");
+      } catch (_) {
+        roleStatus.textContent = "Не удалось сохранить. Попробуйте ещё раз.";
+        renderRoles();
+      }
+    });
+  }
 
   async function authenticateTelegramUser() {
-    const initData = tg?.initData;
+    initData = tg?.initData || "";
     if (!initData) {
       profileUsername.textContent = "Откройте приложение через Telegram";
       if (verifiedDot) verifiedDot.style.background = "#e6a62e";
+      if (roleStatus) roleStatus.textContent = "Для настройки профиля откройте Mini App из Telegram";
+      renderRoles();
       return;
     }
 
     profileUsername.textContent = "Проверяем аккаунт Telegram…";
+    if (roleStatus) roleStatus.textContent = "Загружаем настройки профиля…";
     try {
       const response = await fetch(
         "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/miniapp-auth",
@@ -67,23 +150,29 @@
         verifiedDot.setAttribute("aria-label", "Аккаунт подтверждён сервером");
       }
       document.documentElement.dataset.telegramAuth = "verified";
+      authenticated = true;
+
+      const profile = await requestProfile();
+      selectedRoles = Array.isArray(profile.roles) ? profile.roles : [];
+      renderRoles();
+      if (roleStatus) {
+        roleStatus.textContent = selectedRoles.length
+          ? "Ваш выбор сохранён в профиле"
+          : "Выберите одну или обе роли";
+      }
     } catch (_) {
       profileUsername.textContent = "Не удалось подтвердить аккаунт. Перезапустите приложение.";
       if (verifiedDot) verifiedDot.style.background = "#d94b4b";
       document.documentElement.dataset.telegramAuth = "failed";
+      authenticated = false;
+      if (roleStatus) roleStatus.textContent = "Не удалось загрузить профиль. Перезапустите приложение.";
+      renderRoles();
     }
   }
 
+  renderRoles();
   authenticateTelegramUser();
 
-  const toast = document.getElementById("toast");
-  let toastTimer;
-  function showToast(message) {
-    toast.textContent = message;
-    toast.classList.add("is-visible");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2600);
-  }
   document.querySelector(".brand").addEventListener("click", (event) => {
     event.preventDefault();
     tabs[0].click();
