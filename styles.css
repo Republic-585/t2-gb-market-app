@@ -521,3 +521,11 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
   .catalog-tools { grid-template-columns: 1fr; }
   .catalog-tools select { max-width: none; min-height: 40px; }
 }
+
+
+.listing-buy-row { display: flex; justify-content: flex-end; margin-top: 12px; padding-top: 11px; border-top: 1px solid var(--line); }
+.listing-buy-button {
+  min-width: 104px; min-height: 37px; padding: 0 17px; border: 0; border-radius: 11px;
+  background: var(--lime); color: var(--lime-ink); font: inherit; font-size: 11px; font-weight: 800;
+}
+.listing-buy-button:active { transform: scale(.97); }
