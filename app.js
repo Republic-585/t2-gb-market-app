@@ -41,7 +41,7 @@
     const initData = tg?.initData || "";
     if (!initData) {
       profileUsername.textContent = "Откройте приложение через Telegram";
-      if (verifiedDot) verifiedDot.style.background = "#e6a62e";
+      if (verifiedDot) verifiedDot.style.background = "#9aa4b2";
       return;
     }
     // Show Telegram-provided name immediately for display only.
@@ -80,7 +80,7 @@
         : "Аккаунт Telegram подтверждён";
       avatar.textContent = (user.first_name || user.username || "T2").slice(0, 2).toUpperCase();
       if (verifiedDot) {
-        verifiedDot.style.background = "#39b879";
+        verifiedDot.style.background = "#6b9bff";
         verifiedDot.setAttribute("aria-label", "Аккаунт подтверждён сервером");
       }
       document.documentElement.dataset.telegramAuth = "verified";
