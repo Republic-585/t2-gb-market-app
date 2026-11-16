@@ -54,11 +54,14 @@
 
       const user = result.user;
       const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ");
-      profileName.textContent = fullName || "Пользователь Telegram";
-      profileUsername.textContent = user.username
-        ? "@" + user.username + " · Аккаунт подтверждён"
+      const username = typeof user.username === "string" && user.username
+        ? "@" + user.username
+        : "";
+      profileName.textContent = username || fullName || "Пользователь Telegram";
+      profileUsername.textContent = username && fullName
+        ? fullName + " · Аккаунт подтверждён"
         : "Аккаунт Telegram подтверждён";
-      avatar.textContent = (user.first_name || "T2").slice(0, 2).toUpperCase();
+      avatar.textContent = (user.first_name || user.username || "T2").slice(0, 2).toUpperCase();
       if (verifiedDot) {
         verifiedDot.style.background = "#39b879";
         verifiedDot.setAttribute("aria-label", "Аккаунт подтверждён сервером");
