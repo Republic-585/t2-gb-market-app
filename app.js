@@ -61,7 +61,7 @@
     const result = await response.json().catch(() => ({}));
     if (!response.ok || result.ok !== true) {
       const messages = {
-        marketplace_trading_disabled: "Покупка и публикация пока отключены. Сейчас доступен тестовый режим.",
+        marketplace_trading_disabled: "Покупка и публикация пока недоступны.",
         dashboard_load_failed: "Не удалось загрузить данные маркетплейса",
         draft_save_failed: "Не удалось сохранить черновик. Попробуйте ещё раз.",
       };
@@ -131,7 +131,6 @@
     const catalog = document.getElementById("catalog-list");
     const catalogEmpty = document.getElementById("catalog-empty");
     const catalogCount = document.getElementById("catalog-count");
-    const headerBalance = document.getElementById("wallet-header-balance");
     const myListings = document.getElementById("my-listings");
     const myListingsEmpty = document.getElementById("my-listings-empty");
     const orders = document.getElementById("requests-list");
@@ -139,9 +138,21 @@
 
     if (available) available.textContent = moneyFromKopecks(data.wallet?.available_kopecks);
     if (reserved) reserved.textContent = moneyFromKopecks(data.wallet?.reserved_kopecks);
-    if (headerBalance) headerBalance.textContent = moneyFromKopecks(data.wallet?.available_kopecks);
 
-    catalogItems = (data.catalog || []).filter((item) => item.seller_telegram_user_id !== data.user.id);
+    const stats = data.market_stats || {};
+    const averagePrice = document.getElementById("market-average-price");
+    const activeCount = document.getElementById("market-active-count");
+    const soldYesterday = document.getElementById("market-sold-yesterday");
+    if (averagePrice) averagePrice.textContent = stats.average_price_per_gb_kopecks
+      ? moneyFromKopecks(stats.average_price_per_gb_kopecks)
+      : "— ₽";
+    if (activeCount) activeCount.textContent = new Intl.NumberFormat("ru-RU").format(stats.active_listings_count || 0);
+    if (soldYesterday) soldYesterday.textContent = new Intl.NumberFormat("ru-RU").format(stats.sold_yesterday_gb || 0) + " ГБ";
+
+    catalogItems = (data.catalog || []).filter((item) =>
+      item.seller_telegram_user_id !== data.user.id &&
+      Number(item.volume_gb) >= 1 && Number(item.volume_gb) <= 20
+    );
     renderCatalog();
 
     if (myListings) {
@@ -187,16 +198,19 @@
     if (!catalog || !empty) return;
 
     const query = (document.getElementById("catalog-search")?.value || "").trim().toLowerCase();
-    const sort = document.getElementById("catalog-sort")?.value || "recommended";
+    const sort = document.getElementById("catalog-sort")?.value || "popular";
     let items = catalogItems.filter((item) => {
       const seller = item.seller || {};
       const sellerName = [seller.username, seller.first_name, seller.last_name].filter(Boolean).join(" ").toLowerCase();
       return !query || sellerName.includes(query) || String(item.volume_gb).includes(query) ||
         moneyFromKopecks(item.price_kopecks).toLowerCase().includes(query);
     });
-    if (sort === "price_asc") items.sort((a,b) => a.price_kopecks - b.price_kopecks);
-    if (sort === "price_desc") items.sort((a,b) => b.price_kopecks - a.price_kopecks);
-    if (sort === "volume_desc") items.sort((a,b) => b.volume_gb - a.volume_gb);
+    if (sort === "price_asc") items.sort((a,b) => a.price_kopecks / a.volume_gb - b.price_kopecks / b.volume_gb);
+    if (sort === "price_desc") items.sort((a,b) => b.price_kopecks / b.volume_gb - a.price_kopecks / a.volume_gb);
+    if (sort === "popular") items.sort((a,b) =>
+      (Number(b.popularity_count) || 0) - (Number(a.popularity_count) || 0) ||
+      new Date(b.created_at) - new Date(a.created_at)
+    );
 
     catalog.replaceChildren();
     items.forEach((item) => catalog.append(createListingCard(item, false)));
@@ -293,7 +307,7 @@
       const price = Number(document.getElementById("listing-price").value);
       const description = listingDescription.value.trim();
 
-      if (!Number.isInteger(volume) || volume < 1 || volume > 1000 || !Number.isInteger(price) || price < 1 || price > 1000000) {
+      if (!Number.isInteger(volume) || volume < 1 || volume > 20 || !Number.isInteger(price) || price < 1 || price > 1000000) {
         showToast("Проверьте объём и стоимость предложения");
         return;
       }
