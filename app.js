@@ -3,7 +3,7 @@
   if (tg) {
     tg.ready();
     tg.expand();
-    try { tg.setHeaderColor("#f6f7f9"); tg.setBackgroundColor("#f6f7f9"); } catch (_) {}
+    try { tg.setHeaderColor("#090d10"); tg.setBackgroundColor("#090d10"); } catch (_) {}
   }
 
   const AUTH_URL = "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/miniapp-auth";
