@@ -107,7 +107,20 @@
         [seller.first_name, seller.last_name].filter(Boolean).join(" ") || "Продавец T2";
     }
     bottom.append(unit, detail);
-    card.append(top, price, bottom);
+
+    if (!own) {
+      const buyButton = document.createElement("button");
+      buyButton.type = "button";
+      buyButton.className = "listing-buy-button";
+      buyButton.textContent = "Купить";
+      buyButton.addEventListener("click", () => showToast("Покупки откроются после подключения пополнения и безопасной оплаты."));
+      const buyRow = document.createElement("div");
+      buyRow.className = "listing-buy-row";
+      buyRow.append(buyButton);
+      card.append(top, price, bottom, buyRow);
+    } else {
+      card.append(top, price, bottom);
+    }
     return card;
   }
 
