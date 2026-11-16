@@ -375,3 +375,80 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
   font-size: 12px;
   font-weight: 700;
 }
+
+
+/* Wallet, catalog and saved draft states */
+.wallet-card {
+  margin-top: 15px;
+  padding: 19px;
+  border: 1px solid #34445e;
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, #1a2433, #14191f 72%);
+}
+.wallet-card-head, .wallet-metrics, .listing-row-top, .listing-row-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.wallet-card-head { color: #b8c9e8; font-size: 11px; font-weight: 700; }
+.wallet-mode {
+  padding: 5px 8px;
+  border: 1px solid #394b66;
+  border-radius: 999px;
+  color: #b8c9e8;
+  font-size: 9px;
+  font-weight: 750;
+}
+.wallet-main { margin-top: 17px; }
+.wallet-main span, .wallet-metric span { display: block; color: var(--muted); font-size: 10px; }
+.wallet-main strong { display: block; margin-top: 4px; font-size: 30px; letter-spacing: -.06em; }
+.wallet-metrics { margin-top: 17px; padding-top: 14px; border-top: 1px solid #344052; }
+.wallet-metric strong { display: block; margin-top: 5px; font-size: 14px; }
+.wallet-topup {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 17px;
+  border: 1px solid #3a4b65;
+  border-radius: 13px;
+  background: #202a39;
+  color: #c3d2ed;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  opacity: .82;
+}
+.wallet-hint { margin: 9px 1px 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+.listing-list { display: grid; gap: 10px; margin-top: 14px; }
+.listing-row {
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+.listing-row-top strong { font-size: 14px; }
+.listing-row-top span, .listing-row-bottom span { color: var(--muted); font-size: 10px; }
+.listing-row-price { margin-top: 8px; color: #a9c3f4; font-size: 17px; font-weight: 800; letter-spacing: -.03em; }
+.listing-row-bottom { margin-top: 7px; }
+.listing-state {
+  padding: 5px 8px;
+  border: 1px solid #39485e;
+  border-radius: 999px;
+  color: #b8c9e8 !important;
+  background: #1a2433;
+}
+.listing-empty {
+  padding: 17px;
+  border: 1px dashed #354052;
+  border-radius: 15px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.subsection-heading { margin: 25px 0 10px; font-size: 15px; letter-spacing: -.03em; }
+.catalog-list { display: grid; gap: 11px; }
+.catalog-seller { margin-top: 8px; color: var(--muted); font-size: 10px; }
+.offer-card { background: #171f2b; }
+.offer-status { padding: 5px 8px; border: 1px solid #39485e; border-radius: 999px; background: #1a2028; }
+#profile-panel .wallet-card { margin-top: 15px; }
+#profile-panel .profile-row strong { color: #e2e7ed; }
