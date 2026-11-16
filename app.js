@@ -12,11 +12,14 @@
   const panels = {
     buy: document.getElementById("buy-panel"),
     sell: document.getElementById("sell-panel"),
+    requests: document.getElementById("requests-panel"),
     profile: document.getElementById("profile-panel"),
   };
   function openTab(target) {
     tabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.tab === target));
+    document.querySelectorAll(".nav-item").forEach((tab) => tab.classList.toggle("is-active", tab.dataset.tab === target));
     Object.entries(panels).forEach(([name, panel]) => panel?.classList.toggle("is-hidden", name !== target));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
   tabs.forEach((tab) => tab.addEventListener("click", () => openTab(tab.dataset.tab)));
   document.querySelectorAll("[data-open-tab]").forEach((button) => {
@@ -30,6 +33,7 @@
   const toast = document.getElementById("toast");
   let toastTimer;
   let dashboardData = null;
+  let catalogItems = [];
 
   function showToast(message) {
     if (!toast) return;
@@ -113,20 +117,19 @@
     const reserved = document.getElementById("wallet-reserved");
     const catalog = document.getElementById("catalog-list");
     const catalogEmpty = document.getElementById("catalog-empty");
+    const catalogCount = document.getElementById("catalog-count");
+    const headerBalance = document.getElementById("wallet-header-balance");
     const myListings = document.getElementById("my-listings");
     const myListingsEmpty = document.getElementById("my-listings-empty");
-    const orders = document.getElementById("orders-list");
-    const ordersEmpty = document.getElementById("orders-empty");
+    const orders = document.getElementById("requests-list");
+    const ordersEmpty = document.getElementById("requests-empty");
 
     if (available) available.textContent = moneyFromKopecks(data.wallet?.available_kopecks);
     if (reserved) reserved.textContent = moneyFromKopecks(data.wallet?.reserved_kopecks);
+    if (headerBalance) headerBalance.textContent = moneyFromKopecks(data.wallet?.available_kopecks);
 
-    if (catalog) {
-      catalog.replaceChildren();
-      (data.catalog || []).forEach((item) => catalog.append(createListingCard(item, false)));
-      catalog.classList.toggle("is-hidden", (data.catalog || []).length === 0);
-    }
-    if (catalogEmpty) catalogEmpty.classList.toggle("is-hidden", (data.catalog || []).length > 0);
+    catalogItems = (data.catalog || []).filter((item) => item.seller_telegram_user_id !== data.user.id);
+    renderCatalog();
 
     if (myListings) {
       myListings.replaceChildren();
@@ -163,6 +166,34 @@
     }
     if (ordersEmpty) ordersEmpty.classList.toggle("is-hidden", (data.orders || []).length > 0);
   }
+
+  function renderCatalog() {
+    const catalog = document.getElementById("catalog-list");
+    const empty = document.getElementById("catalog-empty");
+    const count = document.getElementById("catalog-count");
+    if (!catalog || !empty) return;
+
+    const query = (document.getElementById("catalog-search")?.value || "").trim().toLowerCase();
+    const sort = document.getElementById("catalog-sort")?.value || "recommended";
+    let items = catalogItems.filter((item) => {
+      const seller = item.seller || {};
+      const sellerName = [seller.username, seller.first_name, seller.last_name].filter(Boolean).join(" ").toLowerCase();
+      return !query || sellerName.includes(query) || String(item.volume_gb).includes(query) ||
+        moneyFromKopecks(item.price_kopecks).toLowerCase().includes(query);
+    });
+    if (sort === "price_asc") items.sort((a,b) => a.price_kopecks - b.price_kopecks);
+    if (sort === "price_desc") items.sort((a,b) => b.price_kopecks - a.price_kopecks);
+    if (sort === "volume_desc") items.sort((a,b) => b.volume_gb - a.volume_gb);
+
+    catalog.replaceChildren();
+    items.forEach((item) => catalog.append(createListingCard(item, false)));
+    catalog.classList.toggle("is-hidden", items.length === 0);
+    empty.classList.toggle("is-hidden", items.length > 0);
+    if (count) count.textContent = items.length + (items.length === 1 ? " предложение" : items.length < 5 ? " предложения" : " предложений");
+  }
+
+  document.getElementById("catalog-search")?.addEventListener("input", renderCatalog);
+  document.getElementById("catalog-sort")?.addEventListener("change", renderCatalog);
 
   async function loadDashboard() {
     try {
@@ -300,7 +331,7 @@
   authenticateTelegramUser();
   document.querySelector(".brand")?.addEventListener("click", (event) => {
     event.preventDefault();
-    openTab("profile");
-    showToast("Ваш профиль T2 GB MARKET");
+    openTab("buy");
+    showToast("Каталог T2 GB MARKET");
   });
 })();
