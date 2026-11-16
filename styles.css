@@ -602,6 +602,40 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
 }
 
 
+/* Telegram-style animated navigation selection */
+.bottom-nav { --nav-index: 0; overflow: hidden; }
+.bottom-nav::before {
+  content: ""; position: absolute; z-index: 0; top: 7px; bottom: 7px; left: 7px;
+  width: calc((100% - 29px) / 4);
+  border: 1px solid rgba(154,190,255,.19); border-radius: 19px;
+  background: linear-gradient(180deg,rgba(154,190,255,.20),rgba(107,155,255,.085));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16),0 2px 12px rgba(0,0,0,.14);
+  transform: translateX(calc(var(--nav-index) * (100% + 5px)));
+  transition: transform .34s cubic-bezier(.22,1,.36,1); pointer-events: none;
+}
+.bottom-nav .nav-item {
+  z-index: 1; border-color: transparent; background: transparent !important;
+  box-shadow: none !important;
+  transition: color .24s ease,transform .24s cubic-bezier(.2,.8,.2,1);
+}
+.bottom-nav .nav-item.is-active { color: #e8f0ff; }
+.bottom-nav .nav-item.is-active span { animation: nav-icon-pop .32s cubic-bezier(.2,.8,.2,1); }
+@keyframes nav-icon-pop {
+  0% { transform: translateY(2px) scale(.88); }
+  65% { transform: translateY(-2px) scale(1.12); }
+  100% { transform: translateY(-1px) scale(1); }
+}
+.tab-panel-enter { animation: tab-panel-enter .24s ease both; }
+@keyframes tab-panel-enter {
+  from { opacity: .72; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav::before,.bottom-nav .nav-item,.bottom-nav .nav-item span,.tab-panel-enter {
+    animation: none !important; transition: none !important;
+  }
+}
+
 /* Marketplace home refinement */
 .home-wallet { display: none !important; }
 .market-stats {
