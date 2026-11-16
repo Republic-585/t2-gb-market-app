@@ -72,3 +72,81 @@ h3 { margin: 0; font-size: 17px; letter-spacing: -.035em; }
 button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 @media (min-width: 600px) { .app-shell { padding-top: 28px; } .intro { padding-top: 54px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+
+
+/* T2 GB MARKET — Neon Fintech x Apple refinement */
+#profile-panel { padding-top: 26px; }
+#profile-panel .section-heading { margin-bottom: 18px; }
+#profile-panel .section-heading h2 { font-size: 27px; letter-spacing: -.06em; }
+#profile-panel .profile-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 88px;
+  padding: 19px;
+  border-color: #34433b;
+  background: #131c1b;
+}
+#profile-panel .profile-card::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: var(--lime);
+  content: "";
+}
+#profile-panel .avatar {
+  border-radius: 15px;
+  box-shadow: inset 0 -2px 0 #10160920;
+}
+#profile-panel .profile-details strong { font-size: 15px; letter-spacing: -.025em; }
+#profile-panel .verified-dot {
+  flex: 0 0 9px;
+  box-shadow: 0 0 0 4px #42e8d014;
+}
+#profile-panel .profile-actions {
+  margin-top: 20px;
+  padding: 20px;
+  border-color: #2b3938;
+  background: #111918;
+}
+#profile-panel .profile-actions h3 { font-size: 16px; }
+#profile-panel .profile-action {
+  min-height: 72px;
+  margin-top: 10px;
+  border-color: #2b3938;
+  background: #17211f;
+}
+#profile-panel .profile-action-icon {
+  border-radius: 12px;
+}
+#profile-panel .profile-action:nth-of-type(2) .profile-action-icon {
+  background: #17312c;
+}
+#profile-panel .profile-action-arrow {
+  color: #a7bb9a;
+  font-size: 25px;
+}
+#profile-panel .profile-action:active {
+  border-color: var(--lime);
+  background: #1c2921;
+}
+#profile-panel .profile-row {
+  min-height: 52px;
+  align-items: center;
+  border-bottom-color: #202d2d;
+}
+#profile-panel .profile-row strong {
+  color: #dce8df;
+  font-size: 11px;
+}
+#profile-panel > .fine-print {
+  margin-top: 16px;
+  padding: 0 2px;
+}
+@media (hover: hover) {
+  #profile-panel .profile-action:hover {
+    border-color: #637d4b;
+    background: #1b2823;
+  }
+}
