@@ -6,10 +6,10 @@
   --ink: #f3f8f7;
   --muted: #91a09f;
   --line: #26343a;
-  --lime: #c7ff3d;
-  --lime-ink: #101609;
-  --cyan: #42e8d0;
-  --warning: #ffbf5e;
+  --lime: #6b9bff;
+  --lime-ink: #081426;
+  --cyan: #6b9bff;
+  --warning: #9aa4b2;
   --radius: 20px;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
 }
@@ -149,4 +149,102 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
     border-color: #637d4b;
     background: #1b2823;
   }
+}
+
+
+/* T2 GB MARKET — restrained fintech palette: graphite, white, one blue accent */
+:root {
+  --bg: #0b0e12;
+  --surface: #14191f;
+  --surface-raised: #1a2028;
+  --ink: #f4f6f8;
+  --muted: #a0a8b3;
+  --line: #2b333d;
+  --lime: #6b9bff;
+  --lime-ink: #081426;
+  --cyan: #6b9bff;
+  --warning: #9aa4b2;
+}
+.beta-tag, .count-pill {
+  background: #151a21;
+  color: #aeb6c1;
+}
+.empty-icon {
+  border-color: #34445e;
+  background: #1a2433;
+  color: var(--lime);
+}
+.status-line {
+  border-color: #343d49;
+  background: #1a2028;
+  color: #c0c7d0;
+}
+.status-line i {
+  background: #9aa4b2;
+  box-shadow: none;
+}
+.notice-icon {
+  border-color: #34445e;
+  background: #1a2433;
+  color: var(--lime);
+}
+.primary-button:disabled {
+  background: #303b4c;
+  color: #c0cbe0;
+}
+.profile-card {
+  border-color: var(--line);
+  background: var(--surface);
+}
+.verified-dot {
+  background: var(--lime);
+  box-shadow: none;
+}
+.profile-actions {
+  border-color: var(--line);
+  background: var(--surface);
+}
+.profile-action {
+  border-color: #303945;
+  background: var(--surface-raised);
+}
+.profile-action-icon,
+.profile-action:nth-of-type(2) .profile-action-icon {
+  background: #202a39;
+  color: var(--lime);
+}
+.profile-action-arrow { color: var(--lime); }
+.profile-action:active,
+.profile-action:hover {
+  border-color: #5879b1;
+  background: #202a39;
+}
+#profile-panel .profile-card {
+  border-color: #303945;
+  background: var(--surface);
+}
+#profile-panel .profile-card::before { background: var(--lime); }
+#profile-panel .profile-actions {
+  border-color: var(--line);
+  background: var(--surface);
+}
+#profile-panel .profile-action {
+  border-color: #303945;
+  background: var(--surface-raised);
+}
+#profile-panel .profile-action-icon,
+#profile-panel .profile-action:nth-of-type(2) .profile-action-icon {
+  background: #202a39;
+  color: var(--lime);
+}
+#profile-panel .profile-action-arrow { color: #a9bce0; }
+#profile-panel .profile-action:active,
+#profile-panel .profile-action:hover {
+  border-color: #5879b1;
+  background: #202a39;
+}
+#profile-panel .profile-row strong { color: #e2e7ed; }
+.toast {
+  border-color: #39485e;
+  background: #1b2431;
 }
