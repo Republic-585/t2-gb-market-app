@@ -23,15 +23,55 @@
     });
   });
 
-  // Telegram's client-side user object is used only for a cosmetic greeting.
-  // It is not an authentication source; the server must validate initData.
-  const user = tg?.initDataUnsafe?.user;
-  if (user) {
-    const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ");
-    document.getElementById("profile-name").textContent = fullName || "Пользователь Telegram";
-    document.getElementById("profile-username").textContent = user.username ? "@" + user.username : "Аккаунт Telegram подключён";
-    document.getElementById("avatar").textContent = (user.first_name || "T2").slice(0, 2).toUpperCase();
+  const profileName = document.getElementById("profile-name");
+  const profileUsername = document.getElementById("profile-username");
+  const avatar = document.getElementById("avatar");
+  const verifiedDot = document.querySelector(".verified-dot");
+
+  async function authenticateTelegramUser() {
+    const initData = tg?.initData;
+    if (!initData) {
+      profileUsername.textContent = "Откройте приложение через Telegram";
+      if (verifiedDot) verifiedDot.style.background = "#e6a62e";
+      return;
+    }
+
+    profileUsername.textContent = "Проверяем аккаунт Telegram…";
+    try {
+      const response = await fetch(
+        "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/miniapp-auth",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ initData }),
+          cache: "no-store",
+        }
+      );
+      const result = await response.json();
+      if (!response.ok || result.ok !== true || result.authenticated !== true || !result.user) {
+        throw new Error("Telegram authentication failed");
+      }
+
+      const user = result.user;
+      const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ");
+      profileName.textContent = fullName || "Пользователь Telegram";
+      profileUsername.textContent = user.username
+        ? "@" + user.username + " · Аккаунт подтверждён"
+        : "Аккаунт Telegram подтверждён";
+      avatar.textContent = (user.first_name || "T2").slice(0, 2).toUpperCase();
+      if (verifiedDot) {
+        verifiedDot.style.background = "#39b879";
+        verifiedDot.setAttribute("aria-label", "Аккаунт подтверждён сервером");
+      }
+      document.documentElement.dataset.telegramAuth = "verified";
+    } catch (_) {
+      profileUsername.textContent = "Не удалось подтвердить аккаунт. Перезапустите приложение.";
+      if (verifiedDot) verifiedDot.style.background = "#d94b4b";
+      document.documentElement.dataset.telegramAuth = "failed";
+    }
   }
+
+  authenticateTelegramUser();
 
   const toast = document.getElementById("toast");
   let toastTimer;
