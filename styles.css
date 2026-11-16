@@ -665,3 +665,9 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
   .shortcut { gap: 5px; padding: 7px 5px; font-size: 8px; }
   .shortcut-symbol { font-size: 14px; }
 }
+
+
+/* Telegram profile photo */
+.avatar { overflow: hidden; }
+.avatar.has-photo { background: #1a2028; }
+.avatar img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
