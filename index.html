@@ -8,7 +8,7 @@
   <title>T2 GB MARKET</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script defer src="./app.js?v=5"></script>
+  <script defer src="./app.js?v=6"></script>
 </head>
 <body>
   <main class="app-shell">
@@ -26,13 +26,7 @@
       <p class="intro-copy">Покупка и передача гигабайтов между абонентами T2 — в одном месте.</p>
     </section>
 
-    <nav class="tabs" aria-label="Разделы приложения">
-      <button class="tab is-active" type="button" data-tab="buy">Купить</button>
-      <button class="tab" type="button" data-tab="sell">Продать</button>
-      <button class="tab" type="button" data-tab="profile">Профиль</button>
-    </nav>
-
-    <section class="panel" id="buy-panel">
+    <section class="panel is-hidden" id="buy-panel">
       <div class="section-heading">
         <div>
           <p class="eyebrow">КАТАЛОГ</p>
@@ -66,7 +60,7 @@
       <p class="fine-print">Публикация объявлений и сделки отключены на время тестирования.</p>
     </section>
 
-    <section class="panel is-hidden" id="profile-panel">
+    <section class="panel" id="profile-panel">
       <div class="section-heading">
         <div>
           <p class="eyebrow">ВАШ АККАУНТ</p>
