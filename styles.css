@@ -280,3 +280,98 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
   border-color: #39485e;
   background: #1b2431;
 }
+
+/* Seller listing draft form and offer preview */
+.sell-intro { margin-bottom: 20px; }
+.listing-form {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.field-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 18px 0 9px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+.field-label:first-child { margin-top: 0; }
+.field-label span, .field-hint, .form-bottomline {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 450;
+}
+.input-wrap { position: relative; }
+.input-wrap input, .listing-form textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid #303945;
+  border-radius: 13px;
+  outline: none;
+  background: #10151c;
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  transition: border-color .16s ease, background .16s ease;
+}
+.input-wrap input { min-height: 54px; padding: 0 54px 0 15px; }
+.input-wrap > span {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  color: var(--muted);
+  font-size: 13px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.listing-form textarea { min-height: 82px; padding: 13px 14px; resize: vertical; font-size: 13px; line-height: 1.5; }
+.input-wrap input:focus, .listing-form textarea:focus { border-color: #6b9bff; background: #141c27; }
+.input-wrap input::placeholder, .listing-form textarea::placeholder { color: #697483; }
+.field-hint { margin: 7px 1px 0; line-height: 1.45; }
+.form-bottomline { display: flex; justify-content: space-between; margin: 7px 2px 0; }
+.listing-form .primary-button { margin-top: 22px; cursor: pointer; }
+.listing-form .primary-button:active { transform: scale(.99); }
+.listing-preview { margin-top: 25px; }
+.preview-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 13px; }
+.preview-heading .eyebrow { margin-bottom: 6px; }
+.preview-heading h3 { font-size: 18px; }
+.draft-label {
+  padding: 7px 10px;
+  border: 1px solid #34445e;
+  border-radius: 999px;
+  color: #b8c9e8;
+  background: #1a2433;
+  font-size: 10px;
+  font-weight: 700;
+}
+.offer-card {
+  padding: 20px;
+  border: 1px solid #35445a;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #192332, #14191f 68%);
+}
+.offer-topline { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.offer-tag { color: #b8c9e8; font-size: 10px; font-weight: 750; letter-spacing: .04em; }
+.offer-status { color: #9aa4b2; font-size: 9px; }
+.offer-volume { margin-top: 24px; color: var(--ink); font-size: 42px; font-weight: 800; letter-spacing: -.07em; }
+.offer-volume small { color: var(--muted); font-size: 17px; font-weight: 650; letter-spacing: -.02em; }
+.offer-price { margin-top: 8px; color: #8fb2ff; font-size: 25px; font-weight: 800; letter-spacing: -.04em; }
+.offer-unit-price { margin-top: 4px; color: var(--muted); font-size: 11px; }
+.offer-description { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid #303945; color: #c1cad6; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.preview-note { margin: 11px 2px 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+.secondary-button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 13px;
+  border: 1px solid #35445a;
+  border-radius: 14px;
+  background: transparent;
+  color: #c4d3ee;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
