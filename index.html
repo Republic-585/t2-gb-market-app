@@ -8,7 +8,7 @@
   <title>T2 GB MARKET</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script defer src="./app.js?v=3"></script>
+  <script defer src="./app.js?v=4"></script>
 </head>
 <body>
   <main class="app-shell">
@@ -81,31 +81,24 @@
         </div>
         <span class="verified-dot" aria-label="Подключено"></span>
       </div>
-      <div class="role-settings">
-        <div class="role-heading">
-          <h3>Как вы хотите пользоваться маркетплейсом?</h3>
-          <p>Можно выбрать одну или обе роли.</p>
-        </div>
-        <div class="role-options">
-          <button class="role-option" type="button" data-role="buyer" aria-pressed="false" disabled>
-            <span class="role-option-icon" aria-hidden="true">↙</span>
-            <span><strong>Покупатель</strong><small>Искать и покупать гигабайты</small></span>
-            <span class="role-check" aria-hidden="true">✓</span>
-          </button>
-          <button class="role-option" type="button" data-role="seller" aria-pressed="false" disabled>
-            <span class="role-option-icon" aria-hidden="true">↗</span>
-            <span><strong>Продавец</strong><small>Предлагать свои гигабайты</small></span>
-            <span class="role-check" aria-hidden="true">✓</span>
-          </button>
-        </div>
-        <button class="primary-button role-save" id="role-save" type="button" disabled>Сохранить выбор</button>
-        <p class="role-status" id="role-status" aria-live="polite">Подключаем профиль Telegram…</p>
+      <div class="profile-actions">
+        <h3>Что хотите сделать?</h3>
+        <p>Выберите нужный раздел. Менять настройки профиля или регистрироваться повторно не нужно.</p>
+        <button class="profile-action" type="button" data-open-tab="buy">
+          <span class="profile-action-icon" aria-hidden="true">↙</span>
+          <span><strong>Купить гигабайты</strong><small>Найти предложения других абонентов T2</small></span>
+          <span class="profile-action-arrow" aria-hidden="true">›</span>
+        </button>
+        <button class="profile-action" type="button" data-open-tab="sell">
+          <span class="profile-action-icon" aria-hidden="true">↗</span>
+          <span><strong>Продать гигабайты</strong><small>Подготовить своё предложение</small></span>
+          <span class="profile-action-arrow" aria-hidden="true">›</span>
+        </button>
       </div>
-      <div class="profile-row"><span>Мои роли</span><strong id="role-summary">Не выбрана</strong></div>
       <div class="profile-row"><span>Статус</span><strong>Тестовый доступ</strong></div>
       <div class="profile-row"><span>Объявления</span><strong>Пока недоступны</strong></div>
       <div class="profile-row"><span>Сделки</span><strong>Пока недоступны</strong></div>
-      <p class="fine-print">Роли сохраняются в защищённом профиле. Объявления, сделки и платежи пока отключены.</p>
+      <p class="fine-print">Ваш профиль автоматически связан с аккаунтом Telegram. Объявления, сделки и платежи пока отключены.</p>
     </section>
 
     <footer class="footer">
