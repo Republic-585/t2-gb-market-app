@@ -121,8 +121,9 @@
       const money = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 });
       document.getElementById("preview-volume").innerHTML = money.format(volume) + " <small>ГБ</small>";
       document.getElementById("preview-price").textContent = money.format(price) + " ₽";
+      const unitMoney = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 2 });
       document.getElementById("preview-unit-price").textContent =
-        money.format(Math.round((price / volume) * 100) / 100) + " ₽ за 1 ГБ";
+        unitMoney.format(price / volume) + " ₽ за 1 ГБ";
 
       const previewDescription = document.getElementById("preview-description");
       previewDescription.textContent = description;
