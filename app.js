@@ -44,15 +44,30 @@
       if (verifiedDot) verifiedDot.style.background = "#e6a62e";
       return;
     }
-    profileUsername.textContent = "Проверяем аккаунт Telegram…";
+    // Show Telegram-provided name immediately for display only.
+    // Authentication is still established exclusively by the server response.
+    const previewUser = tg?.initDataUnsafe?.user;
+    if (previewUser) {
+      const previewFullName = [previewUser.first_name, previewUser.last_name].filter(Boolean).join(" ");
+      const previewUsername = typeof previewUser.username === "string" && previewUser.username ? "@" + previewUser.username : "";
+      profileName.textContent = previewUsername || previewFullName || "Пользователь Telegram";
+      profileUsername.textContent = "Подтверждаем аккаунт…";
+      avatar.textContent = (previewUser.first_name || previewUser.username || "T2").slice(0, 2).toUpperCase();
+    } else {
+      profileUsername.textContent = "Проверяем аккаунт Telegram…";
+    }
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
     try {
       const response = await fetch(AUTH_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ initData }),
         cache: "no-store",
+        signal: controller.signal,
       });
       const result = await response.json();
+      clearTimeout(timeoutId);
       if (!response.ok || result.ok !== true || result.authenticated !== true || !result.user) {
         throw new Error(result.error || "authentication_failed");
       }
@@ -70,7 +85,8 @@
       }
       document.documentElement.dataset.telegramAuth = "verified";
     } catch (_) {
-      profileUsername.textContent = "Не удалось подтвердить аккаунт. Перезапустите приложение.";
+      clearTimeout(timeoutId);
+      profileUsername.textContent = "Не удалось подтвердить аккаунт. Проверьте соединение и повторите запуск.";
       if (verifiedDot) verifiedDot.style.background = "#d94b4b";
       document.documentElement.dataset.telegramAuth = "failed";
     }
