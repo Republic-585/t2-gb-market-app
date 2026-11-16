@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f7f9">
+  <meta name="description" content="T2 GB MARKET — маркетплейс передачи гигабайтов T2.">
+  <title>T2 GB MARKET</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="T2 GB MARKET — главная">
+        <span class="brand-mark">T2</span>
+        <span class="brand-name">GB MARKET</span>
+      </a>
+      <span class="beta-tag">ТЕСТОВЫЙ РЕЖИМ</span>
+    </header>
+
+    <section class="intro">
+      <p class="eyebrow">МАРКЕТПЛЕЙС ГИГАБАЙТОВ</p>
+      <h1>Гигабайты.<br><span>Когда нужны.</span></h1>
+      <p class="intro-copy">Покупка и передача гигабайтов между абонентами T2 — в одном месте.</p>
+    </section>
+
+    <nav class="tabs" aria-label="Разделы приложения">
+      <button class="tab is-active" type="button" data-tab="buy">Купить</button>
+      <button class="tab" type="button" data-tab="sell">Продать</button>
+      <button class="tab" type="button" data-tab="profile">Профиль</button>
+    </nav>
+
+    <section class="panel" id="buy-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">КАТАЛОГ</p>
+          <h2>Найти гигабайты</h2>
+        </div>
+        <span class="count-pill">Скоро</span>
+      </div>
+      <div class="empty-state">
+        <div class="empty-icon" aria-hidden="true">↗</div>
+        <h3>Каталог готовится</h3>
+        <p>Сейчас мы настраиваем безопасную систему объявлений и передачи гигабайтов. Здесь появятся предложения продавцов.</p>
+        <span class="status-line"><i></i> Сделки пока недоступны</span>
+      </div>
+    </section>
+
+    <section class="panel is-hidden" id="sell-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">ДЛЯ ПРОДАВЦОВ</p>
+          <h2>Предложить гигабайты</h2>
+        </div>
+      </div>
+      <div class="notice-card">
+        <span class="notice-icon" aria-hidden="true">＋</span>
+        <div>
+          <h3>Размещение скоро откроется</h3>
+          <p>Готовим создание объявлений, проверку доступного объёма и понятный процесс передачи.</p>
+        </div>
+      </div>
+      <button class="primary-button" type="button" disabled>Создать объявление</button>
+      <p class="fine-print">Публикация объявлений и сделки отключены на время тестирования.</p>
+    </section>
+
+    <section class="panel is-hidden" id="profile-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">ВАШ АККАУНТ</p>
+          <h2>Профиль</h2>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="avatar" id="avatar">T2</div>
+        <div class="profile-details">
+          <strong id="profile-name">Пользователь Telegram</strong>
+          <span id="profile-username">Аккаунт подключён через Telegram</span>
+        </div>
+        <span class="verified-dot" aria-label="Подключено"></span>
+      </div>
+      <div class="profile-row"><span>Статус</span><strong>Тестовый доступ</strong></div>
+      <div class="profile-row"><span>Объявления</span><strong>Пока недоступны</strong></div>
+      <div class="profile-row"><span>Сделки</span><strong>Пока недоступны</strong></div>
+      <p class="fine-print">Данные профиля отображаются из Telegram только для интерфейса. Подтверждение личности и серверная авторизация будут реализованы отдельно.</p>
+    </section>
+
+    <footer class="footer">
+      <span>T2 GB MARKET</span>
+      <span>Развиваем маркетплейс вместе</span>
+    </footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
