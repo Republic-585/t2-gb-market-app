@@ -17,8 +17,24 @@
   };
   function openTab(target) {
     tabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.tab === target));
-    document.querySelectorAll(".nav-item").forEach((tab) => tab.classList.toggle("is-active", tab.dataset.tab === target));
-    Object.entries(panels).forEach(([name, panel]) => panel?.classList.toggle("is-hidden", name !== target));
+    const navItems = [...document.querySelectorAll(".bottom-nav .nav-item")];
+    const activeIndex = navItems.findIndex((tab) => tab.dataset.tab === target);
+    navItems.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.tab === target));
+    const bottomNav = document.querySelector(".bottom-nav");
+    if (bottomNav && activeIndex >= 0) {
+      bottomNav.style.setProperty("--nav-index", activeIndex);
+      bottomNav.dataset.activeTab = target;
+    }
+    Object.entries(panels).forEach(([name, panel]) => {
+      if (!panel) return;
+      const isTarget = name === target;
+      panel.classList.toggle("is-hidden", !isTarget);
+      if (isTarget) {
+        panel.classList.remove("tab-panel-enter");
+        void panel.offsetWidth;
+        panel.classList.add("tab-panel-enter");
+      }
+    });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   tabs.forEach((tab) => tab.addEventListener("click", () => openTab(tab.dataset.tab)));
