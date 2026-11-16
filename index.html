@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0b0e12">
   <meta name="description" content="T2 GB MARKET — маркетплейс передачи гигабайтов T2.">
   <title>T2 GB MARKET</title>
-  <link rel="stylesheet" href="./styles.css?v=16">
+  <link rel="stylesheet" href="./styles.css?v=17">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script defer src="./app.js?v=16"></script>
 </head>
@@ -185,10 +185,18 @@
     </section>
 
     <nav class="bottom-nav" aria-label="Основная навигация">
-      <button class="nav-item is-active" type="button" data-tab="buy"><span>⌂</span><small>Маркет</small></button>
-      <button class="nav-item" type="button" data-tab="sell"><span>＋</span><small>Продать</small></button>
-      <button class="nav-item" type="button" data-tab="requests"><span>◷</span><small>Заявки</small></button>
-      <button class="nav-item" type="button" data-tab="profile"><span>◉</span><small>Профиль</small></button>
+      <button class="nav-item is-active" type="button" data-tab="buy" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 10 8.5-7 8.5 7v10a1 1 0 0 1-1 1h-5.2v-6.4H9.7V21H4.5a1 1 0 0 1-1-1z"/></svg><small>Маркет</small>
+      </button>
+      <button class="nav-item" type="button" data-tab="sell">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><small>Продать</small>
+      </button>
+      <button class="nav-item" type="button" data-tab="requests">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.3 2"/></svg><small>Заявки</small>
+      </button>
+      <button class="nav-item" type="button" data-tab="profile">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.2 20a6.8 6.8 0 0 1 13.6 0"/></svg><small>Профиль</small>
+      </button>
     </nav>
     <footer class="footer">
       <span>T2 GB MARKET</span>
