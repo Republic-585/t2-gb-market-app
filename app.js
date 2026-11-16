@@ -7,6 +7,7 @@
   }
 
   const AUTH_URL = "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/miniapp-auth";
+  const MARKETPLACE_API = "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/marketplace-api";
   const tabs = [...document.querySelectorAll("[data-tab]")];
   const panels = {
     buy: document.getElementById("buy-panel"),
@@ -15,7 +16,7 @@
   };
   function openTab(target) {
     tabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.tab === target));
-    Object.entries(panels).forEach(([name, panel]) => panel.classList.toggle("is-hidden", name !== target));
+    Object.entries(panels).forEach(([name, panel]) => panel?.classList.toggle("is-hidden", name !== target));
   }
   tabs.forEach((tab) => tab.addEventListener("click", () => openTab(tab.dataset.tab)));
   document.querySelectorAll("[data-open-tab]").forEach((button) => {
@@ -28,6 +29,7 @@
   const verifiedDot = document.querySelector(".verified-dot");
   const toast = document.getElementById("toast");
   let toastTimer;
+  let dashboardData = null;
 
   function showToast(message) {
     if (!toast) return;
@@ -37,6 +39,140 @@
     toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2600);
   }
 
+  function moneyFromKopecks(value) {
+    return new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 2 }).format((Number(value) || 0) / 100) + " ₽";
+  }
+  function unitPrice(price, volume) {
+    return new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 2 }).format((Number(price) || 0) / 100 / Math.max(1, Number(volume) || 1)) + " ₽ за 1 ГБ";
+  }
+  async function callMarketplaceApi(action, payload = {}) {
+    const initData = tg?.initData || "";
+    if (!initData) throw new Error("Откройте приложение через Telegram");
+    const response = await fetch(MARKETPLACE_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ initData, action, payload }),
+      cache: "no-store",
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.ok !== true) {
+      const messages = {
+        marketplace_trading_disabled: "Покупка и публикация пока отключены. Сейчас доступен тестовый режим.",
+        dashboard_load_failed: "Не удалось загрузить данные маркетплейса",
+        draft_save_failed: "Не удалось сохранить черновик. Попробуйте ещё раз.",
+      };
+      throw new Error(messages[result.error] || "Не удалось выполнить запрос");
+    }
+    return result;
+  }
+
+  function createEmptyState(text) {
+    const el = document.createElement("div");
+    el.className = "listing-empty";
+    el.textContent = text;
+    return el;
+  }
+  function createListingCard(item, own = false) {
+    const card = document.createElement("article");
+    card.className = "listing-row";
+
+    const top = document.createElement("div");
+    top.className = "listing-row-top";
+    const volume = document.createElement("strong");
+    volume.textContent = new Intl.NumberFormat("ru-RU").format(item.volume_gb) + " ГБ";
+    const status = document.createElement("span");
+    status.className = "listing-state";
+    const labels = { draft: "Черновик", active: "Опубликовано", paused: "На паузе", reserved: "В сделке", sold: "Продано", cancelled: "Снято", moderation: "Проверка" };
+    status.textContent = labels[item.status] || "Предложение";
+    top.append(volume, status);
+
+    const price = document.createElement("div");
+    price.className = "listing-row-price";
+    price.textContent = moneyFromKopecks(item.price_kopecks);
+
+    const bottom = document.createElement("div");
+    bottom.className = "listing-row-bottom";
+    const unit = document.createElement("span");
+    unit.textContent = unitPrice(item.price_kopecks, item.volume_gb);
+    const detail = document.createElement("span");
+    if (own) {
+      detail.textContent = item.description ? item.description.slice(0, 72) : "Только вам";
+    } else {
+      const seller = item.seller || {};
+      detail.textContent = seller.username ? "@" + seller.username :
+        [seller.first_name, seller.last_name].filter(Boolean).join(" ") || "Продавец T2";
+    }
+    bottom.append(unit, detail);
+    card.append(top, price, bottom);
+    return card;
+  }
+
+  function renderDashboard(data) {
+    dashboardData = data;
+    const available = document.getElementById("wallet-available");
+    const reserved = document.getElementById("wallet-reserved");
+    const catalog = document.getElementById("catalog-list");
+    const catalogEmpty = document.getElementById("catalog-empty");
+    const myListings = document.getElementById("my-listings");
+    const myListingsEmpty = document.getElementById("my-listings-empty");
+    const orders = document.getElementById("orders-list");
+    const ordersEmpty = document.getElementById("orders-empty");
+
+    if (available) available.textContent = moneyFromKopecks(data.wallet?.available_kopecks);
+    if (reserved) reserved.textContent = moneyFromKopecks(data.wallet?.reserved_kopecks);
+
+    if (catalog) {
+      catalog.replaceChildren();
+      (data.catalog || []).forEach((item) => catalog.append(createListingCard(item, false)));
+      catalog.classList.toggle("is-hidden", (data.catalog || []).length === 0);
+    }
+    if (catalogEmpty) catalogEmpty.classList.toggle("is-hidden", (data.catalog || []).length > 0);
+
+    if (myListings) {
+      myListings.replaceChildren();
+      (data.my_listings || []).forEach((item) => myListings.append(createListingCard(item, true)));
+      myListings.classList.toggle("is-hidden", (data.my_listings || []).length === 0);
+    }
+    if (myListingsEmpty) myListingsEmpty.classList.toggle("is-hidden", (data.my_listings || []).length > 0);
+
+    if (orders) {
+      orders.replaceChildren();
+      const statusLabels = {
+        awaiting_seller: "Ожидает продавца", accepted: "Продавец принял",
+        transfer_reported: "Ожидает подтверждения", completed: "Завершена",
+        cancelled: "Отменена", disputed: "Спор", expired: "Истекла", refunded: "Возврат",
+      };
+      (data.orders || []).forEach((order) => {
+        const item = document.createElement("article");
+        item.className = "listing-row";
+        const top = document.createElement("div");
+        top.className = "listing-row-top";
+        const label = document.createElement("strong");
+        label.textContent = (order.buyer_telegram_user_id === data.user.id ? "Покупка · " : "Продажа · ") + order.volume_gb + " ГБ";
+        const status = document.createElement("span");
+        status.className = "listing-state";
+        status.textContent = statusLabels[order.status] || order.status;
+        top.append(label, status);
+        const price = document.createElement("div");
+        price.className = "listing-row-price";
+        price.textContent = moneyFromKopecks(order.price_kopecks);
+        item.append(top, price);
+        orders.append(item);
+      });
+      orders.classList.toggle("is-hidden", (data.orders || []).length === 0);
+    }
+    if (ordersEmpty) ordersEmpty.classList.toggle("is-hidden", (data.orders || []).length > 0);
+  }
+
+  async function loadDashboard() {
+    try {
+      const data = await callMarketplaceApi("dashboard");
+      renderDashboard(data);
+    } catch (error) {
+      showToast(error.message || "Не удалось загрузить маркетплейс");
+    }
+  }
+
   async function authenticateTelegramUser() {
     const initData = tg?.initData || "";
     if (!initData) {
@@ -44,8 +180,6 @@
       if (verifiedDot) verifiedDot.style.background = "#9aa4b2";
       return;
     }
-    // Show Telegram-provided name immediately for display only.
-    // Authentication is still established exclusively by the server response.
     const previewUser = tg?.initDataUnsafe?.user;
     if (previewUser) {
       const previewFullName = [previewUser.first_name, previewUser.last_name].filter(Boolean).join(" ");
@@ -84,6 +218,7 @@
         verifiedDot.setAttribute("aria-label", "Аккаунт подтверждён сервером");
       }
       document.documentElement.dataset.telegramAuth = "verified";
+      await loadDashboard();
     } catch (_) {
       clearTimeout(timeoutId);
       profileUsername.textContent = "Не удалось подтвердить аккаунт. Проверьте соединение и повторите запуск.";
@@ -97,6 +232,7 @@
   const descriptionCount = document.getElementById("description-count");
   const listingPreview = document.getElementById("listing-preview");
   const editListingButton = document.getElementById("edit-listing");
+  const saveListingButton = listingForm?.querySelector('button[type="submit"]');
 
   if (listingDescription && descriptionCount) {
     listingDescription.addEventListener("input", () => {
@@ -105,7 +241,7 @@
   }
 
   if (listingForm) {
-    listingForm.addEventListener("submit", (event) => {
+    listingForm.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!listingForm.reportValidity()) return;
 
@@ -113,24 +249,43 @@
       const price = Number(document.getElementById("listing-price").value);
       const description = listingDescription.value.trim();
 
-      if (!Number.isInteger(volume) || volume < 1 || volume > 1000 || !Number.isFinite(price) || price < 1 || price > 100000) {
+      if (!Number.isInteger(volume) || volume < 1 || volume > 1000 || !Number.isInteger(price) || price < 1 || price > 1000000) {
         showToast("Проверьте объём и стоимость предложения");
         return;
       }
 
-      const money = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 });
-      document.getElementById("preview-volume").innerHTML = money.format(volume) + " <small>ГБ</small>";
-      document.getElementById("preview-price").textContent = money.format(price) + " ₽";
-      const unitMoney = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 2 });
-      document.getElementById("preview-unit-price").textContent =
-        unitMoney.format(price / volume) + " ₽ за 1 ГБ";
-
-      const previewDescription = document.getElementById("preview-description");
-      previewDescription.textContent = description;
-      previewDescription.classList.toggle("is-hidden", !description);
-      listingPreview.classList.remove("is-hidden");
-      showToast("Предварительная карточка готова");
-      listingPreview.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (saveListingButton) {
+        saveListingButton.disabled = true;
+        saveListingButton.textContent = "Сохраняем черновик…";
+      }
+      try {
+        const result = await callMarketplaceApi("create_draft", {
+          volume_gb: volume,
+          price_rub: price,
+          description,
+        });
+        const listing = result.listing;
+        document.getElementById("preview-volume").textContent = new Intl.NumberFormat("ru-RU").format(listing.volume_gb) + " ГБ";
+        document.getElementById("preview-price").textContent = moneyFromKopecks(listing.price_kopecks);
+        document.getElementById("preview-unit-price").textContent = unitPrice(listing.price_kopecks, listing.volume_gb);
+        const previewDescription = document.getElementById("preview-description");
+        previewDescription.textContent = listing.description || "";
+        previewDescription.classList.toggle("is-hidden", !listing.description);
+        const previewStatus = listingPreview.querySelector(".offer-status");
+        if (previewStatus) previewStatus.textContent = "Сохранено · не опубликовано";
+        listingPreview.dataset.listingId = listing.id;
+        listingPreview.classList.remove("is-hidden");
+        showToast("Черновик сохранён в вашем профиле");
+        listingPreview.scrollIntoView({ behavior: "smooth", block: "start" });
+        await loadDashboard();
+      } catch (error) {
+        showToast(error.message || "Не удалось сохранить черновик");
+      } finally {
+        if (saveListingButton) {
+          saveListingButton.disabled = false;
+          saveListingButton.textContent = "Сохранить черновик";
+        }
+      }
     });
   }
 
@@ -143,7 +298,7 @@
   }
 
   authenticateTelegramUser();
-  document.querySelector(".brand").addEventListener("click", (event) => {
+  document.querySelector(".brand")?.addEventListener("click", (event) => {
     event.preventDefault();
     openTab("profile");
     showToast("Ваш профиль T2 GB MARKET");
