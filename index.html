@@ -9,9 +9,9 @@
   <meta name="theme-color" content="#0b0e12">
   <meta name="description" content="T2 GB MARKET — маркетплейс передачи гигабайтов T2.">
   <title>T2 GB MARKET</title>
-  <link rel="stylesheet" href="./styles.css?v=8">
+  <link rel="stylesheet" href="./styles.css?v=9">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script defer src="./app.js?v=10"></script>
+  <script defer src="./app.js?v=11"></script>
 </head>
 <body>
   <main class="app-shell">
@@ -37,11 +37,12 @@
         </div>
         <span class="count-pill">Скоро</span>
       </div>
-      <div class="empty-state">
+      <div class="catalog-list is-hidden" id="catalog-list"></div>
+      <div class="empty-state" id="catalog-empty">
         <div class="empty-icon" aria-hidden="true">↗</div>
-        <h3>Каталог готовится</h3>
-        <p>Сейчас мы настраиваем безопасную систему объявлений и передачи гигабайтов. Здесь появятся предложения продавцов.</p>
-        <span class="status-line"><i></i> Сделки пока недоступны</span>
+        <h3>Пока нет предложений</h3>
+        <p>Когда продавцы разместят объявления, здесь появятся доступные объёмы и цены.</p>
+        <span class="status-line"><i></i> Покупки пока отключены</span>
       </div>
     </section>
 
@@ -79,7 +80,7 @@
         <textarea id="listing-description" name="description" maxlength="160" rows="3" placeholder="Например: передам в течение дня"></textarea>
         <div class="form-bottomline"><span>До 160 символов</span><span id="description-count">0 / 160</span></div>
 
-        <button class="primary-button" type="submit">Сформировать карточку</button>
+        <button class="primary-button" type="submit">Сохранить черновик</button>
       </form>
       <section class="listing-preview is-hidden" id="listing-preview" aria-live="polite">
         <div class="preview-heading">
@@ -99,7 +100,10 @@
         <p class="preview-note">Это только предварительный просмотр. Черновик не отправлен на сервер, не виден другим пользователям и не создаёт сделку.</p>
         <button class="secondary-button" type="button" id="edit-listing">Изменить данные</button>
       </section>
-      <p class="fine-print">Публикация объявлений, платежи и передача гигабайтов пока отключены.</p>
+      <h3 class="subsection-heading">Мои предложения</h3>
+      <div class="listing-list is-hidden" id="my-listings"></div>
+      <div class="listing-empty" id="my-listings-empty">Сохранённые черновики и будущие объявления будут отображаться здесь. Видны только вам.</div>
+      <p class="fine-print">Черновик сохраняется в вашем профиле, но не публикуется. Платежи и передача гигабайтов пока отключены.</p>
     </section>
 
     <section class="panel" id="profile-panel">
@@ -117,6 +121,16 @@
         </div>
         <span class="verified-dot" aria-label="Подключено"></span>
       </div>
+      <section class="wallet-card" aria-label="Баланс кошелька">
+        <div class="wallet-card-head"><span>ВАШ КОШЕЛЁК</span><span class="wallet-mode">ТЕСТОВЫЙ РЕЖИМ</span></div>
+        <div class="wallet-main"><span>Доступно</span><strong id="wallet-available">— ₽</strong></div>
+        <div class="wallet-metrics">
+          <div class="wallet-metric"><span>В резерве</span><strong id="wallet-reserved">— ₽</strong></div>
+          <div class="wallet-metric"><span>Валюта</span><strong>RUB</strong></div>
+        </div>
+        <button class="wallet-topup" type="button" disabled>Пополнение скоро</button>
+        <p class="wallet-hint">Баланс пока демонстрационный: пополнение и вывод средств не подключены.</p>
+      </section>
       <div class="profile-actions">
         <h3>Что хотите сделать?</h3>
         <p>Выберите нужный раздел. Менять настройки профиля или регистрироваться повторно не нужно.</p>
@@ -131,6 +145,9 @@
           <span class="profile-action-arrow" aria-hidden="true">›</span>
         </button>
       </div>
+      <h3 class="subsection-heading">Мои сделки</h3>
+      <div class="listing-list is-hidden" id="orders-list"></div>
+      <div class="listing-empty" id="orders-empty">Здесь появится история покупок и продаж после запуска сделок.</div>
       <div class="profile-row"><span>Статус</span><strong>Тестовый доступ</strong></div>
       <div class="profile-row"><span>Объявления</span><strong>Пока недоступны</strong></div>
       <div class="profile-row"><span>Сделки</span><strong>Пока недоступны</strong></div>
