@@ -92,6 +92,55 @@
     }
   }
 
+  const listingForm = document.getElementById("listing-form");
+  const listingDescription = document.getElementById("listing-description");
+  const descriptionCount = document.getElementById("description-count");
+  const listingPreview = document.getElementById("listing-preview");
+  const editListingButton = document.getElementById("edit-listing");
+
+  if (listingDescription && descriptionCount) {
+    listingDescription.addEventListener("input", () => {
+      descriptionCount.textContent = listingDescription.value.length + " / 160";
+    });
+  }
+
+  if (listingForm) {
+    listingForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!listingForm.reportValidity()) return;
+
+      const volume = Number(document.getElementById("listing-volume").value);
+      const price = Number(document.getElementById("listing-price").value);
+      const description = listingDescription.value.trim();
+
+      if (!Number.isInteger(volume) || volume < 1 || volume > 1000 || !Number.isFinite(price) || price < 1 || price > 100000) {
+        showToast("Проверьте объём и стоимость предложения");
+        return;
+      }
+
+      const money = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 });
+      document.getElementById("preview-volume").innerHTML = money.format(volume) + " <small>ГБ</small>";
+      document.getElementById("preview-price").textContent = money.format(price) + " ₽";
+      document.getElementById("preview-unit-price").textContent =
+        money.format(Math.round((price / volume) * 100) / 100) + " ₽ за 1 ГБ";
+
+      const previewDescription = document.getElementById("preview-description");
+      previewDescription.textContent = description;
+      previewDescription.classList.toggle("is-hidden", !description);
+      listingPreview.classList.remove("is-hidden");
+      showToast("Предварительная карточка готова");
+      listingPreview.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  if (editListingButton) {
+    editListingButton.addEventListener("click", () => {
+      listingPreview.classList.add("is-hidden");
+      listingForm.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("listing-volume").focus({ preventScroll: true });
+    });
+  }
+
   authenticateTelegramUser();
   document.querySelector(".brand").addEventListener("click", (event) => {
     event.preventDefault();
