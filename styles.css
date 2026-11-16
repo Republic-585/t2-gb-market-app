@@ -600,3 +600,68 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
 @media (prefers-reduced-motion: reduce) {
   .nav-item, .nav-item span { transition: none; }
 }
+
+
+/* Marketplace home refinement */
+.home-wallet { display: none !important; }
+.market-stats {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 7px;
+  margin-top: 19px;
+}
+.market-stat {
+  display: flex;
+  min-width: 0;
+  min-height: 76px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 9px;
+  padding: 11px 10px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 15px;
+  background: linear-gradient(155deg, rgba(255,255,255,.055), rgba(255,255,255,.018)), #121922;
+}
+.market-stat span {
+  color: #9ba8b8;
+  font-size: 9px;
+  line-height: 1.25;
+  font-weight: 600;
+}
+.market-stat strong {
+  color: #f1f5fb;
+  font-size: clamp(15px, 4vw, 20px);
+  line-height: 1;
+  letter-spacing: -.045em;
+  white-space: nowrap;
+}
+.market-stat-main {
+  border-color: rgba(107,155,255,.2);
+  background: linear-gradient(145deg, rgba(107,155,255,.12), rgba(255,255,255,.025)), #141c28;
+}
+.market-stat-main strong { color: #a9c5ff; }
+.home-shortcuts {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 11px;
+}
+.shortcut {
+  min-height: 46px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 7px;
+  border-radius: 13px;
+  font-size: 9px;
+  white-space: nowrap;
+}
+.shortcut-symbol { flex: 0 0 auto; font-size: 16px; }
+.shortcut span:last-child { overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 360px) {
+  .market-stats { gap: 5px; }
+  .market-stat { min-height: 70px; padding: 9px 7px; }
+  .market-stat span { font-size: 8px; }
+  .shortcut { gap: 5px; padding: 7px 5px; font-size: 8px; }
+  .shortcut-symbol { font-size: 14px; }
+}
