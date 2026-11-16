@@ -19,7 +19,12 @@
     tabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.tab === target));
     const navItems = [...document.querySelectorAll(".bottom-nav .nav-item")];
     const activeIndex = navItems.findIndex((tab) => tab.dataset.tab === target);
-    navItems.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.tab === target));
+    navItems.forEach((tab) => {
+      const active = tab.dataset.tab === target;
+      tab.classList.toggle("is-active", active);
+      if (active) tab.setAttribute("aria-current", "page");
+      else tab.removeAttribute("aria-current");
+    });
     const bottomNav = document.querySelector(".bottom-nav");
     if (bottomNav && activeIndex >= 0) {
       bottomNav.style.setProperty("--nav-index", activeIndex);
