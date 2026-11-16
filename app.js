@@ -35,6 +35,16 @@
   let dashboardData = null;
   let catalogItems = [];
 
+  const DEMO_LISTINGS = [
+    { id: "demo-1", demo: true, volume_gb: 1, price_kopecks: 1200, status: "active", created_at: "2026-11-17T00:01:00Z", seller: { first_name: "Алексей" }, popularity_count: 7 },
+    { id: "demo-2", demo: true, volume_gb: 2, price_kopecks: 2200, status: "active", created_at: "2026-11-17T00:02:00Z", seller: { first_name: "Мария" }, popularity_count: 6 },
+    { id: "demo-3", demo: true, volume_gb: 3, price_kopecks: 3000, status: "active", created_at: "2026-11-17T00:03:00Z", seller: { first_name: "Денис" }, popularity_count: 5 },
+    { id: "demo-4", demo: true, volume_gb: 5, price_kopecks: 4750, status: "active", created_at: "2026-11-17T00:04:00Z", seller: { first_name: "Ирина" }, popularity_count: 4 },
+    { id: "demo-5", demo: true, volume_gb: 8, price_kopecks: 7200, status: "active", created_at: "2026-11-17T00:05:00Z", seller: { first_name: "Максим" }, popularity_count: 3 },
+    { id: "demo-6", demo: true, volume_gb: 12, price_kopecks: 9600, status: "active", created_at: "2026-11-17T00:06:00Z", seller: { first_name: "Анна" }, popularity_count: 2 },
+    { id: "demo-7", demo: true, volume_gb: 20, price_kopecks: 15400, status: "active", created_at: "2026-11-17T00:07:00Z", seller: { first_name: "Артём" }, popularity_count: 1 },
+  ];
+
   function showToast(message) {
     if (!toast) return;
     toast.textContent = message;
@@ -87,7 +97,7 @@
     const status = document.createElement("span");
     status.className = "listing-state";
     const labels = { draft: "Черновик", active: "Опубликовано", paused: "На паузе", reserved: "В сделке", sold: "Продано", cancelled: "Снято", moderation: "Проверка" };
-    status.textContent = labels[item.status] || "Предложение";
+    status.textContent = item.demo ? "Демо-лот" : (labels[item.status] || "Предложение");
     top.append(volume, status);
 
     const price = document.createElement("div");
@@ -112,8 +122,14 @@
       const buyButton = document.createElement("button");
       buyButton.type = "button";
       buyButton.className = "listing-buy-button";
-      buyButton.textContent = "Купить";
-      buyButton.addEventListener("click", () => showToast("Покупки откроются после подключения пополнения и безопасной оплаты."));
+      buyButton.textContent = item.demo ? "Демо" : "Купить";
+      if (item.demo) {
+        buyButton.disabled = true;
+        buyButton.setAttribute("aria-label", "Демонстрационный лот, покупка недоступна");
+        buyButton.title = "Это демонстрационное предложение";
+      } else {
+        buyButton.addEventListener("click", () => showToast("Покупки откроются после подключения пополнения и безопасной оплаты."));
+      }
       const buyRow = document.createElement("div");
       buyRow.className = "listing-buy-row";
       buyRow.append(buyButton);
@@ -143,16 +159,16 @@
     const averagePrice = document.getElementById("market-average-price");
     const activeCount = document.getElementById("market-active-count");
     const soldYesterday = document.getElementById("market-sold-yesterday");
-    if (averagePrice) averagePrice.textContent = stats.average_price_per_gb_kopecks
-      ? moneyFromKopecks(stats.average_price_per_gb_kopecks)
-      : "— ₽";
-    if (activeCount) activeCount.textContent = new Intl.NumberFormat("ru-RU").format(stats.active_listings_count || 0);
-    if (soldYesterday) soldYesterday.textContent = new Intl.NumberFormat("ru-RU").format(stats.sold_yesterday_gb || 0) + " ГБ";
-
-    catalogItems = (data.catalog || []).filter((item) =>
+    const liveCatalog = (data.catalog || []).filter((item) =>
       item.seller_telegram_user_id !== data.user.id &&
       Number(item.volume_gb) >= 1 && Number(item.volume_gb) <= 20
     );
+    const usingDemoListings = liveCatalog.length === 0;
+    if (averagePrice) averagePrice.textContent = usingDemoListings ? "9,60 ₽" : moneyFromKopecks(stats.average_price_per_gb_kopecks || 0);
+    if (activeCount) activeCount.textContent = new Intl.NumberFormat("ru-RU").format(usingDemoListings ? DEMO_LISTINGS.length : (stats.active_listings_count || liveCatalog.length));
+    if (soldYesterday) soldYesterday.textContent = new Intl.NumberFormat("ru-RU").format(stats.sold_yesterday_gb || 0) + " ГБ";
+
+    catalogItems = usingDemoListings ? DEMO_LISTINGS.slice() : liveCatalog;
     renderCatalog();
 
     if (myListings) {
