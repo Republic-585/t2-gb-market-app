@@ -96,33 +96,6 @@
 
   const tactileNav = document.querySelector(".bottom-nav");
   if (tactileNav) {
-    let lastScrollY = Math.max(0, window.scrollY || 0);
-    let accumulatedScroll = 0;
-    let scrollDirection = 0;
-    const scrollThreshold = 12;
-    const handleNavScroll = () => {
-      const currentY = Math.max(0, window.scrollY || 0);
-      const delta = currentY - lastScrollY;
-      lastScrollY = currentY;
-      if (currentY <= 24) {
-        accumulatedScroll = 0;
-        scrollDirection = 0;
-        tactileNav.classList.remove("is-scroll-hidden");
-        return;
-      }
-      if (Math.abs(delta) < 1) return;
-      const nextDirection = delta > 0 ? 1 : -1;
-      if (nextDirection !== scrollDirection) {
-        scrollDirection = nextDirection;
-        accumulatedScroll = 0;
-      }
-      accumulatedScroll += Math.abs(delta);
-      if (accumulatedScroll >= scrollThreshold) {
-        tactileNav.classList.toggle("is-scroll-hidden", nextDirection > 0);
-        accumulatedScroll = 0;
-      }
-    };
-    window.addEventListener("scroll", handleNavScroll, { passive: true });
     const releaseNav = () => tactileNav.classList.remove("is-pressed");
     tactileNav.addEventListener("pointerdown", () => tactileNav.classList.add("is-pressed"), { passive: true });
     window.addEventListener("pointerup", releaseNav, { passive: true });
