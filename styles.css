@@ -1644,7 +1644,7 @@ body::-webkit-scrollbar {
   left: 50%;
   right: auto;
   width: min(calc(100% - 24px), 536px);
-  border: 1px solid rgba(255,255,255,.20);
+  border: 0;
   border-radius: 27px;
   background: rgba(24,32,42,.16);
   -webkit-backdrop-filter: blur(2px);
@@ -1655,7 +1655,22 @@ body::-webkit-scrollbar {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.bottom-nav::before,
+.bottom-nav::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: rgba(255,255,255,.20);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
 .bottom-nav::after { content: none !important; display: none !important; }
 .bottom-nav .nav-indicator {
   position: absolute;
@@ -1664,9 +1679,9 @@ body::-webkit-scrollbar {
   bottom: 6px;
   left: 6px;
   width: calc((100% - 24px) / 4);
-  border: 1px solid rgba(255,255,255,.07);
+  border: 0;
   border-radius: 21px;
-  background: rgba(255,255,255,.045);
+  background: #343b44;
   box-shadow: none;
   transform: translateX(calc(var(--nav-index, 0) * (100% + 4px)));
   transition: transform .24s cubic-bezier(.2,.75,.25,1);
