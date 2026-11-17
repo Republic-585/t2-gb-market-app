@@ -78,7 +78,7 @@
       activeItem.classList.remove("is-bouncing");
       void activeItem.offsetWidth;
       activeItem.classList.add("is-bouncing");
-      window.setTimeout(() => activeItem.classList.remove("is-bouncing"), 900);
+      window.setTimeout(() => activeItem.classList.remove("is-bouncing"), 240);
     }
     Object.entries(panels).forEach(([name, panel]) => {
       if (!panel) return;
