@@ -2209,8 +2209,10 @@ body::-webkit-scrollbar {
   gap: 4px;
   border: 1px solid rgba(255,255,255,.10);
   border-radius: 27px;
-  background: rgba(30,43,59,.94);
-  box-shadow: 0 8px 28px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.07);
+  background: rgba(18,24,32,.12);
+  -webkit-backdrop-filter: blur(28px) saturate(165%);
+  backdrop-filter: blur(28px) saturate(165%);
+  box-shadow: 0 5px 22px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.045);
   bottom: calc(10px + env(safe-area-inset-bottom));
   left: 50%;
   right: auto;
@@ -2229,10 +2231,10 @@ body::-webkit-scrollbar {
   bottom: 6px;
   left: 6px;
   width: calc((100% - 24px) / 4);
-  border: 1px solid rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.035);
   border-radius: 21px;
-  background: rgba(255,255,255,.055);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.055);
+  background: rgba(255,255,255,.025);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
   transform: translateX(calc(var(--nav-index, 0) * (100% + 4px)));
   transition: transform .34s cubic-bezier(.2,.78,.2,1);
   pointer-events: none;
