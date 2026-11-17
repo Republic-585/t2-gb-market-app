@@ -1750,3 +1750,45 @@ html, body, button, input, textarea, select {
 @media (prefers-reduced-motion: reduce) {
   .volume-wheel-card .volume-scroll-hint { animation: none; }
 }
+
+
+/* Volume wheel interaction refinement */
+.volume-wheel-card .volume-filter {
+  box-sizing: border-box;
+  flex: 1 1 0%;
+  width: 0;
+  min-width: 0;
+  padding-inline: calc(50% - 17px) !important;
+  gap: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-padding-inline: 0;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.volume-wheel-card .volume-filter-item {
+  flex: 0 0 34px;
+  width: 34px;
+  min-width: 34px;
+  box-sizing: border-box;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+.volume-wheel-card .volume-filter-item.is-selected {
+  transform: scale(var(--wheel-scale, 1.52));
+  font-size: 14px;
+  font-weight: 800;
+}
+.volume-wheel-card .volume-scroll-hint {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin-right: 3px;
+  animation: volume-scroll-nudge-left 1.25s ease-in-out infinite !important;
+  will-change: transform, opacity;
+}
+@keyframes volume-scroll-nudge-left {
+  0%, 100% { transform: translateX(0); opacity: .68; }
+  50% { transform: translateX(-4px); opacity: 1; }
+}
