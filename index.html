@@ -9,10 +9,10 @@
   <meta name="theme-color" content="#0b0e12">
   <meta name="description" content="T2 GB MARKET — маркетплейс передачи гигабайтов T2.">
   <title>T2 GB MARKET</title>
-  <link rel="stylesheet" href="./styles.css?v=25">
+  <link rel="stylesheet" href="./styles.css?v=26">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
-  <script defer src="./app.js?v=21"></script>
+  <script defer src="./app.js?v=22"></script>
 </head>
 <body>
   <main class="app-shell">
@@ -61,14 +61,37 @@
           <p class="eyebrow">КАТАЛОГ</p>
           <h2>Найти гигабайты</h2>
         </div>
-        <span class="count-pill" id="catalog-count">0 предложений</span>
       </div>
-      <div class="catalog-tools">
-        <label class="catalog-search-wrap"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" placeholder="Найти предложение" autocomplete="off"></label>
+      <div class="catalog-tools catalog-tools-compact">
+        <div class="volume-filter" id="volume-filter" role="group" aria-label="Выбор объёма гигабайтов">
+          <button class="volume-filter-item is-selected" type="button" data-volume="all" aria-pressed="true">Все</button>
+          <button class="volume-filter-item" type="button" data-volume="1" aria-pressed="false">1</button>
+          <button class="volume-filter-item" type="button" data-volume="2" aria-pressed="false">2</button>
+          <button class="volume-filter-item" type="button" data-volume="3" aria-pressed="false">3</button>
+          <button class="volume-filter-item" type="button" data-volume="4" aria-pressed="false">4</button>
+          <button class="volume-filter-item" type="button" data-volume="5" aria-pressed="false">5</button>
+          <button class="volume-filter-item" type="button" data-volume="6" aria-pressed="false">6</button>
+          <button class="volume-filter-item" type="button" data-volume="7" aria-pressed="false">7</button>
+          <button class="volume-filter-item" type="button" data-volume="8" aria-pressed="false">8</button>
+          <button class="volume-filter-item" type="button" data-volume="9" aria-pressed="false">9</button>
+          <button class="volume-filter-item" type="button" data-volume="10" aria-pressed="false">10</button>
+          <button class="volume-filter-item" type="button" data-volume="11" aria-pressed="false">11</button>
+          <button class="volume-filter-item" type="button" data-volume="12" aria-pressed="false">12</button>
+          <button class="volume-filter-item" type="button" data-volume="13" aria-pressed="false">13</button>
+          <button class="volume-filter-item" type="button" data-volume="14" aria-pressed="false">14</button>
+          <button class="volume-filter-item" type="button" data-volume="15" aria-pressed="false">15</button>
+          <button class="volume-filter-item" type="button" data-volume="16" aria-pressed="false">16</button>
+          <button class="volume-filter-item" type="button" data-volume="17" aria-pressed="false">17</button>
+          <button class="volume-filter-item" type="button" data-volume="18" aria-pressed="false">18</button>
+          <button class="volume-filter-item" type="button" data-volume="19" aria-pressed="false">19</button>
+          <button class="volume-filter-item" type="button" data-volume="20" aria-pressed="false">20</button>
+        </div>
         <select id="catalog-sort" aria-label="Сортировка предложений">
-          <option value="popular">Популярные</option>
-          <option value="price_asc">Сначала дешевле</option>
-          <option value="price_desc">Сначала дороже</option>
+          <option value="recommended">Рекомендуемые</option>
+          <option value="total_asc">Сначала дешевле</option>
+          <option value="total_desc">Сначала дороже</option>
+          <option value="unit_asc">Цена за ГБ: ниже</option>
+          <option value="unit_desc">Цена за ГБ: выше</option>
         </select>
       </div>
       <div class="catalog-list is-hidden" id="catalog-list"></div>
@@ -206,10 +229,6 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.2 20a6.8 6.8 0 0 1 13.6 0"/></svg><small>Профиль</small>
       </button>
     </nav>
-    <footer class="footer">
-      <span>T2 GB MARKET</span>
-      <span>Развиваем маркетплейс вместе</span>
-    </footer>
   </main>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
