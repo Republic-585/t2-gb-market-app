@@ -9,10 +9,10 @@
   <meta name="theme-color" content="#0b0e12">
   <meta name="description" content="T2 GB MARKET — маркетплейс передачи гигабайтов T2.">
   <title>T2 GB MARKET</title>
-  <link rel="stylesheet" href="./styles.css?v=35">
+  <link rel="stylesheet" href="./styles.css?v=36">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
-  <script defer src="./app.js?v=29"></script>
+  <script defer src="./app.js?v=30"></script>
 </head>
 <body>
   <main class="app-shell">
@@ -212,6 +212,21 @@
       <div class="profile-row"><span>Сделки</span><strong>Пока недоступны</strong></div>
       <p class="fine-print">Ваш профиль автоматически связан с аккаунтом Telegram. Объявления, сделки и платежи пока отключены.</p>
       <button class="support-project-action" id="support-project" type="button">Поддержать проект</button>
+      <div class="support-modal is-hidden" id="support-modal" aria-hidden="true">
+        <div class="support-modal-backdrop" data-support-close></div>
+        <section class="support-modal-card" role="dialog" aria-modal="true" aria-labelledby="support-modal-title">
+          <button class="support-modal-close" type="button" aria-label="Закрыть" data-support-close>×</button>
+          <p class="eyebrow">ПОДДЕРЖКА ПРОЕКТА</p>
+          <h3 id="support-modal-title">Выберите сумму</h3>
+          <p class="support-modal-copy">Любая поддержка помогает развивать T2 GB MARKET.</p>
+          <div class="support-amount-list">
+            <button class="support-amount" type="button" data-support-amount="50"><strong>50 ⭐</strong><span>Небольшая поддержка</span></button>
+            <button class="support-amount is-recommended" type="button" data-support-amount="100"><span class="support-recommended-label">Рекомендуем</span><strong>100 ⭐</strong><span>Оптимальный вклад</span></button>
+            <button class="support-amount" type="button" data-support-amount="250"><strong>250 ⭐</strong><span>Большая поддержка</span></button>
+          </div>
+          <p class="support-modal-footnote">Оплата проходит безопасно через Telegram Stars.</p>
+        </section>
+      </div>
     </section>
 
     <nav class="bottom-nav" aria-label="Основная навигация">
