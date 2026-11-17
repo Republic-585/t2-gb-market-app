@@ -1623,7 +1623,7 @@ body::-webkit-scrollbar {
 .support-modal-close { background: #3a4048 !important; color: #c7cbd0 !important; }
 
 
-/* T2 GB MARKET — single clean-glass navigation system */
+/* T2 GB MARKET — clean optical glass navigation */
 .bottom-nav {
   position: fixed;
   z-index: 30;
@@ -1640,42 +1640,92 @@ body::-webkit-scrollbar {
   overflow: hidden;
   padding: 6px;
   gap: 4px;
-  bottom: calc(10px + env(safe-area-inset-bottom));
-  left: 50%;
-  right: auto;
-  width: min(calc(100% - 24px), 536px);
-  border: 1px solid rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.15);
   border-radius: 27px;
-  background: rgba(24,32,42,.16);
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px);
-  box-shadow: 0 4px 14px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.08);
+  background: rgba(32,42,56,.27);
+  -webkit-backdrop-filter: blur(.6px);
+  backdrop-filter: blur(.6px);
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.13),
+    inset 0 1px 0 rgba(255,255,255,.13),
+    inset 0 -1px 0 rgba(255,255,255,.035);
   transform: translateX(-50%);
   transition: transform .16s ease, border-color .16s ease, background-color .16s ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.bottom-nav::before,
-.bottom-nav::after { content: none !important; display: none !important; }
-.bottom-nav .nav-indicator {
+/* Central optical density: strongest refraction in the middle, fading to the ends. */
+.bottom-nav::before {
+  content: "";
   position: absolute;
   z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(3.2px) saturate(1.12);
+  backdrop-filter: blur(3.2px) saturate(1.12);
+  -webkit-mask-image: linear-gradient(90deg,
+    rgba(0,0,0,.12) 0%,
+    rgba(0,0,0,.32) 12%,
+    rgba(0,0,0,.72) 30%,
+    rgba(0,0,0,.92) 50%,
+    rgba(0,0,0,.72) 70%,
+    rgba(0,0,0,.32) 88%,
+    rgba(0,0,0,.12) 100%);
+  mask-image: linear-gradient(90deg,
+    rgba(0,0,0,.12) 0%,
+    rgba(0,0,0,.32) 12%,
+    rgba(0,0,0,.72) 30%,
+    rgba(0,0,0,.92) 50%,
+    rgba(0,0,0,.72) 70%,
+    rgba(0,0,0,.32) 88%,
+    rgba(0,0,0,.12) 100%);
+}
+/* Curved edge glints create a restrained lens/refraction cue without extra haze. */
+.bottom-nav::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(105deg,
+      rgba(255,255,255,.22) 0%,
+      rgba(255,255,255,.055) 7%,
+      transparent 19%,
+      transparent 81%,
+      rgba(255,255,255,.055) 93%,
+      rgba(255,255,255,.19) 100%),
+    linear-gradient(180deg,
+      rgba(255,255,255,.13) 0%,
+      transparent 24%,
+      transparent 76%,
+      rgba(255,255,255,.055) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.055),
+    inset 0 2px 5px rgba(255,255,255,.045),
+    inset 0 -3px 7px rgba(0,0,0,.10);
+  opacity: .9;
+}
+.bottom-nav .nav-indicator {
+  position: absolute;
+  z-index: 1;
   top: 6px;
   bottom: 6px;
   left: 6px;
   width: calc((100% - 24px) / 4);
-  border: 1px solid rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.085);
   border-radius: 21px;
-  background: rgba(255,255,255,.045);
-  box-shadow: none;
+  background: rgba(255,255,255,.055);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
   transform: translateX(calc(var(--nav-index, 0) * (100% + 4px)));
   transition: transform .24s cubic-bezier(.2,.75,.25,1);
   pointer-events: none;
 }
 .bottom-nav .nav-item {
   position: relative;
-  z-index: 1;
-  min-width: 0;
+  z-index: 3;
   min-width: 0;
   min-height: 52px;
   display: flex;
@@ -1726,7 +1776,7 @@ body::-webkit-scrollbar {
 }
 .bottom-nav.is-pressed {
   transform: translateX(-50%) scale(.985);
-  border-color: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.2);
 }
 @media (max-width: 360px) {
   .bottom-nav { width: calc(100% - 18px); gap: 2px; }
