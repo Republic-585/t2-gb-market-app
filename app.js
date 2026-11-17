@@ -43,6 +43,16 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   tabs.forEach((tab) => tab.addEventListener("click", () => openTab(tab.dataset.tab)));
+
+  const tactileNav = document.querySelector(".bottom-nav");
+  if (tactileNav) {
+    const releaseNav = () => tactileNav.classList.remove("is-pressed");
+    tactileNav.addEventListener("pointerdown", () => tactileNav.classList.add("is-pressed"), { passive: true });
+    window.addEventListener("pointerup", releaseNav, { passive: true });
+    window.addEventListener("pointercancel", releaseNav, { passive: true });
+    tactileNav.addEventListener("pointerleave", releaseNav, { passive: true });
+  }
+
   document.querySelectorAll("[data-open-tab]").forEach((button) => {
     button.addEventListener("click", () => openTab(button.dataset.openTab));
   });
