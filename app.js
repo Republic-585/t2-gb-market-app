@@ -113,6 +113,15 @@
   const verifiedDot = document.querySelector(".verified-dot");
   const toast = document.getElementById("toast");
   let toastTimer;
+
+  document.getElementById("support-project")?.addEventListener("click", () => {
+    const botUrl = "https://t.me/t2_gb_market_bot";
+    if (tg?.openTelegramLink) {
+      tg.openTelegramLink(botUrl);
+    } else {
+      window.open(botUrl, "_blank", "noopener,noreferrer");
+    }
+  });
   let dashboardData = null;
   let catalogItems = [];
 
