@@ -1792,3 +1792,45 @@ html, body, button, input, textarea, select {
   0%, 100% { transform: translateX(0); opacity: .68; }
   50% { transform: translateX(-4px); opacity: 1; }
 }
+
+
+/* Match home stats and quick actions to marketplace listing cards */
+.market-stats .market-stat,
+.home-shortcuts .shortcut {
+  border: 1px solid #35445a;
+  border-radius: 20px;
+  background: #171f2b;
+  box-shadow: none;
+}
+.market-stats .market-stat {
+  min-height: 76px;
+  padding: 12px;
+}
+.market-stats .market-stat-main {
+  border-color: #35445a;
+  background: #171f2b;
+}
+.market-stats .market-stat-main strong {
+  color: #8fb2ff;
+}
+.home-shortcuts .shortcut {
+  min-height: 52px;
+  padding: 9px 7px;
+  border-color: #35445a;
+  background: #171f2b;
+  border-radius: 16px;
+}
+.home-shortcuts .shortcut-primary {
+  border-color: #35445a;
+  background: #171f2b;
+}
+.home-shortcuts .shortcut-symbol,
+.home-shortcuts .shortcut-primary .shortcut-symbol {
+  color: #a9c5ff;
+}
+.volume-wheel-card .volume-scroll-hint {
+  display: none !important;
+}
+.volume-wheel-card {
+  padding-left: 8px;
+}
