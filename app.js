@@ -183,8 +183,6 @@
     price.textContent = moneyFromKopecks(item.price_kopecks);
     const bottom = document.createElement("div");
     bottom.className = "listing-row-bottom";
-    const unit = document.createElement("span");
-    unit.textContent = unitPrice(item.price_kopecks, item.volume_gb);
     const detail = document.createElement("span");
     if (own) detail.textContent = item.description ? item.description.slice(0, 72) : "Только вам";
     else {
@@ -192,8 +190,14 @@
       detail.textContent = seller.username ? "@" + seller.username :
         [seller.first_name, seller.last_name].filter(Boolean).join(" ") || "Продавец T2";
     }
-    bottom.append(unit, detail);
     if (!own) {
+      const info = document.createElement("div");
+      info.className = "listing-offer-info";
+      const seller = item.seller || {};
+      detail.textContent = seller.username ? "@" + seller.username :
+        [seller.first_name, seller.last_name].filter(Boolean).join(" ") || "Продавец T2";
+      bottom.append(price, detail);
+      info.append(volume, bottom);
       const buyButton = document.createElement("button");
       buyButton.type = "button";
       buyButton.className = "listing-buy-button";
@@ -205,10 +209,10 @@
       } else {
         buyButton.addEventListener("click", () => showToast("Покупки откроются после подключения пополнения и безопасной оплаты."));
       }
-      top.append(price, buyButton);
-      card.append(top, bottom);
+      card.append(info, buyButton);
     } else {
-      top.append(status);
+      top.append(volume, status);
+      bottom.append(detail);
       card.append(top, price, bottom);
     }
     return card;
@@ -291,12 +295,9 @@
       selectedVolume === "all" || Number(item.volume_gb) === Number(selectedVolume)
     );
     const totalPrice = (item) => Number(item.price_kopecks) || 0;
-    const perGb = (item) => totalPrice(item) / Math.max(1, Number(item.volume_gb) || 1);
     const newestFirst = (a,b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
     if (sort === "total_asc") items.sort((a,b) => totalPrice(a)-totalPrice(b) || Number(a.volume_gb)-Number(b.volume_gb) || newestFirst(a,b));
     else if (sort === "total_desc") items.sort((a,b) => totalPrice(b)-totalPrice(a) || Number(b.volume_gb)-Number(a.volume_gb) || newestFirst(a,b));
-    else if (sort === "unit_asc") items.sort((a,b) => perGb(a)-perGb(b) || totalPrice(a)-totalPrice(b) || newestFirst(a,b));
-    else if (sort === "unit_desc") items.sort((a,b) => perGb(b)-perGb(a) || totalPrice(b)-totalPrice(a) || newestFirst(a,b));
     else items.sort((a,b) => (Number(b.popularity_count)||0)-(Number(a.popularity_count)||0) || newestFirst(a,b) || Number(a.volume_gb)-Number(b.volume_gb));
     catalog.replaceChildren();
     items.forEach((item) => catalog.append(createListingCard(item, false)));
