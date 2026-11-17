@@ -655,11 +655,9 @@
       renderDmNotificationsToggle();
       try {
         await callMarketplaceApi("set_dm_notifications", { enabled: nextValue });
-        showToast(nextValue ? "Важные уведомления включены" : "Уведомления в личку выключены");
       } catch (error) {
         dmNotificationsEnabled = previousValue;
         renderDmNotificationsToggle();
-        showToast(error.message || "Не удалось сохранить настройку");
       } finally {
         dmNotificationsToggle.disabled = false;
       }
