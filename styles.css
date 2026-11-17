@@ -1252,3 +1252,19 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
     transform: translateY(0) scale(1) rotate(0);
   }
 }
+
+/* Compact marketplace catalog: two-line offer cards and volume chips */
+.catalog-tools-compact { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:8px; margin-bottom:10px; }
+.volume-filter { display:flex; min-width:0; gap:4px; overflow-x:auto; padding:2px 1px 5px; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+.volume-filter::-webkit-scrollbar { display:none; }
+.volume-filter-item { flex:0 0 auto; min-width:27px; height:27px; padding:0 7px; border:1px solid rgba(255,255,255,.09); border-radius:8px; background:rgba(255,255,255,.035); color:#aeb9c6; font:inherit; font-size:10px; font-weight:650; }
+.volume-filter-item.is-selected { border-color:rgba(255,255,255,.22); background:rgba(255,255,255,.13); color:#fff; }
+.catalog-tools-compact select { width:112px; max-width:112px; min-height:31px; padding:0 6px; border-radius:9px; font-size:9px; }
+.catalog-offer-card { display:grid; grid-template-rows:auto auto; gap:5px; min-height:0; padding:8px 10px; border-radius:12px; }
+.catalog-offer-card .listing-row-top { display:grid; grid-template-columns:minmax(42px,auto) minmax(0,1fr) 104px; align-items:center; gap:8px; min-width:0; }
+.catalog-offer-card .listing-row-top strong { overflow:hidden; color:#f2f5f8; font-size:13px; line-height:1.1; text-overflow:ellipsis; white-space:nowrap; }
+.catalog-offer-card .listing-row-price { min-width:0; margin:0; color:#f2f5f8; font-size:13px; font-weight:750; line-height:1.1; text-align:right; white-space:nowrap; }
+.catalog-offer-card .listing-row-bottom { display:flex; min-width:0; justify-content:space-between; gap:8px; margin:0; }
+.catalog-offer-card .listing-row-bottom span { overflow:hidden; font-size:9px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
+.catalog-offer-card .listing-row-bottom span:last-child { max-width:48%; }
+.catalog-offer-card .listing-buy-button { min-width:104px; min-height:37px; width:104px; height:37px; padding:0 17px; }
