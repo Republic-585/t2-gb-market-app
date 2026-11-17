@@ -1644,12 +1644,12 @@ body::-webkit-scrollbar {
   left: 50%;
   right: auto;
   width: min(calc(100% - 24px), 536px);
-  border: 1px solid rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.20);
   border-radius: 27px;
   background: rgba(24,32,42,.16);
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px);
-  box-shadow: 0 4px 14px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.08);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 4px 14px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.14);
   transform: translateX(-50%);
   transition: transform .16s ease, border-color .16s ease, background-color .16s ease;
   -webkit-tap-highlight-color: transparent;
