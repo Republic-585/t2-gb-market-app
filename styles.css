@@ -1229,3 +1229,26 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
   78% { opacity: .38; transform: translate(3px,2px) scale(.82); }
   86% { opacity: 0; transform: translate(4px,2px) scale(.6); }
 }
+
+
+/* One-shot icon feedback on tab change: remove competing active/press animations */
+.bottom-nav .nav-item.is-active svg {
+  animation: none !important;
+}
+.bottom-nav .nav-item:active svg {
+  animation: none !important;
+}
+.bottom-nav .nav-item.is-bouncing svg {
+  animation: nav-icon-single-pop .52s cubic-bezier(.22, .75, .28, 1) both !important;
+}
+@keyframes nav-icon-single-pop {
+  0% {
+    transform: translateY(0) scale(1) rotate(0);
+  }
+  38% {
+    transform: translateY(-1.5px) scale(1.16) rotate(-5deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0);
+  }
+}
