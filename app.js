@@ -351,18 +351,33 @@
     clearTimeout(volumeScrollTimer);
     volumeScrollTimer = window.setTimeout(() => renderCatalog(), 150);
   }
+  function centerVolumeItem(button, behavior = "smooth") {
+    if (!volumeFilter || !button) return;
+    const viewport = volumeFilter.getBoundingClientRect();
+    const item = button.getBoundingClientRect();
+    const delta = (item.left + item.width / 2) - (viewport.left + viewport.width / 2);
+    volumeFilter.scrollTo({
+      left: volumeFilter.scrollLeft + delta,
+      behavior
+    });
+  }
   volumeFilter?.addEventListener("click", (event) => {
     const button = event.target.closest("[data-volume]");
     if (!button) return;
     setSelectedVolume(button);
-    volumeFilter.scrollTo({
-      left: button.offsetLeft + button.offsetWidth / 2 - volumeFilter.clientWidth / 2,
-      behavior: "smooth"
-    });
+    centerVolumeItem(button, "smooth");
   });
   volumeFilter?.addEventListener("scroll", updateVolumeWheelScale, { passive: true });
-  window.addEventListener("resize", updateVolumeWheelScale, { passive: true });
-  window.requestAnimationFrame(updateVolumeWheelScale);
+  window.addEventListener("resize", () => {
+    const selected = volumeFilter?.querySelector(".is-selected");
+    centerVolumeItem(selected, "auto");
+    updateVolumeWheelScale();
+  }, { passive: true });
+  window.requestAnimationFrame(() => {
+    const selected = volumeFilter?.querySelector(".is-selected");
+    centerVolumeItem(selected, "auto");
+    updateVolumeWheelScale();
+  });
   document.getElementById("catalog-sort")?.addEventListener("change", renderCatalog);
 
   async function loadDashboard() {
