@@ -9,9 +9,10 @@
   <meta name="theme-color" content="#0b0e12">
   <meta name="description" content="T2 GB MARKET — маркетплейс передачи гигабайтов T2.">
   <title>T2 GB MARKET</title>
-  <link rel="stylesheet" href="./styles.css?v=22">
+  <link rel="stylesheet" href="./styles.css?v=23">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script defer src="./app.js?v=19"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
+  <script defer src="./app.js?v=20"></script>
 </head>
 <body>
   <main class="app-shell">
@@ -45,6 +46,13 @@
         <button class="shortcut shortcut-primary" type="button" data-open-tab="sell"><span class="shortcut-symbol">＋</span><span>Добавить лот</span></button>
         <button class="shortcut" type="button" data-open-tab="sell"><span class="shortcut-symbol">▤</span><span>Мои лоты</span></button>
         <button class="shortcut" type="button" data-open-tab="requests"><span class="shortcut-symbol">◷</span><span>Мои заявки</span></button>
+      </div>
+      <div class="online-presence" role="status" aria-live="polite">
+        <span class="online-indicator" id="online-indicator" aria-hidden="true"></span>
+        <span class="online-copy">Сейчас онлайн</span>
+        <strong id="online-count">—</strong>
+        <span class="online-people">человек</span>
+        <span class="online-live-label">в прямом эфире</span>
       </div>
     </section>
 
