@@ -1625,8 +1625,8 @@ body::-webkit-scrollbar {
 
 /* T2 GB MARKET — tunable Liquid Glass navigation */
 :root {
-  --nav-glass-opacity: .12;
-  --nav-glass-tint: rgba(26, 37, 52, .24);
+  --nav-glass-opacity: .14;
+  --nav-glass-tint: 26, 37, 52;
   --nav-glass-blur: 2.4px;
   --nav-glass-center-blur: 1.4px;
   --nav-glass-refraction: .06;
@@ -1652,7 +1652,7 @@ body::-webkit-scrollbar {
   gap: 4px;
   border: 1px solid rgba(255,255,255, calc(.12 + var(--nav-glass-edge-strength) * .12));
   border-radius: 27px;
-  background: color-mix(in srgb, var(--nav-glass-tint) calc(var(--nav-glass-opacity) * 100%), transparent);
+  background: rgba(var(--nav-glass-tint), var(--nav-glass-opacity));
   -webkit-backdrop-filter: blur(var(--nav-glass-blur));
   backdrop-filter: blur(var(--nav-glass-blur));
   box-shadow:
