@@ -1900,3 +1900,25 @@ body::-webkit-scrollbar {
   #profile-panel .dm-notifications-toggle,
   #profile-panel .dm-notifications-knob { transition: none; }
 }
+
+
+/* Refine the profile status light: centered green rim and an inward-facing highlight */
+#profile-panel .verified-dot {
+  border: 0 !important;
+  box-shadow: 0 0 0 1px rgba(53,212,119,.72), 0 0 5px rgba(53,212,119,.22) !important;
+  overflow: hidden !important;
+}
+#profile-panel .verified-dot::after {
+  top: 1px !important;
+  left: 1px !important;
+  width: 3px !important;
+  height: 1.5px !important;
+  transform-origin: center !important;
+  animation: online-surface-glint-up 3.8s ease-in-out infinite !important;
+}
+@keyframes online-surface-glint-up {
+  0%, 62%, 100% { opacity: 0; transform: translate(0,0) scale(.7); }
+  68% { opacity: .95; transform: translate(0,0) scale(1); }
+  78% { opacity: .5; transform: translate(0,-.35px) scale(.9); }
+  86% { opacity: 0; transform: translate(0,-.5px) scale(.7); }
+}
