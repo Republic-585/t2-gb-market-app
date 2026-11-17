@@ -9,11 +9,25 @@
   const AUTH_URL = "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/miniapp-auth";
   const MARKETPLACE_API = "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/marketplace-api";
 
-  function startOnlinePresence() {
+  let onlinePublicIds = new Set();
+  let onlineChannel = null;
+  let currentPublicId = null;
+
+  function updateOnlineUi() {
+    const ownOnline = Boolean(currentPublicId && onlinePublicIds.has(currentPublicId));
+    if (avatar) {
+      avatar.classList.toggle("is-online", ownOnline);
+      avatar.classList.toggle("is-offline", !ownOnline);
+      avatar.setAttribute("aria-label", ownOnline ? "Пользователь онлайн" : "Пользователь офлайн");
+    }
+    renderCatalog();
+  }
+
+  function startOnlinePresence(publicId) {
     const countNode = document.getElementById("online-count");
     const indicator = document.getElementById("online-indicator");
     const supabaseLib = window.supabase;
-    if (!countNode || !indicator || !supabaseLib?.createClient) return;
+    if (!publicId || onlineChannel || !countNode || !indicator || !supabaseLib?.createClient) return;
 
     try {
       const client = supabaseLib.createClient(
@@ -21,38 +35,43 @@
         "sb_publishable_EQ6nIiLpL1Q9UsIF5rROHQ_KugmUfb9",
         { realtime: { params: { eventsPerSecond: 5 } } }
       );
-      const sessionKey = window.crypto?.randomUUID?.()
-        || "visitor-" + Date.now().toString(36) + Math.random().toString(36).slice(2);
       const channel = client.channel("t2-gb-market-online", {
-        config: { presence: { key: sessionKey } }
+        config: { presence: { key: publicId } }
       });
+      onlineChannel = channel;
 
       const renderOnlineCount = () => {
         const state = channel.presenceState();
-        const online = Object.keys(state).length;
-        countNode.textContent = new Intl.NumberFormat("ru-RU").format(online);
+        onlinePublicIds = new Set(Object.keys(state));
+        countNode.textContent = new Intl.NumberFormat("ru-RU").format(onlinePublicIds.size);
         indicator.classList.add("is-live");
         indicator.setAttribute("aria-label", "Соединение активно");
+        updateOnlineUi();
       };
 
       channel
         .on("presence", { event: "sync" }, renderOnlineCount)
         .subscribe(async (status) => {
           if (status === "SUBSCRIBED") {
-            await channel.track({ online_at: new Date().toISOString() });
+            await channel.track({ public_id: publicId, online_at: new Date().toISOString() });
             renderOnlineCount();
           } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
+            onlinePublicIds.delete(publicId);
             indicator.classList.remove("is-live");
             indicator.setAttribute("aria-label", "Нет соединения");
             countNode.textContent = "—";
+            updateOnlineUi();
           }
         });
     } catch (_) {
+      onlinePublicIds.delete(publicId);
       countNode.textContent = "—";
       indicator.classList.remove("is-live");
+      updateOnlineUi();
     }
   }
-  startOnlinePresence();
+
+
   const tabs = [...document.querySelectorAll("[data-tab]")];
   const panels = {
     buy: document.getElementById("buy-panel"),
@@ -250,16 +269,20 @@
     const detail = document.createElement("span");
     if (own) detail.textContent = item.description ? item.description.slice(0, 72) : "Только вам";
     else {
-      const seller = item.seller || {};
-      detail.textContent = seller.username ? "@" + seller.username :
-        [seller.first_name, seller.last_name].filter(Boolean).join(" ") || "Продавец T2";
+      detail.textContent = "Продавец T2";
+      detail.className = "seller-public-label";
+      const sellerOnline = Boolean(item.seller_public_id && onlinePublicIds.has(item.seller_public_id));
+      detail.classList.toggle("is-online", sellerOnline);
+      detail.title = sellerOnline ? "Продавец в сети" : "Продавец не в сети";
     }
     if (!own) {
       const info = document.createElement("div");
       info.className = "listing-offer-info";
-      const seller = item.seller || {};
-      detail.textContent = (seller.username ? "@" + seller.username :
-        [seller.first_name, seller.last_name].filter(Boolean).join(" ") || "Продавец T2");
+      detail.textContent = "Продавец T2";
+      detail.className = "seller-public-label";
+      const sellerOnline = Boolean(item.seller_public_id && onlinePublicIds.has(item.seller_public_id));
+      detail.classList.toggle("is-online", sellerOnline);
+      detail.title = sellerOnline ? "Продавец в сети" : "Продавец не в сети";
       bottom.append(price, detail);
       info.append(volume, bottom);
       const buyButton = document.createElement("button");
@@ -287,6 +310,17 @@
     dashboardData = data;
     dmNotificationsEnabled = data.user?.dm_notifications_enabled !== false;
     renderDmNotificationsToggle();
+    currentPublicId = data.user?.public_id || null;
+    if (currentPublicId) startOnlinePresence(currentPublicId);
+    const responseTimeNode = document.getElementById("profile-response-time");
+    if (responseTimeNode) {
+      const minutes = data.user?.average_response_minutes;
+      let responseLabel = "Пока нет данных";
+      if (Number.isFinite(minutes) && minutes >= 0) {
+        responseLabel = minutes < 60 ? `${minutes} мин` : `${Math.floor(minutes / 60)} ч ${minutes % 60} мин`;
+      }
+      responseTimeNode.textContent = "Среднее время ответа · " + responseLabel;
+    }
     const available = document.getElementById("wallet-available");
     const reserved = document.getElementById("wallet-reserved");
     const catalog = document.getElementById("catalog-list");
@@ -305,7 +339,7 @@
     const activeCount = document.getElementById("market-active-count");
     const soldYesterday = document.getElementById("market-sold-yesterday");
     const liveCatalog = (data.catalog || []).filter((item) =>
-      item.seller_telegram_user_id !== data.user.id &&
+      item.is_own_listing !== true &&
       Number(item.volume_gb) >= 1 && Number(item.volume_gb) <= 20
     );
     const usingDemoListings = liveCatalog.length === 0;
