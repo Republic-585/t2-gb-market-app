@@ -1,9 +1,9 @@
 (() => {
   const tg = window.Telegram?.WebApp;
   if (tg) {
+    try { tg.setHeaderColor("#090d10"); tg.setBackgroundColor("#090d10"); if (typeof tg.setBottomBarColor === "function") tg.setBottomBarColor("#090d10"); } catch (_) {}
     tg.ready();
     tg.expand();
-    try { tg.setHeaderColor("#0b0e12"); tg.setBackgroundColor("#0b0e12"); } catch (_) {}
   }
 
   const AUTH_URL = "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/miniapp-auth";
