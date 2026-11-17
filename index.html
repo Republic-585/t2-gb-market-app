@@ -9,10 +9,10 @@
   <meta name="theme-color" content="#0b0e12">
   <meta name="description" content="T2 GB MARKET — маркетплейс передачи гигабайтов T2.">
   <title>T2 GB MARKET</title>
-  <link rel="stylesheet" href="./styles.css?v=52">
+  <link rel="stylesheet" href="./styles.css?v=53">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
-  <script defer src="./app.js?v=43"></script>
+  <script defer src="./app.js?v=44"></script>
 </head>
 <body>
   <main class="app-shell">
@@ -181,6 +181,15 @@
           <span id="profile-username">Получаем имя пользователя Telegram</span>
         </div>
         <span class="verified-dot" aria-label="Подключено"></span>
+      </div>
+      <div class="dm-notifications-card">
+        <div class="dm-notifications-copy">
+          <strong>Уведомления в личку</strong>
+          <span>Сообщения о событиях аккаунта</span>
+        </div>
+        <button class="dm-notifications-toggle" id="dm-notifications-toggle" type="button" role="switch" aria-checked="true" aria-label="Уведомления в личку">
+          <span class="dm-notifications-knob"></span>
+        </button>
       </div>
       <button class="secondary-button is-hidden" id="profile-retry" type="button">Повторить подключение</button>
       <section class="wallet-card" aria-label="Баланс кошелька">
