@@ -207,7 +207,7 @@
       const info = document.createElement("div");
       info.className = "listing-offer-info";
       const seller = item.seller || {};
-      detail.textContent = "ДЕМО · " + (seller.username ? "@" + seller.username :
+      detail.textContent = (seller.username ? "@" + seller.username :
         [seller.first_name, seller.last_name].filter(Boolean).join(" ") || "Продавец T2");
       bottom.append(price, detail);
       info.append(volume, bottom);
@@ -215,13 +215,14 @@
       buyButton.type = "button";
       buyButton.className = "listing-buy-button";
       buyButton.textContent = "Купить";
-      if (item.demo) {
-        buyButton.disabled = true;
-        buyButton.setAttribute("aria-label", "Демонстрационное предложение, покупка пока недоступна");
-        buyButton.title = "Покупка станет доступна после запуска сделок";
-      } else {
-        buyButton.addEventListener("click", () => showToast("Покупки откроются после подключения пополнения и безопасной оплаты."));
-      }
+      buyButton.disabled = false;
+      buyButton.removeAttribute("aria-label");
+      buyButton.title = "Посмотреть условия покупки";
+      buyButton.addEventListener("click", () => showToast(
+        item.demo
+          ? "Это пример лота. Реальные покупки пока не подключены."
+          : "Оформление покупки станет доступно после запуска безопасных сделок и пополнения кошелька."
+      ));
       card.append(info, buyButton);
     } else {
       top.append(volume, status);
@@ -325,7 +326,7 @@
     const currentLabel = document.getElementById("volume-current");
     if (currentLabel) currentLabel.textContent = selectedVolume === "all"
       ? "Все объёмы"
-      : selectedVolume + " ГБ выбрано";
+      : selectedVolume + " ГБ";
     volumeFilter?.querySelectorAll("[data-volume]").forEach((item) => {
       const selected = item === button;
       item.classList.toggle("is-selected", selected);
