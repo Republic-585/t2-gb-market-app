@@ -1792,12 +1792,44 @@ body::-webkit-scrollbar {
 }
 
 
-/* Profile pill and private-message notification preference */
+/* Compact, evenly spaced profile and notification pills */
 #profile-panel .profile-card {
-  min-height: 92px;
-  padding: 12px 18px;
+  min-height: 76px;
+  padding: 8px 12px 8px 10px;
+  gap: 12px;
   border: 0 !important;
   border-radius: 999px !important;
+}
+#profile-panel .avatar {
+  position: relative;
+  width: 56px !important;
+  height: 56px !important;
+  flex: 0 0 56px !important;
+  border-radius: 50% !important;
+}
+#profile-panel .profile-details {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+#profile-panel .verified-dot {
+  position: absolute !important;
+  left: 58px;
+  bottom: 9px;
+  z-index: 2;
+  width: 8px !important;
+  height: 8px !important;
+  flex: 0 0 8px !important;
+  border: 1.5px solid var(--surface) !important;
+  border-radius: 50%;
+  background: #35d477 !important;
+  box-shadow: 0 0 0 1.5px rgba(53,212,119,.14), 0 0 7px rgba(53,212,119,.3) !important;
+}
+#profile-panel .dm-notifications-card {
+  min-height: 52px;
+  padding: 7px 14px;
+  gap: 12px;
+  border: 0 !important;
+  border-radius: 999px;
 }
 #profile-panel .dm-notifications-card {
   display: flex;
