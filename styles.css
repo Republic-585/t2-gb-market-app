@@ -1703,11 +1703,11 @@ body::-webkit-scrollbar {
   border-radius: 999px;
   background: transparent !important;
   box-shadow: none !important;
-  color: #9aa7b7;
+  color: #ffffff !important;
   transition: color .14s ease, opacity .14s ease;
   -webkit-tap-highlight-color: transparent;
 }
-.bottom-nav .nav-item.is-active { color: #e4e9ef !important; }
+.bottom-nav .nav-item.is-active { color: #ffffff !important; }
 .bottom-nav .nav-item svg {
   width: 23px;
   height: 23px;
