@@ -1623,17 +1623,7 @@ body::-webkit-scrollbar {
 .support-modal-close { background: #3a4048 !important; color: #c7cbd0 !important; }
 
 
-/* T2 GB MARKET — tunable Liquid Glass navigation */
-:root {
-  --nav-glass-opacity: .14;
-  --nav-glass-tint: 26, 37, 52;
-  --nav-glass-blur: 2.4px;
-  --nav-glass-center-blur: 1.4px;
-  --nav-glass-refraction: .06;
-  --nav-glass-edge-strength: .72;
-  --nav-glass-highlight: .42;
-  --nav-glass-volume: .10;
-}
+/* T2 GB MARKET — single clean-glass navigation system */
 .bottom-nav {
   position: fixed;
   z-index: 30;
@@ -1650,61 +1640,26 @@ body::-webkit-scrollbar {
   overflow: hidden;
   padding: 6px;
   gap: 4px;
-  border: 1px solid rgba(255,255,255, calc(.12 + var(--nav-glass-edge-strength) * .12));
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  left: 50%;
+  right: auto;
+  width: min(calc(100% - 24px), 536px);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 27px;
-  background: rgba(var(--nav-glass-tint), var(--nav-glass-opacity));
-  -webkit-backdrop-filter: blur(var(--nav-glass-blur));
-  backdrop-filter: blur(var(--nav-glass-blur));
-  box-shadow:
-    0 4px 14px rgba(0,0,0,.10),
-    inset 0 1px 0 rgba(255,255,255, var(--nav-glass-volume));
+  background: rgba(24,32,42,.16);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+  box-shadow: 0 4px 14px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.08);
   transform: translateX(-50%);
   transition: transform .16s ease, border-color .16s ease, background-color .16s ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.bottom-nav::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-  -webkit-backdrop-filter: blur(var(--nav-glass-center-blur));
-  backdrop-filter: blur(var(--nav-glass-center-blur));
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.25) 16%, #000 50%, rgba(0,0,0,.25) 84%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.25) 16%, #000 50%, rgba(0,0,0,.25) 84%, transparent 100%);
-  background: linear-gradient(180deg,
-    rgba(255,255,255, calc(var(--nav-glass-highlight) * .20)),
-    transparent 34%,
-    rgba(255,255,255, var(--nav-glass-refraction)) 100%);
-}
-.bottom-nav::after {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  background:
-    linear-gradient(90deg,
-      rgba(255,255,255, calc(var(--nav-glass-edge-strength) * .24)) 0%,
-      rgba(255,255,255,.06) 3%,
-      transparent 13%,
-      transparent 87%,
-      rgba(255,255,255,.06) 97%,
-      rgba(255,255,255, calc(var(--nav-glass-edge-strength) * .24)) 100%),
-    linear-gradient(180deg,
-      rgba(255,255,255, calc(var(--nav-glass-highlight) * .34)),
-      transparent 18%,
-      transparent 82%,
-      rgba(0,0,0, calc(var(--nav-glass-edge-strength) * .12)));
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255, calc(var(--nav-glass-edge-strength) * .20)),
-    inset 0 1px 5px rgba(255,255,255, calc(var(--nav-glass-highlight) * .16));
-}
+.bottom-nav::before,
+.bottom-nav::after { content: none !important; display: none !important; }
 .bottom-nav .nav-indicator {
   position: absolute;
-  z-index: 1;
+  z-index: 0;
   top: 6px;
   bottom: 6px;
   left: 6px;
@@ -1719,7 +1674,8 @@ body::-webkit-scrollbar {
 }
 .bottom-nav .nav-item {
   position: relative;
-  z-index: 2;
+  z-index: 1;
+  min-width: 0;
   min-width: 0;
   min-height: 52px;
   display: flex;
