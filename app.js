@@ -8,6 +8,51 @@
 
   const AUTH_URL = "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/miniapp-auth";
   const MARKETPLACE_API = "https://mklvipfzcgfzhfzbpzii.supabase.co/functions/v1/marketplace-api";
+
+  function startOnlinePresence() {
+    const countNode = document.getElementById("online-count");
+    const indicator = document.getElementById("online-indicator");
+    const supabaseLib = window.supabase;
+    if (!countNode || !indicator || !supabaseLib?.createClient) return;
+
+    try {
+      const client = supabaseLib.createClient(
+        "https://mklvipfzcgfzhfzbpzii.supabase.co",
+        "sb_publishable_EQ6nIiLpL1Q9UsIF5rROHQ_KugmUfb9",
+        { realtime: { params: { eventsPerSecond: 5 } } }
+      );
+      const sessionKey = window.crypto?.randomUUID?.()
+        || "visitor-" + Date.now().toString(36) + Math.random().toString(36).slice(2);
+      const channel = client.channel("t2-gb-market-online", {
+        config: { presence: { key: sessionKey } }
+      });
+
+      const renderOnlineCount = () => {
+        const state = channel.presenceState();
+        const online = Object.keys(state).length;
+        countNode.textContent = new Intl.NumberFormat("ru-RU").format(online);
+        indicator.classList.add("is-live");
+        indicator.setAttribute("aria-label", "Соединение активно");
+      };
+
+      channel
+        .on("presence", { event: "sync" }, renderOnlineCount)
+        .subscribe(async (status) => {
+          if (status === "SUBSCRIBED") {
+            await channel.track({ online_at: new Date().toISOString() });
+            renderOnlineCount();
+          } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
+            indicator.classList.remove("is-live");
+            indicator.setAttribute("aria-label", "Нет соединения");
+            countNode.textContent = "—";
+          }
+        });
+    } catch (_) {
+      countNode.textContent = "—";
+      indicator.classList.remove("is-live");
+    }
+  }
+  startOnlinePresence();
   const tabs = [...document.querySelectorAll("[data-tab]")];
   const panels = {
     buy: document.getElementById("buy-panel"),
