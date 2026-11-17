@@ -114,13 +114,45 @@
   const toast = document.getElementById("toast");
   let toastTimer;
 
-  document.getElementById("support-project")?.addEventListener("click", () => {
-    const botUrl = "https://t.me/t2_gb_market_bot";
-    if (tg?.openTelegramLink) {
-      tg.openTelegramLink(botUrl);
-    } else {
-      window.open(botUrl, "_blank", "noopener,noreferrer");
-    }
+  const supportModal = document.getElementById("support-modal");
+  const supportButton = document.getElementById("support-project");
+  const supportAmountButtons = [...document.querySelectorAll("[data-support-amount]")];
+  const closeSupportModal = () => {
+    supportModal?.classList.add("is-hidden");
+    supportModal?.setAttribute("aria-hidden", "true");
+  };
+
+  supportButton?.addEventListener("click", () => {
+    supportModal?.classList.remove("is-hidden");
+    supportModal?.setAttribute("aria-hidden", "false");
+  });
+  supportModal?.querySelectorAll("[data-support-close]").forEach((button) => {
+    button.addEventListener("click", closeSupportModal);
+  });
+  supportAmountButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      const amount = Number(button.dataset.supportAmount);
+      if (![50, 100, 250].includes(amount)) return;
+      supportAmountButtons.forEach((item) => { item.disabled = true; });
+      button.classList.add("is-loading");
+      try {
+        const invoice = await callMarketplaceApi("create_support_invoice", { amount });
+        closeSupportModal();
+        if (typeof tg?.openInvoice === "function") {
+          tg.openInvoice(invoice.invoice_url, (status) => {
+            if (status === "paid") showToast("Спасибо! Поддержка получена ⭐");
+            else if (status === "failed") showToast("Не удалось завершить оплату. Попробуйте ещё раз.");
+          });
+        } else {
+          window.open(invoice.invoice_url, "_blank", "noopener,noreferrer");
+        }
+      } catch (error) {
+        showToast(error.message || "Не удалось подготовить оплату");
+      } finally {
+        supportAmountButtons.forEach((item) => { item.disabled = false; });
+        button.classList.remove("is-loading");
+      }
+    });
   });
   let dashboardData = null;
   let catalogItems = [];
