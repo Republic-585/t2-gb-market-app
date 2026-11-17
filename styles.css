@@ -1614,3 +1614,69 @@ html, body, button, input, textarea, select {
     gap: 8px;
   }
 }
+
+
+/* Requested catalog cleanup: plain volume digits, neutral sort, aligned seller labels */
+.volume-filter {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  padding-inline: calc(50% - 21px) !important;
+}
+.volume-filter::after { content: none !important; display: none !important; }
+.volume-filter-item,
+.volume-filter-item.is-selected {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.volume-filter-item.is-selected { color: #fff !important; }
+.volume-infinity-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+}
+.volume-filter-item { display: inline-flex; align-items: center; justify-content: center; }
+.sort-tool select,
+.sort-tool select:focus,
+.sort-tool select:active {
+  color-scheme: dark;
+  accent-color: #aeb8c2;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+.sort-tool select option {
+  color: #edf2f7;
+  background: #171c22;
+}
+.sort-tool select:focus-visible {
+  border-color: rgba(255,255,255,.18) !important;
+}
+.catalog-offer-card .listing-offer-info { min-width: 0; }
+.catalog-offer-card .listing-row-bottom {
+  align-items: flex-start !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  gap: 4px !important;
+  min-width: 0;
+  text-align: left !important;
+}
+.catalog-offer-card .listing-row-bottom span {
+  display: block !important;
+  width: 100%;
+  max-width: 100% !important;
+  min-width: 0;
+  overflow: visible !important;
+  text-align: left !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal;
+  text-overflow: clip !important;
+}
+.catalog-offer-card .listing-row-price { text-align: left !important; }
+.catalog-title { color: #fff !important; }
