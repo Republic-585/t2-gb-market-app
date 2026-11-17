@@ -1827,33 +1827,40 @@ body::-webkit-scrollbar {
 #profile-panel .dm-notifications-toggle {
   position: relative;
   display: block;
-  width: 48px;
-  height: 29px;
-  flex: 0 0 48px;
+  width: 51px;
+  height: 31px;
+  flex: 0 0 51px;
   padding: 0;
-  border: 1px solid rgba(255,255,255,.10);
+  border: 0;
   border-radius: 999px;
-  background: #39434b;
+  background: #484d54;
   cursor: pointer;
-  transition: background .2s ease, border-color .2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: background-color .22s ease;
 }
 #profile-panel .dm-notifications-toggle[aria-checked="true"] {
-  border-color: rgba(53,212,119,.35);
-  background: #238b56;
+  background: #30d158;
 }
 #profile-panel .dm-notifications-knob {
   position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 21px;
-  height: 21px;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,.28);
-  transition: transform .2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,.24), 0 1px 3px rgba(0,0,0,.12);
+  transition: transform .22s cubic-bezier(.2,.8,.2,1);
 }
 #profile-panel .dm-notifications-toggle[aria-checked="true"] .dm-notifications-knob {
-  transform: translateX(19px);
+  transform: translateX(20px);
+}
+#profile-panel .dm-notifications-toggle:active .dm-notifications-knob {
+  width: 29px;
+}
+#profile-panel .dm-notifications-toggle[aria-checked="true"]:active .dm-notifications-knob {
+  transform: translateX(18px);
 }
 #profile-panel .dm-notifications-toggle:focus-visible {
   outline: 2px solid #6b9bff;
