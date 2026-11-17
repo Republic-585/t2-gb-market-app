@@ -2150,3 +2150,51 @@ body::-webkit-scrollbar {
   font-weight: 750;
 }
 #profile-panel .wallet-actions button:disabled { opacity: .72; }
+
+
+/* Support UI refinements */
+#profile-panel .support-project-action {
+  background: var(--tg-theme-button-color, #2AABEE) !important;
+  color: var(--tg-theme-button-text-color, #fff) !important;
+}
+.support-modal-card {
+  background: #292d33 !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: #f5f6f7 !important;
+}
+.support-modal-card h3 {
+  margin: 2px 28px 17px !important;
+  color: #f5f6f7 !important;
+  font-size: 16px !important;
+  line-height: 1.35;
+  font-weight: 650 !important;
+  letter-spacing: -.02em !important;
+}
+.support-amount-list { gap: 8px !important; }
+.support-amount {
+  min-height: 54px !important;
+  height: 54px;
+  flex-direction: row !important;
+  gap: 7px !important;
+  padding: 8px 5px !important;
+  border-radius: 13px !important;
+  border-color: rgba(255,255,255,.09) !important;
+  background: #343a42 !important;
+  color: #fff !important;
+}
+.support-amount strong { font-size: 17px !important; }
+.support-star-mini {
+  display: inline-block;
+  color: transparent !important;
+  font-size: 0 !important;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(145deg, #fff5bd 0%, #ffd34f 38%, #f4a900 75%, #c97800 100%);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 36%, 69% 58%, 80% 96%, 50% 73%, 20% 96%, 31% 58%, 2% 36%, 39% 35%);
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.3));
+}
+.support-amount.is-recommended {
+  border-color: rgba(255,202,75,.75) !important;
+  background: #414044 !important;
+}
+.support-modal-close { background: #3a4048 !important; color: #c7cbd0 !important; }
