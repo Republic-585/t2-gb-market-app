@@ -888,3 +888,62 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
 }
 .bottom-nav .nav-item:active small { transform: translateY(1px); }
 .bottom-nav .nav-item small { transition: transform .2s ease, opacity .2s ease; }
+
+
+/* Navigation: expanding spring glass interaction — strictly no gradients */
+.bottom-nav {
+  background-color: rgba(18, 31, 47, .50) !important;
+  background-image: none !important;
+  transition:
+    transform .42s cubic-bezier(.2, 1.35, .35, 1),
+    background-color .28s ease,
+    border-color .28s ease,
+    box-shadow .34s ease,
+    -webkit-backdrop-filter .3s ease,
+    backdrop-filter .3s ease !important;
+  transform-origin: center bottom;
+  will-change: transform;
+}
+.bottom-nav::before,
+.bottom-nav::after {
+  background-image: none !important;
+}
+.bottom-nav::before {
+  background-color: rgba(110, 177, 235, .15) !important;
+}
+.bottom-nav::after {
+  background-color: rgba(225, 241, 255, .045) !important;
+}
+.bottom-nav:active,
+.bottom-nav.is-pressed {
+  transform: translateX(-50%) translateY(-3px) scale(1.045) !important;
+  background-color: rgba(25, 44, 66, .68) !important;
+  background-image: none !important;
+  border-color: rgba(235, 247, 255, .42) !important;
+  box-shadow:
+    0 24px 54px rgba(0,0,0,.42),
+    0 0 0 1px rgba(210,235,255,.10),
+    inset 0 2px 2px rgba(255,255,255,.30),
+    inset 0 -2px 3px rgba(0,0,0,.15) !important;
+  -webkit-backdrop-filter: blur(50px) saturate(250%) brightness(1.2) !important;
+  backdrop-filter: blur(50px) saturate(250%) brightness(1.2) !important;
+}
+.bottom-nav:active::before,
+.bottom-nav.is-pressed::before {
+  background-color: rgba(126, 190, 244, .22) !important;
+  background-image: none !important;
+}
+.bottom-nav:active::after,
+.bottom-nav.is-pressed::after {
+  background-color: rgba(235,245,255,.09) !important;
+  background-image: none !important;
+}
+.bottom-nav .nav-item {
+  transition: transform .38s cubic-bezier(.2, 1.4, .35, 1), color .2s ease, opacity .2s ease !important;
+}
+.bottom-nav .nav-item:active {
+  transform: translateY(-1px) scale(1.07) !important;
+}
+.bottom-nav .nav-item:active svg {
+  transform: scale(.9) rotate(-5deg) !important;
+}
