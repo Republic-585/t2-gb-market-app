@@ -633,6 +633,29 @@
     });
   }
 
+
+  // Persist the user's local preference for private-message notifications.
+  const dmNotificationsToggle = document.getElementById("dm-notifications-toggle");
+  if (dmNotificationsToggle) {
+    let dmNotificationsEnabled = true;
+    try {
+      const savedPreference = window.localStorage.getItem("t2gb_dm_notifications");
+      if (savedPreference === "0" || savedPreference === "1") dmNotificationsEnabled = savedPreference === "1";
+    } catch (_) {}
+    const renderDmNotificationsToggle = () => {
+      dmNotificationsToggle.setAttribute("aria-checked", String(dmNotificationsEnabled));
+      dmNotificationsToggle.setAttribute("aria-label", dmNotificationsEnabled
+        ? "Уведомления в личку включены"
+        : "Уведомления в личку выключены");
+    };
+    renderDmNotificationsToggle();
+    dmNotificationsToggle.addEventListener("click", () => {
+      dmNotificationsEnabled = !dmNotificationsEnabled;
+      try { window.localStorage.setItem("t2gb_dm_notifications", dmNotificationsEnabled ? "1" : "0"); } catch (_) {}
+      renderDmNotificationsToggle();
+    });
+  }
+
   authenticateTelegramUser();
   document.querySelector(".brand")?.addEventListener("click", (event) => {
     event.preventDefault();
