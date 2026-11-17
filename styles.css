@@ -1319,3 +1319,152 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
   .catalog-offer-card .listing-offer-info > strong { font-size:19px; }
   .catalog-offer-card .listing-buy-button { flex-basis:104px; }
 }
+
+
+/* Unified Apple typography, Telegram action color and centered glass volume wheel */
+:root {
+  --tg-action: var(--tg-theme-button-color, #2AABEE);
+  --tg-action-text: var(--tg-theme-button-text-color, #ffffff);
+}
+html, body, button, input, textarea, select {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", sans-serif !important;
+  font-synthesis: none;
+}
+.app-shell button:not(.nav-item):not(.volume-filter-item) {
+  background-color: var(--tg-action) !important;
+  color: var(--tg-action-text) !important;
+  border-color: transparent !important;
+  font-family: inherit !important;
+  font-weight: 650;
+}
+.app-shell button:disabled { opacity: .48; }
+.catalog-tools-compact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(138px, 42%);
+  align-items: center;
+  gap: 10px;
+}
+.volume-filter {
+  height: 54px;
+  min-height: 54px;
+  align-items: center;
+  position: relative;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: auto;
+  isolation: isolate;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+.volume-filter::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 42px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.055));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.20), 0 5px 18px rgba(0,0,0,.16);
+  backdrop-filter: blur(12px) saturate(145%);
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
+  pointer-events: none;
+}
+.volume-filter-item {
+  position: relative;
+  z-index: 1;
+  min-width: 38px;
+  width: 38px;
+  height: 42px;
+  margin: 0 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 11px;
+  background: transparent !important;
+  color: rgba(230,237,244,var(--wheel-opacity, .55)) !important;
+  font-size: 15px;
+  font-weight: 560;
+  line-height: 1;
+  transform: scale(var(--wheel-scale, .9));
+  transition: transform .16s cubic-bezier(.2,.75,.25,1), color .16s ease, opacity .16s ease;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+.volume-filter-item.is-selected {
+  color: #fff !important;
+  background: transparent !important;
+  transform: scale(var(--wheel-scale, 1.34));
+}
+.catalog-tools-compact select {
+  justify-self: end;
+  width: 100%;
+  max-width: none;
+  min-height: 42px;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 13px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--tg-action-text);
+  background-color: var(--tg-action);
+  border: 0;
+}
+.catalog-offer-card .listing-offer-info { gap: 6px; }
+.catalog-offer-card .listing-offer-info > strong {
+  font-size: 23px;
+  line-height: 1.04;
+  letter-spacing: -.55px;
+}
+.catalog-offer-card .listing-row-bottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 3px 12px;
+  width: 100%;
+}
+.catalog-offer-card .listing-row-price {
+  flex: 0 0 auto;
+  font-size: 15px;
+  line-height: 1.25;
+}
+.catalog-offer-card .listing-row-bottom span {
+  display: inline-block;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+  color: #b9c4cf;
+  font-size: 12px;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+.catalog-offer-card .listing-buy-button {
+  flex: 0 0 104px;
+  width: 104px;
+  min-width: 104px;
+  height: 42px;
+  min-height: 42px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+.online-presence { min-height: 42px; }
+@media (max-width: 390px) {
+  .catalog-tools-compact { grid-template-columns: minmax(0, 1fr) minmax(126px, 40%); gap: 7px; }
+  .catalog-tools-compact select { padding: 0 9px; font-size: 12px; }
+  .catalog-offer-card { gap: 8px; padding: 11px 10px; }
+  .catalog-offer-card .listing-offer-info > strong { font-size: 21px; }
+  .catalog-offer-card .listing-buy-button { flex-basis: 96px; width: 96px; min-width: 96px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .volume-filter, .volume-filter-item { scroll-behavior: auto; transition: none; }
+}
