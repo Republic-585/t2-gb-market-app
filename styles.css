@@ -1873,3 +1873,13 @@ html, body, button, input, textarea, select {
   padding-bottom: 0;
   box-sizing: border-box;
 }
+
+
+/* Home heading: white title and tighter top spacing after removing the brand bar */
+.market-home-head {
+  padding-top: 8px;
+}
+.market-welcome h1,
+.market-welcome h1 span {
+  color: #ffffff;
+}
