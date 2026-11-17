@@ -117,13 +117,26 @@
   let catalogItems = [];
 
   const DEMO_LISTINGS = [
-    { id: "demo-1", demo: true, volume_gb: 1, price_kopecks: 1200, status: "active", created_at: "2026-11-17T00:01:00Z", seller: { first_name: "Алексей" }, popularity_count: 7 },
-    { id: "demo-2", demo: true, volume_gb: 2, price_kopecks: 2200, status: "active", created_at: "2026-11-17T00:02:00Z", seller: { first_name: "Мария" }, popularity_count: 6 },
-    { id: "demo-3", demo: true, volume_gb: 3, price_kopecks: 3000, status: "active", created_at: "2026-11-17T00:03:00Z", seller: { first_name: "Денис" }, popularity_count: 5 },
-    { id: "demo-4", demo: true, volume_gb: 5, price_kopecks: 4750, status: "active", created_at: "2026-11-17T00:04:00Z", seller: { first_name: "Ирина" }, popularity_count: 4 },
-    { id: "demo-5", demo: true, volume_gb: 8, price_kopecks: 7200, status: "active", created_at: "2026-11-17T00:05:00Z", seller: { first_name: "Максим" }, popularity_count: 3 },
-    { id: "demo-6", demo: true, volume_gb: 12, price_kopecks: 9600, status: "active", created_at: "2026-11-17T00:06:00Z", seller: { first_name: "Анна" }, popularity_count: 2 },
-    { id: "demo-7", demo: true, volume_gb: 20, price_kopecks: 15400, status: "active", created_at: "2026-11-17T00:07:00Z", seller: { first_name: "Артём" }, popularity_count: 1 },
+    { id: "demo-1", demo: true, volume_gb: 1, price_kopecks: 1200, status: "active", created_at: "2026-11-17T00:00:00Z", seller: { first_name: "Алексей" }, popularity_count: 20 },
+    { id: "demo-2", demo: true, volume_gb: 2, price_kopecks: 2200, status: "active", created_at: "2026-11-17T00:01:00Z", seller: { first_name: "Мария" }, popularity_count: 19 },
+    { id: "demo-3", demo: true, volume_gb: 3, price_kopecks: 3000, status: "active", created_at: "2026-11-17T00:02:00Z", seller: { first_name: "Денис" }, popularity_count: 18 },
+    { id: "demo-4", demo: true, volume_gb: 4, price_kopecks: 3800, status: "active", created_at: "2026-11-17T00:03:00Z", seller: { first_name: "Ирина" }, popularity_count: 17 },
+    { id: "demo-5", demo: true, volume_gb: 5, price_kopecks: 4750, status: "active", created_at: "2026-11-17T00:04:00Z", seller: { first_name: "Максим" }, popularity_count: 16 },
+    { id: "demo-6", demo: true, volume_gb: 6, price_kopecks: 5400, status: "active", created_at: "2026-11-17T00:05:00Z", seller: { first_name: "Анна" }, popularity_count: 15 },
+    { id: "demo-7", demo: true, volume_gb: 7, price_kopecks: 6300, status: "active", created_at: "2026-11-17T00:06:00Z", seller: { first_name: "Артём" }, popularity_count: 14 },
+    { id: "demo-8", demo: true, volume_gb: 8, price_kopecks: 7200, status: "active", created_at: "2026-11-17T00:07:00Z", seller: { first_name: "Екатерина" }, popularity_count: 13 },
+    { id: "demo-9", demo: true, volume_gb: 9, price_kopecks: 7650, status: "active", created_at: "2026-11-17T00:08:00Z", seller: { first_name: "Илья" }, popularity_count: 12 },
+    { id: "demo-10", demo: true, volume_gb: 10, price_kopecks: 8500, status: "active", created_at: "2026-11-17T00:09:00Z", seller: { first_name: "София" }, popularity_count: 11 },
+    { id: "demo-11", demo: true, volume_gb: 11, price_kopecks: 9350, status: "active", created_at: "2026-11-17T00:10:00Z", seller: { first_name: "Дмитрий" }, popularity_count: 10 },
+    { id: "demo-12", demo: true, volume_gb: 12, price_kopecks: 9600, status: "active", created_at: "2026-11-17T00:11:00Z", seller: { first_name: "Полина" }, popularity_count: 9 },
+    { id: "demo-13", demo: true, volume_gb: 13, price_kopecks: 10400, status: "active", created_at: "2026-11-17T00:12:00Z", seller: { first_name: "Кирилл" }, popularity_count: 8 },
+    { id: "demo-14", demo: true, volume_gb: 14, price_kopecks: 11200, status: "active", created_at: "2026-11-17T00:13:00Z", seller: { first_name: "Алина" }, popularity_count: 7 },
+    { id: "demo-15", demo: true, volume_gb: 15, price_kopecks: 12000, status: "active", created_at: "2026-11-17T00:14:00Z", seller: { first_name: "Михаил" }, popularity_count: 6 },
+    { id: "demo-16", demo: true, volume_gb: 16, price_kopecks: 12480, status: "active", created_at: "2026-11-17T00:15:00Z", seller: { first_name: "Дарья" }, popularity_count: 5 },
+    { id: "demo-17", demo: true, volume_gb: 17, price_kopecks: 13260, status: "active", created_at: "2026-11-17T00:16:00Z", seller: { first_name: "Никита" }, popularity_count: 4 },
+    { id: "demo-18", demo: true, volume_gb: 18, price_kopecks: 14040, status: "active", created_at: "2026-11-17T00:17:00Z", seller: { first_name: "Виктория" }, popularity_count: 3 },
+    { id: "demo-19", demo: true, volume_gb: 19, price_kopecks: 14440, status: "active", created_at: "2026-11-17T00:18:00Z", seller: { first_name: "Егор" }, popularity_count: 2 },
+    { id: "demo-20", demo: true, volume_gb: 20, price_kopecks: 15400, status: "active", created_at: "2026-11-17T00:19:00Z", seller: { first_name: "Ольга" }, popularity_count: 1 }
   ];
 
   function showToast(message) {
@@ -194,8 +207,8 @@
       const info = document.createElement("div");
       info.className = "listing-offer-info";
       const seller = item.seller || {};
-      detail.textContent = seller.username ? "@" + seller.username :
-        [seller.first_name, seller.last_name].filter(Boolean).join(" ") || "Продавец T2";
+      detail.textContent = "ДЕМО · " + (seller.username ? "@" + seller.username :
+        [seller.first_name, seller.last_name].filter(Boolean).join(" ") || "Продавец T2");
       bottom.append(price, detail);
       info.append(volume, bottom);
       const buyButton = document.createElement("button");
