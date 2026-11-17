@@ -1883,3 +1883,68 @@ html, body, button, input, textarea, select {
 .market-welcome h1 span {
   color: #ffffff;
 }
+
+
+/* Full-width layout, hidden page scrollbar and consistent smooth card geometry */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.app-shell {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
+
+/* Use the Buy button's 11px radius as the shared shape for surfaces and fields */
+:root {
+  --surface-radius: 11px;
+}
+.empty-state,
+.notice-card,
+.profile-card,
+.profile-actions,
+.profile-action,
+.listing-form,
+.offer-card,
+.wallet-card,
+.listing-row,
+.listing-empty,
+.market-stat,
+.home-shortcuts .shortcut,
+.home-wallet,
+.catalog-search-wrap,
+.catalog-tools select,
+.volume-wheel-card,
+.sort-tool select,
+.input-wrap input,
+.listing-form textarea,
+.secondary-button,
+.wallet-topup,
+.primary-button,
+.profile-action-icon,
+.avatar,
+.empty-icon {
+  border-radius: var(--surface-radius) !important;
+}
+.input-wrap input,
+.listing-form textarea,
+.catalog-search-wrap,
+.catalog-tools select,
+.sort-tool select,
+.volume-wheel-card,
+.secondary-button,
+.wallet-topup,
+.primary-button,
+.profile-action,
+.shortcut {
+  overflow: hidden;
+}
