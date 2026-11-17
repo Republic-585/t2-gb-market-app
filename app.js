@@ -304,17 +304,45 @@
     catalog.classList.toggle("is-hidden", items.length === 0);
     empty.classList.toggle("is-hidden", items.length > 0);
   }
-  document.getElementById("volume-filter")?.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-volume]");
+  const volumeFilter = document.getElementById("volume-filter");
+  let volumeScrollTimer = null;
+  function setSelectedVolume(button, shouldRender = true) {
     if (!button) return;
     selectedVolume = button.dataset.volume;
-    document.querySelectorAll("#volume-filter [data-volume]").forEach((item) => {
+    volumeFilter?.querySelectorAll("[data-volume]").forEach((item) => {
       const selected = item === button;
       item.classList.toggle("is-selected", selected);
       item.setAttribute("aria-pressed", selected ? "true" : "false");
     });
-    renderCatalog();
+    if (shouldRender) renderCatalog();
+  }
+  function updateVolumeWheelScale() {
+    if (!volumeFilter) return;
+    const center = volumeFilter.getBoundingClientRect().left + volumeFilter.clientWidth / 2;
+    let nearest = null;
+    let nearestDistance = Infinity;
+    volumeFilter.querySelectorAll("[data-volume]").forEach((item) => {
+      const rect = item.getBoundingClientRect();
+      const distance = Math.abs((rect.left + rect.width / 2) - center);
+      const normalized = Math.min(1, distance / Math.max(1, volumeFilter.clientWidth * .42));
+      const scale = 1.34 - normalized * .34;
+      item.style.setProperty("--wheel-scale", scale.toFixed(3));
+      item.style.setProperty("--wheel-opacity", (1 - normalized * .52).toFixed(3));
+      if (distance < nearestDistance) { nearestDistance = distance; nearest = item; }
+    });
+    if (nearest) setSelectedVolume(nearest, false);
+    clearTimeout(volumeScrollTimer);
+    volumeScrollTimer = window.setTimeout(() => renderCatalog(), 150);
+  }
+  volumeFilter?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-volume]");
+    if (!button) return;
+    setSelectedVolume(button);
+    button.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
   });
+  volumeFilter?.addEventListener("scroll", updateVolumeWheelScale, { passive: true });
+  window.addEventListener("resize", updateVolumeWheelScale, { passive: true });
+  window.requestAnimationFrame(updateVolumeWheelScale);
   document.getElementById("catalog-sort")?.addEventListener("change", renderCatalog);
 
   async function loadDashboard() {
