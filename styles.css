@@ -698,370 +698,6 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
 .avatar img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
 
 
-/* Telegram-inspired Liquid Glass navigation: full-surface touch feedback */
-.bottom-nav {
-  --glass-highlight: rgba(255,255,255,.22);
-  --glass-edge: rgba(255,255,255,.16);
-  background:
-    linear-gradient(145deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.055) 28%, rgba(255,255,255,.018) 62%, rgba(120,160,210,.075) 100%),
-    rgba(23, 34, 49, .68);
-  border: 1px solid var(--glass-edge);
-  box-shadow:
-    0 14px 42px rgba(0,0,0,.34),
-    0 3px 10px rgba(0,0,0,.2),
-    inset 0 1px 0 var(--glass-highlight),
-    inset 0 -1px 0 rgba(0,0,0,.18),
-    inset 1px 0 0 rgba(255,255,255,.055),
-    inset -1px 0 0 rgba(255,255,255,.055);
-  -webkit-backdrop-filter: blur(34px) saturate(190%) contrast(112%);
-  backdrop-filter: blur(34px) saturate(190%) contrast(112%);
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  transition:
-    transform .22s cubic-bezier(.2,.8,.2,1),
-    background .22s ease,
-    box-shadow .22s ease,
-    border-color .22s ease;
-}
-.bottom-nav::after {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: 1px;
-  border-radius: inherit;
-  pointer-events: none;
-  background:
-    linear-gradient(118deg, rgba(255,255,255,.17), transparent 24%, transparent 70%, rgba(150,195,255,.09)),
-    linear-gradient(180deg, rgba(255,255,255,.07), transparent 38%);
-  opacity: .9;
-}
-.bottom-nav::before {
-  z-index: 1;
-  top: 5px;
-  bottom: 5px;
-  background:
-    linear-gradient(155deg, rgba(255,255,255,.13), rgba(255,255,255,.025) 48%, rgba(42,171,238,.12)),
-    rgba(42,171,238,.095);
-  border: 1px solid rgba(255,255,255,.14);
-  box-shadow:
-    0 2px 10px rgba(0,0,0,.12),
-    inset 0 1px 0 rgba(255,255,255,.22),
-    inset 0 -1px 0 rgba(255,255,255,.035);
-  transition: transform .36s cubic-bezier(.22,.9,.25,1.12), background .22s ease, box-shadow .22s ease;
-}
-.bottom-nav .nav-item {
-  z-index: 2;
-  position: relative;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  transition: color .2s ease, opacity .2s ease, transform .22s cubic-bezier(.2,.8,.2,1);
-}
-.bottom-nav .nav-item svg,
-.bottom-nav .nav-item small { pointer-events: none; }
-.bottom-nav .nav-item:active {
-  opacity: 1;
-  transform: scale(.92);
-  color: #ffffff;
-}
-.bottom-nav:has(.nav-item:active) {
-  transform: translateX(-50%) scale(.975);
-  border-color: rgba(255,255,255,.25);
-  background:
-    linear-gradient(145deg, rgba(255,255,255,.2), rgba(255,255,255,.07) 40%, rgba(120,160,210,.1)),
-    rgba(23,34,49,.78);
-  box-shadow:
-    0 8px 24px rgba(0,0,0,.32),
-    inset 0 1px 0 rgba(255,255,255,.24),
-    inset 0 -1px 0 rgba(0,0,0,.16);
-}
-.bottom-nav:has(.nav-item:active)::after { opacity: 1; }
-.bottom-nav:has(.nav-item:active)::before {
-  background: linear-gradient(145deg, rgba(255,255,255,.2), rgba(42,171,238,.17));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 0 16px rgba(42,171,238,.12);
-}
-.bottom-nav .nav-item:active svg { transform: scale(.94); }
-@media (max-width: 360px) {
-  .bottom-nav { width: calc(100% - 18px); gap: 2px; }
-}
-
-
-/* Pure tinted Liquid Glass — no gradients, responsive tactile feedback */
-.bottom-nav {
-  --glass-tint: rgba(17, 29, 44, .48);
-  --glass-tint-pressed: rgba(25, 43, 63, .62);
-  --glass-stroke: rgba(220, 239, 255, .22);
-  background: var(--glass-tint) !important;
-  border: 1px solid var(--glass-stroke) !important;
-  -webkit-backdrop-filter: blur(42px) saturate(225%) brightness(1.12) !important;
-  backdrop-filter: blur(42px) saturate(225%) brightness(1.12) !important;
-  box-shadow:
-    0 18px 48px rgba(0,0,0,.36),
-    0 4px 14px rgba(0,0,0,.22),
-    inset 0 1.5px 0 rgba(255,255,255,.28),
-    inset 0 -1px 0 rgba(255,255,255,.075),
-    inset 1px 0 0 rgba(255,255,255,.10),
-    inset -1px 0 0 rgba(255,255,255,.10) !important;
-  transition:
-    transform .26s cubic-bezier(.2,.85,.25,1),
-    background-color .24s ease,
-    border-color .24s ease,
-    box-shadow .26s ease,
-    -webkit-backdrop-filter .26s ease,
-    backdrop-filter .26s ease !important;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-.bottom-nav::after {
-  inset: 1px !important;
-  background: rgba(220,239,255,.055) !important;
-  opacity: .8 !important;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.035);
-  transition: opacity .25s ease, background-color .25s ease !important;
-}
-.bottom-nav::before {
-  background: rgba(89, 166, 232, .17) !important;
-  border: 1px solid rgba(205,232,255,.22) !important;
-  box-shadow:
-    0 0 18px rgba(94,174,238,.13),
-    inset 0 1px 0 rgba(255,255,255,.25),
-    inset 0 -1px 0 rgba(255,255,255,.08) !important;
-  transition:
-    transform .48s cubic-bezier(.16,1,.3,1),
-    background-color .24s ease,
-    box-shadow .3s ease,
-    border-color .24s ease !important;
-}
-.bottom-nav .nav-item {
-  transition:
-    color .2s ease,
-    opacity .2s ease,
-    transform .28s cubic-bezier(.2,.9,.25,1),
-    filter .2s ease !important;
-}
-.bottom-nav .nav-item svg {
-  transition: transform .36s cubic-bezier(.16,1,.3,1), filter .25s ease !important;
-}
-.bottom-nav .nav-item.is-active svg {
-  animation: nav-icon-arrive .48s cubic-bezier(.16,1,.3,1) both;
-  filter: drop-shadow(0 1px 5px rgba(42,171,238,.28));
-}
-@keyframes nav-icon-arrive {
-  0% { transform: translateY(3px) scale(.78); }
-  65% { transform: translateY(-1.5px) scale(1.12); }
-  100% { transform: translateY(0) scale(1); }
-}
-/* The entire glass surface responds, not just the icon or label */
-.bottom-nav:active,
-.bottom-nav.is-pressed {
-  transform: translateX(-50%) scale(.955) !important;
-  background: var(--glass-tint-pressed) !important;
-  border-color: rgba(235,247,255,.34) !important;
-  -webkit-backdrop-filter: blur(48px) saturate(245%) brightness(1.18) !important;
-  backdrop-filter: blur(48px) saturate(245%) brightness(1.18) !important;
-  box-shadow:
-    0 9px 24px rgba(0,0,0,.32),
-    inset 0 2px 2px rgba(255,255,255,.27),
-    inset 0 -2px 2px rgba(0,0,0,.12),
-    0 0 0 1px rgba(190,225,255,.06) !important;
-}
-.bottom-nav:active::after,
-.bottom-nav.is-pressed::after {
-  background: rgba(220,239,255,.105) !important;
-  opacity: 1 !important;
-}
-.bottom-nav:active::before,
-.bottom-nav.is-pressed::before {
-  background: rgba(89,166,232,.24) !important;
-  border-color: rgba(230,245,255,.32) !important;
-  box-shadow:
-    0 0 24px rgba(94,174,238,.22),
-    inset 0 2px 2px rgba(255,255,255,.32),
-    inset 0 -1px 0 rgba(255,255,255,.10) !important;
-}
-.bottom-nav .nav-item:active,
-.bottom-nav .nav-item.is-active {
-  color: #eaf6ff;
-}
-.bottom-nav .nav-item:active svg {
-  transform: scale(.86) rotate(-4deg);
-  filter: drop-shadow(0 0 7px rgba(100,190,255,.45));
-}
-.bottom-nav .nav-item:active small { transform: translateY(1px); }
-.bottom-nav .nav-item small { transition: transform .2s ease, opacity .2s ease; }
-
-
-/* Navigation: expanding spring glass interaction — strictly no gradients */
-.bottom-nav {
-  background-color: rgba(18, 31, 47, .50) !important;
-  background-image: none !important;
-  transition:
-    transform .42s cubic-bezier(.2, 1.35, .35, 1),
-    background-color .28s ease,
-    border-color .28s ease,
-    box-shadow .34s ease,
-    -webkit-backdrop-filter .3s ease,
-    backdrop-filter .3s ease !important;
-  transform-origin: center bottom;
-  will-change: transform;
-}
-.bottom-nav::before,
-.bottom-nav::after {
-  background-image: none !important;
-}
-.bottom-nav::before {
-  background-color: rgba(110, 177, 235, .15) !important;
-}
-.bottom-nav::after {
-  background-color: rgba(225, 241, 255, .045) !important;
-}
-.bottom-nav:active,
-.bottom-nav.is-pressed {
-  transform: translateX(-50%) translateY(-3px) scale(1.045) !important;
-  background-color: rgba(25, 44, 66, .68) !important;
-  background-image: none !important;
-  border-color: rgba(235, 247, 255, .42) !important;
-  box-shadow:
-    0 24px 54px rgba(0,0,0,.42),
-    0 0 0 1px rgba(210,235,255,.10),
-    inset 0 2px 2px rgba(255,255,255,.30),
-    inset 0 -2px 3px rgba(0,0,0,.15) !important;
-  -webkit-backdrop-filter: blur(50px) saturate(250%) brightness(1.2) !important;
-  backdrop-filter: blur(50px) saturate(250%) brightness(1.2) !important;
-}
-.bottom-nav:active::before,
-.bottom-nav.is-pressed::before {
-  background-color: rgba(126, 190, 244, .22) !important;
-  background-image: none !important;
-}
-.bottom-nav:active::after,
-.bottom-nav.is-pressed::after {
-  background-color: rgba(235,245,255,.09) !important;
-  background-image: none !important;
-}
-.bottom-nav .nav-item {
-  transition: transform .38s cubic-bezier(.2, 1.4, .35, 1), color .2s ease, opacity .2s ease !important;
-}
-.bottom-nav .nav-item:active {
-  transform: translateY(-1px) scale(1.07) !important;
-}
-.bottom-nav .nav-item:active svg {
-  transform: scale(.9) rotate(-5deg) !important;
-}
-
-
-/* Graphite Liquid Glass navigation — slow, fluid spring response */
-.bottom-nav {
-  --graphite-glass: rgba(37, 40, 44, .62);
-  --graphite-glass-pressed: rgba(48, 51, 55, .76);
-  --graphite-edge: rgba(255, 255, 255, .105);
-  background-color: var(--graphite-glass) !important;
-  background-image: none !important;
-  border: .5px solid var(--graphite-edge) !important;
-  transition:
-    transform .62s cubic-bezier(.2, 1.18, .28, 1),
-    background-color .55s ease,
-    border-color .55s ease,
-    box-shadow .62s ease,
-    -webkit-backdrop-filter .55s ease,
-    backdrop-filter .55s ease !important;
-}
-.bottom-nav:active,
-.bottom-nav.is-pressed {
-  transform: translateX(-50%) translateY(-2px) scale(1.028) !important;
-  background-color: var(--graphite-glass-pressed) !important;
-  background-image: none !important;
-  border-color: rgba(255,255,255,.16) !important;
-  box-shadow:
-    0 22px 48px rgba(0,0,0,.40),
-    inset 0 1px 1px rgba(255,255,255,.18),
-    inset 0 -1px 2px rgba(0,0,0,.22) !important;
-  -webkit-backdrop-filter: blur(52px) saturate(115%) brightness(1.13) !important;
-  backdrop-filter: blur(52px) saturate(115%) brightness(1.13) !important;
-}
-.bottom-nav::before {
-  left: 7px !important;
-  width: calc((100% - 26px) / 4) !important;
-  border: .5px solid rgba(255,255,255,.12) !important;
-  border-radius: 26px !important;
-  background-color: rgba(225,229,233,.105) !important;
-  background-image: none !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.14),
-    0 2px 9px rgba(0,0,0,.12) !important;
-  transition:
-    transform .68s cubic-bezier(.18, 1.22, .28, 1),
-    background-color .5s ease,
-    border-color .5s ease,
-    box-shadow .58s ease !important;
-}
-.bottom-nav:active::before,
-.bottom-nav.is-pressed::before {
-  background-color: rgba(239,242,245,.16) !important;
-  border-color: rgba(255,255,255,.17) !important;
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,.2),
-    0 3px 12px rgba(0,0,0,.15) !important;
-}
-.bottom-nav::after {
-  background-color: rgba(255,255,255,.025) !important;
-  background-image: none !important;
-  box-shadow: inset 0 0 0 .5px rgba(255,255,255,.035) !important;
-  transition: opacity .55s ease, background-color .55s ease !important;
-}
-.bottom-nav:active::after,
-.bottom-nav.is-pressed::after {
-  background-color: rgba(255,255,255,.055) !important;
-}
-.bottom-nav .nav-item {
-  color: rgba(238,241,244,.78);
-  transform: translateZ(0);
-  transition:
-    color .52s ease,
-    opacity .52s ease,
-    transform .62s cubic-bezier(.18, 1.3, .28, 1) !important;
-}
-.bottom-nav .nav-item.is-active {
-  color: #fff !important;
-}
-.bottom-nav .nav-item svg {
-  transform-origin: 50% 55%;
-  transition:
-    transform .68s cubic-bezier(.18, 1.35, .28, 1),
-    filter .55s ease !important;
-  filter: none !important;
-}
-.bottom-nav .nav-item.is-active svg {
-  animation: graphite-icon-arrive .72s cubic-bezier(.18, 1.25, .28, 1) both !important;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,.22)) !important;
-}
-@keyframes graphite-icon-arrive {
-  0% { transform: translateY(2px) scale(.86); }
-  58% { transform: translateY(-1px) scale(1.17); }
-  78% { transform: translateY(.35px) scale(.98); }
-  100% { transform: translateY(0) scale(1.055); }
-}
-.bottom-nav .nav-item:active {
-  opacity: 1 !important;
-  transform: translateY(-1px) scale(1.045) !important;
-  color: #fff !important;
-}
-.bottom-nav .nav-item:active svg {
-  animation: graphite-icon-press .72s cubic-bezier(.18, 1.35, .28, 1) both !important;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,.28)) !important;
-}
-@keyframes graphite-icon-press {
-  0% { transform: scale(1); }
-  42% { transform: scale(1.28) rotate(-3deg); }
-  72% { transform: scale(.97) rotate(1deg); }
-  100% { transform: scale(1.08) rotate(0); }
-}
-.bottom-nav .nav-item small {
-  transition: transform .58s cubic-bezier(.18, 1.25, .28, 1), opacity .5s ease !important;
-}
-.bottom-nav .nav-item:active small {
-  transform: translateY(-.5px) scale(1.025) !important;
-}
-
 /* Live online presence on marketplace home */
 .online-presence {
   display: flex;
@@ -1115,90 +751,6 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
   .online-live-label { font-size: 8px; padding-left: 7px; }
 }
 
-/* Refined translucent graphite glass and Telegram-like spring feedback */
-.bottom-nav {
-  --graphite-glass: rgba(28, 31, 35, .30);
-  --graphite-glass-pressed: rgba(38, 42, 46, .43);
-  --graphite-edge: rgba(255, 255, 255, .12);
-  background: var(--graphite-glass) !important;
-  background-image: none !important;
-  border: .5px solid var(--graphite-edge) !important;
-  -webkit-backdrop-filter: blur(26px) saturate(135%) brightness(1.06) !important;
-  backdrop-filter: blur(26px) saturate(135%) brightness(1.06) !important;
-  transition:
-    transform .78s cubic-bezier(.18, 1.12, .25, 1),
-    background-color .68s ease,
-    border-color .68s ease,
-    box-shadow .78s ease,
-    -webkit-backdrop-filter .68s ease,
-    backdrop-filter .68s ease !important;
-}
-.bottom-nav:active,
-.bottom-nav.is-pressed {
-  background: var(--graphite-glass-pressed) !important;
-  background-image: none !important;
-  -webkit-backdrop-filter: blur(30px) saturate(145%) brightness(1.08) !important;
-  backdrop-filter: blur(30px) saturate(145%) brightness(1.08) !important;
-  transform: translateX(-50%) translateY(-2px) scale(1.035) !important;
-}
-.bottom-nav::before {
-  background: rgba(235, 239, 243, .085) !important;
-  background-image: none !important;
-  border: .5px solid rgba(255,255,255,.13) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 2px 8px rgba(0,0,0,.10) !important;
-  transition:
-    transform .78s cubic-bezier(.18, 1.16, .25, 1),
-    background-color .65s ease,
-    border-color .65s ease,
-    box-shadow .72s ease !important;
-}
-.bottom-nav:active::before,
-.bottom-nav.is-pressed::before {
-  background: rgba(245,247,249,.13) !important;
-  border-color: rgba(255,255,255,.17) !important;
-}
-.bottom-nav::after {
-  background: rgba(255,255,255,.012) !important;
-  background-image: none !important;
-  box-shadow: inset 0 0 0 .5px rgba(255,255,255,.025) !important;
-}
-.bottom-nav:active::after,
-.bottom-nav.is-pressed::after {
-  background: rgba(255,255,255,.025) !important;
-}
-.bottom-nav .nav-item {
-  transition:
-    color .58s ease,
-    opacity .58s ease,
-    transform .76s cubic-bezier(.18, 1.18, .25, 1) !important;
-}
-.bottom-nav .nav-item.is-active {
-  color: #fff !important;
-}
-.bottom-nav .nav-item svg {
-  transform-origin: 50% 55%;
-  transition: transform .76s cubic-bezier(.18, 1.18, .25, 1), filter .6s ease !important;
-}
-.bottom-nav .nav-item.is-bouncing {
-  animation: nav-tab-spring .78s cubic-bezier(.18, 1.22, .25, 1) both !important;
-}
-.bottom-nav .nav-item.is-bouncing svg {
-  animation: nav-icon-telegram .78s cubic-bezier(.18, 1.24, .25, 1) both !important;
-}
-@keyframes nav-tab-spring {
-  0% { transform: scale(1); }
-  34% { transform: scale(1.105); }
-  62% { transform: scale(.975); }
-  82% { transform: scale(1.025); }
-  100% { transform: scale(1); }
-}
-@keyframes nav-icon-telegram {
-  0% { transform: translateY(0) scale(1) rotate(0); }
-  32% { transform: translateY(-2px) scale(1.22) rotate(-7deg); }
-  56% { transform: translateY(1px) scale(.96) rotate(3deg); }
-  78% { transform: translateY(-.5px) scale(1.07) rotate(-1deg); }
-  100% { transform: translateY(0) scale(1.02) rotate(0); }
-}
 /* Green status light with a restrained periodic specular glint */
 .online-indicator.is-live {
   position: relative;
@@ -2272,4 +1824,84 @@ body::-webkit-scrollbar {
   .bottom-nav .nav-indicator,
   .bottom-nav .nav-item,
   .bottom-nav .nav-item svg { transition: none !important; }
+}
+
+
+/* T2 GB MARKET — single clean-glass navigation system */
+.bottom-nav {
+  box-sizing: border-box;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 6px;
+  gap: 4px;
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  left: 50%;
+  right: auto;
+  width: min(calc(100% - 24px), 536px);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 27px;
+  background: rgba(24,32,42,.16);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+  box-shadow: 0 4px 14px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.08);
+  transform: translateX(-50%);
+  transition: transform .16s ease, border-color .16s ease, background-color .16s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.bottom-nav::before,
+.bottom-nav::after { content: none !important; display: none !important; }
+.bottom-nav .nav-indicator {
+  position: absolute;
+  z-index: 0;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
+  width: calc((100% - 24px) / 4);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 21px;
+  background: rgba(255,255,255,.045);
+  box-shadow: none;
+  transform: translateX(calc(var(--nav-index, 0) * (100% + 4px)));
+  transition: transform .24s cubic-bezier(.2,.75,.25,1);
+  pointer-events: none;
+}
+.bottom-nav .nav-item {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  min-height: 52px;
+  border: 0 !important;
+  border-radius: 21px;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #9aa7b7;
+  transition: color .14s ease, opacity .14s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.bottom-nav .nav-item.is-active { color: #e4e9ef !important; }
+.bottom-nav .nav-item svg {
+  transition: transform .18s ease-out;
+  filter: none !important;
+}
+.bottom-nav .nav-item.is-bouncing svg {
+  animation: nav-icon-pop .2s ease-out both !important;
+}
+@keyframes nav-icon-pop {
+  0% { transform: scale(1); }
+  55% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+.bottom-nav .nav-item small { transition: none !important; }
+.bottom-nav.is-pressed {
+  transform: translateX(-50%) scale(.985);
+  border-color: rgba(255,255,255,.18);
+}
+@media (max-width: 360px) {
+  .bottom-nav { width: calc(100% - 18px); gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav, .bottom-nav .nav-indicator, .bottom-nav .nav-item,
+  .bottom-nav .nav-item svg { transition: none !important; }
+  .bottom-nav .nav-item.is-bouncing svg { animation: none !important; }
 }
