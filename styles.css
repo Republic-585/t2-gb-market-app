@@ -1564,3 +1564,53 @@ html, body, button, input, textarea, select {
   .catalog-tools-compact { grid-template-columns: minmax(0,1fr) minmax(128px,39%); gap: 8px; }
   .sort-tool select { padding-inline: 8px; font-size: 10px; }
 }
+
+
+/* Alignment and fixed-center glass window for the volume wheel */
+.catalog-tools-compact {
+  align-items: start !important;
+  grid-template-columns: minmax(0,1fr) minmax(142px,40%);
+  gap: 12px;
+}
+.catalog-tool-group {
+  align-self: start;
+}
+.volume-tool .volume-filter {
+  display: flex;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  padding-inline: calc(50% - 21px) !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-padding-inline: 0;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.volume-tool .volume-filter::after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 5;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.volume-tool .volume-filter-item {
+  flex: 0 0 38px;
+  box-sizing: border-box;
+  margin-inline: 2px;
+}
+.sort-tool {
+  min-width: 0;
+}
+.sort-tool select {
+  align-self: stretch;
+  margin: 0;
+}
+@media (max-width: 360px) {
+  .catalog-tools-compact {
+    grid-template-columns: minmax(0,1fr) minmax(128px,39%);
+    gap: 8px;
+  }
+}
