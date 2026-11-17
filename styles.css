@@ -1863,3 +1863,13 @@ html, body, button, input, textarea, select {
   background: #171f2b;
   border-color: #35445a;
 }
+
+
+/* Match quick-action button height to the catalog Buy buttons */
+.home-shortcuts .shortcut {
+  height: 37px;
+  min-height: 37px;
+  padding-top: 0;
+  padding-bottom: 0;
+  box-sizing: border-box;
+}
