@@ -169,8 +169,7 @@
   }
   function createListingCard(item, own = false) {
     const card = document.createElement("article");
-    card.className = "listing-row";
-
+    card.className = own ? "listing-row" : "listing-row catalog-offer-card";
     const top = document.createElement("div");
     top.className = "listing-row-top";
     const volume = document.createElement("strong");
@@ -178,44 +177,38 @@
     const status = document.createElement("span");
     status.className = "listing-state";
     const labels = { draft: "Черновик", active: "Опубликовано", paused: "На паузе", reserved: "В сделке", sold: "Продано", cancelled: "Снято", moderation: "Проверка" };
-    status.textContent = item.demo ? "Демо-лот" : (labels[item.status] || "Предложение");
-    top.append(volume, status);
-
+    status.textContent = item.demo ? "Предложение" : (labels[item.status] || "Предложение");
     const price = document.createElement("div");
     price.className = "listing-row-price";
     price.textContent = moneyFromKopecks(item.price_kopecks);
-
     const bottom = document.createElement("div");
     bottom.className = "listing-row-bottom";
     const unit = document.createElement("span");
     unit.textContent = unitPrice(item.price_kopecks, item.volume_gb);
     const detail = document.createElement("span");
-    if (own) {
-      detail.textContent = item.description ? item.description.slice(0, 72) : "Только вам";
-    } else {
+    if (own) detail.textContent = item.description ? item.description.slice(0, 72) : "Только вам";
+    else {
       const seller = item.seller || {};
       detail.textContent = seller.username ? "@" + seller.username :
         [seller.first_name, seller.last_name].filter(Boolean).join(" ") || "Продавец T2";
     }
     bottom.append(unit, detail);
-
     if (!own) {
       const buyButton = document.createElement("button");
       buyButton.type = "button";
       buyButton.className = "listing-buy-button";
-      buyButton.textContent = item.demo ? "Демо" : "Купить";
+      buyButton.textContent = "Купить";
       if (item.demo) {
         buyButton.disabled = true;
-        buyButton.setAttribute("aria-label", "Демонстрационный лот, покупка недоступна");
-        buyButton.title = "Это демонстрационное предложение";
+        buyButton.setAttribute("aria-label", "Демонстрационное предложение, покупка пока недоступна");
+        buyButton.title = "Покупка станет доступна после запуска сделок";
       } else {
         buyButton.addEventListener("click", () => showToast("Покупки откроются после подключения пополнения и безопасной оплаты."));
       }
-      const buyRow = document.createElement("div");
-      buyRow.className = "listing-buy-row";
-      buyRow.append(buyButton);
-      card.append(top, price, bottom, buyRow);
+      top.append(price, buyButton);
+      card.append(top, bottom);
     } else {
+      top.append(status);
       card.append(top, price, bottom);
     }
     return card;
@@ -288,35 +281,39 @@
     if (ordersEmpty) ordersEmpty.classList.toggle("is-hidden", (data.orders || []).length > 0);
   }
 
+  let selectedVolume = "all";
   function renderCatalog() {
     const catalog = document.getElementById("catalog-list");
     const empty = document.getElementById("catalog-empty");
-    const count = document.getElementById("catalog-count");
     if (!catalog || !empty) return;
-
-    const query = (document.getElementById("catalog-search")?.value || "").trim().toLowerCase();
-    const sort = document.getElementById("catalog-sort")?.value || "popular";
-    let items = catalogItems.filter((item) => {
-      const seller = item.seller || {};
-      const sellerName = [seller.username, seller.first_name, seller.last_name].filter(Boolean).join(" ").toLowerCase();
-      return !query || sellerName.includes(query) || String(item.volume_gb).includes(query) ||
-        moneyFromKopecks(item.price_kopecks).toLowerCase().includes(query);
-    });
-    if (sort === "price_asc") items.sort((a,b) => a.price_kopecks / a.volume_gb - b.price_kopecks / b.volume_gb);
-    if (sort === "price_desc") items.sort((a,b) => b.price_kopecks / b.volume_gb - a.price_kopecks / a.volume_gb);
-    if (sort === "popular") items.sort((a,b) =>
-      (Number(b.popularity_count) || 0) - (Number(a.popularity_count) || 0) ||
-      new Date(b.created_at) - new Date(a.created_at)
+    const sort = document.getElementById("catalog-sort")?.value || "recommended";
+    let items = catalogItems.filter((item) =>
+      selectedVolume === "all" || Number(item.volume_gb) === Number(selectedVolume)
     );
-
+    const totalPrice = (item) => Number(item.price_kopecks) || 0;
+    const perGb = (item) => totalPrice(item) / Math.max(1, Number(item.volume_gb) || 1);
+    const newestFirst = (a,b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+    if (sort === "total_asc") items.sort((a,b) => totalPrice(a)-totalPrice(b) || Number(a.volume_gb)-Number(b.volume_gb) || newestFirst(a,b));
+    else if (sort === "total_desc") items.sort((a,b) => totalPrice(b)-totalPrice(a) || Number(b.volume_gb)-Number(a.volume_gb) || newestFirst(a,b));
+    else if (sort === "unit_asc") items.sort((a,b) => perGb(a)-perGb(b) || totalPrice(a)-totalPrice(b) || newestFirst(a,b));
+    else if (sort === "unit_desc") items.sort((a,b) => perGb(b)-perGb(a) || totalPrice(b)-totalPrice(a) || newestFirst(a,b));
+    else items.sort((a,b) => (Number(b.popularity_count)||0)-(Number(a.popularity_count)||0) || newestFirst(a,b) || Number(a.volume_gb)-Number(b.volume_gb));
     catalog.replaceChildren();
     items.forEach((item) => catalog.append(createListingCard(item, false)));
     catalog.classList.toggle("is-hidden", items.length === 0);
     empty.classList.toggle("is-hidden", items.length > 0);
-    if (count) count.textContent = items.length + (items.length === 1 ? " предложение" : items.length < 5 ? " предложения" : " предложений");
   }
-
-  document.getElementById("catalog-search")?.addEventListener("input", renderCatalog);
+  document.getElementById("volume-filter")?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-volume]");
+    if (!button) return;
+    selectedVolume = button.dataset.volume;
+    document.querySelectorAll("#volume-filter [data-volume]").forEach((item) => {
+      const selected = item === button;
+      item.classList.toggle("is-selected", selected);
+      item.setAttribute("aria-pressed", selected ? "true" : "false");
+    });
+    renderCatalog();
+  });
   document.getElementById("catalog-sort")?.addEventListener("change", renderCatalog);
 
   async function loadDashboard() {
