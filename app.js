@@ -74,6 +74,11 @@
     if (bottomNav && activeIndex >= 0) {
       bottomNav.style.setProperty("--nav-index", activeIndex);
       bottomNav.dataset.activeTab = target;
+      const activeItem = navItems[activeIndex];
+      activeItem.classList.remove("is-bouncing");
+      void activeItem.offsetWidth;
+      activeItem.classList.add("is-bouncing");
+      window.setTimeout(() => activeItem.classList.remove("is-bouncing"), 900);
     }
     Object.entries(panels).forEach(([name, panel]) => {
       if (!panel) return;
