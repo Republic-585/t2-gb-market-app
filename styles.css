@@ -1834,3 +1834,32 @@ html, body, button, input, textarea, select {
 .volume-wheel-card {
   padding-left: 8px;
 }
+
+
+/* Shortcut icons follow the infinity filter icon's SVG treatment */
+.home-shortcuts .shortcut {
+  border-color: #35445a;
+  background: #171f2b;
+}
+.home-shortcuts .shortcut-primary {
+  border-color: #35445a;
+  background: #171f2b;
+}
+.home-shortcuts .shortcut-symbol {
+  display: block;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  color: rgba(235,242,249,.82);
+  font-size: initial;
+  line-height: 1;
+  overflow: visible;
+}
+.home-shortcuts .shortcut-primary .shortcut-symbol {
+  color: rgba(235,242,249,.82);
+}
+.market-stats .market-stat,
+.home-shortcuts .shortcut {
+  background: #171f2b;
+  border-color: #35445a;
+}
