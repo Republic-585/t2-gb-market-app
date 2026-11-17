@@ -1981,3 +1981,22 @@ body::-webkit-scrollbar {
   background: #30d158;
   box-shadow: 0 0 0 2px rgba(48,209,88,.14), 0 0 6px rgba(48,209,88,.38);
 }
+
+/* Profile avatar status light: match the marketplace online indicator */
+#profile-panel .avatar {
+  box-shadow: none !important;
+}
+#profile-panel .avatar::after {
+  right: 0;
+  bottom: 0;
+  width: 7px;
+  height: 7px;
+  border: 0;
+  border-radius: 50%;
+  background: #ed4b55;
+  box-shadow: 0 0 0 2.5px rgba(237,75,85,.10), 0 0 8px rgba(237,75,85,.34);
+}
+#profile-panel .avatar.is-online::after {
+  background: #35d477;
+  box-shadow: 0 0 0 2.5px rgba(53,212,119,.10), 0 0 8px rgba(53,212,119,.34);
+}
