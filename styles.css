@@ -71,7 +71,6 @@ h3 { margin: 0; font-size: 17px; letter-spacing: -.035em; }
 .profile-action:active { transform: scale(.985); border-color: var(--lime); background: #1c2921; }
 button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 @media (min-width: 600px) { .app-shell { padding-top: 28px; } .intro { padding-top: 54px; } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
 
 
 /* T2 GB MARKET — Neon Fintech x Apple refinement */
@@ -627,11 +626,6 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
   .bottom-nav .nav-item small { font-size: 10px; }
   .bottom-nav .nav-item svg { width: 22px; height: 22px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .bottom-nav::before, .bottom-nav .nav-item, .bottom-nav .nav-item svg {
-    transition: none !important;
-  }
-}
 
 /* Marketplace home refinement */
 .home-wallet { display: none !important; }
@@ -702,3 +696,90 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
 .avatar { overflow: hidden; }
 .avatar.has-photo { background: #1a2028; }
 .avatar img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+
+
+/* Telegram-inspired Liquid Glass navigation: full-surface touch feedback */
+.bottom-nav {
+  --glass-highlight: rgba(255,255,255,.22);
+  --glass-edge: rgba(255,255,255,.16);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.055) 28%, rgba(255,255,255,.018) 62%, rgba(120,160,210,.075) 100%),
+    rgba(23, 34, 49, .68);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    0 14px 42px rgba(0,0,0,.34),
+    0 3px 10px rgba(0,0,0,.2),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 rgba(0,0,0,.18),
+    inset 1px 0 0 rgba(255,255,255,.055),
+    inset -1px 0 0 rgba(255,255,255,.055);
+  -webkit-backdrop-filter: blur(34px) saturate(190%) contrast(112%);
+  backdrop-filter: blur(34px) saturate(190%) contrast(112%);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition:
+    transform .22s cubic-bezier(.2,.8,.2,1),
+    background .22s ease,
+    box-shadow .22s ease,
+    border-color .22s ease;
+}
+.bottom-nav::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(118deg, rgba(255,255,255,.17), transparent 24%, transparent 70%, rgba(150,195,255,.09)),
+    linear-gradient(180deg, rgba(255,255,255,.07), transparent 38%);
+  opacity: .9;
+}
+.bottom-nav::before {
+  z-index: 1;
+  top: 5px;
+  bottom: 5px;
+  background:
+    linear-gradient(155deg, rgba(255,255,255,.13), rgba(255,255,255,.025) 48%, rgba(42,171,238,.12)),
+    rgba(42,171,238,.095);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow:
+    0 2px 10px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 -1px 0 rgba(255,255,255,.035);
+  transition: transform .36s cubic-bezier(.22,.9,.25,1.12), background .22s ease, box-shadow .22s ease;
+}
+.bottom-nav .nav-item {
+  z-index: 2;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  transition: color .2s ease, opacity .2s ease, transform .22s cubic-bezier(.2,.8,.2,1);
+}
+.bottom-nav .nav-item svg,
+.bottom-nav .nav-item small { pointer-events: none; }
+.bottom-nav .nav-item:active {
+  opacity: 1;
+  transform: scale(.92);
+  color: #ffffff;
+}
+.bottom-nav:has(.nav-item:active) {
+  transform: translateX(-50%) scale(.975);
+  border-color: rgba(255,255,255,.25);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.2), rgba(255,255,255,.07) 40%, rgba(120,160,210,.1)),
+    rgba(23,34,49,.78);
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.24),
+    inset 0 -1px 0 rgba(0,0,0,.16);
+}
+.bottom-nav:has(.nav-item:active)::after { opacity: 1; }
+.bottom-nav:has(.nav-item:active)::before {
+  background: linear-gradient(145deg, rgba(255,255,255,.2), rgba(42,171,238,.17));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 0 16px rgba(42,171,238,.12);
+}
+.bottom-nav .nav-item:active svg { transform: scale(.94); }
+@media (max-width: 360px) {
+  .bottom-nav { width: calc(100% - 18px); gap: 2px; }
+}
