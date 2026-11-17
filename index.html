@@ -194,23 +194,20 @@
         <button class="wallet-topup" type="button" disabled>Пополнение скоро</button>
         <p class="wallet-hint">Пополнение и вывод средств появятся после подключения платёжного сервиса.</p>
       </section>
-      <div class="profile-actions">
-        <h3>Что хотите сделать?</h3>
-        <p>Выберите нужный раздел. Менять настройки профиля или регистрироваться повторно не нужно.</p>
-        <button class="profile-action" type="button" data-open-tab="buy">
-          <span class="profile-action-icon" aria-hidden="true">↙</span>
-          <span><strong>Купить гигабайты</strong><small>Найти предложения других абонентов T2</small></span>
-          <span class="profile-action-arrow" aria-hidden="true">›</span>
+      <div class="profile-management">
+        <button class="profile-management-row" type="button" data-open-tab="sell">
+          <span><strong>Мои лоты</strong><small>Ваши предложения и черновики</small></span>
+          <span aria-hidden="true">›</span>
         </button>
-        <button class="profile-action" type="button" data-open-tab="sell">
-          <span class="profile-action-icon" aria-hidden="true">↗</span>
-          <span><strong>Продать гигабайты</strong><small>Подготовить своё предложение</small></span>
-          <span class="profile-action-arrow" aria-hidden="true">›</span>
-        </button>
+        <div class="profile-management-row is-static">
+          <span><strong>История покупок</strong><small>Покупки будут отображаться здесь</small></span>
+          <span aria-hidden="true">›</span>
+        </div>
+        <div class="profile-management-row is-static">
+          <span><strong>История продаж</strong><small>Продажи будут отображаться здесь</small></span>
+          <span aria-hidden="true">›</span>
+        </div>
       </div>
-      <div class="profile-row"><span>Объявления</span><strong>Черновики доступны</strong></div>
-      <div class="profile-row"><span>Сделки</span><strong>Пока недоступны</strong></div>
-      <p class="fine-print">Ваш профиль автоматически связан с аккаунтом Telegram. Объявления, сделки и платежи пока отключены.</p>
       <button class="support-project-action" id="support-project" type="button">Поддержать проект</button>
       <div class="support-modal is-hidden" id="support-modal" aria-hidden="true">
         <div class="support-modal-backdrop" data-support-close></div>
