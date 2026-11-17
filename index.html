@@ -63,7 +63,9 @@
         </div>
       </div>
       <div class="catalog-tools catalog-tools-compact">
-        <div class="volume-filter" id="volume-filter" role="group" aria-label="Выбор объёма гигабайтов">
+        <div class="catalog-tool-group volume-tool">
+          <span class="catalog-tool-label">ОБЪЁМ</span>
+          <div class="volume-filter" id="volume-filter" role="group" aria-label="Выбор объёма гигабайтов">
           <button class="volume-filter-item is-selected" type="button" data-volume="all" aria-pressed="true">Все</button>
           <button class="volume-filter-item" type="button" data-volume="1" aria-pressed="false">1</button>
           <button class="volume-filter-item" type="button" data-volume="2" aria-pressed="false">2</button>
@@ -85,12 +87,17 @@
           <button class="volume-filter-item" type="button" data-volume="18" aria-pressed="false">18</button>
           <button class="volume-filter-item" type="button" data-volume="19" aria-pressed="false">19</button>
           <button class="volume-filter-item" type="button" data-volume="20" aria-pressed="false">20</button>
+          </div>
+          <span class="volume-current" id="volume-current" aria-live="polite">Все объёмы</span>
         </div>
-        <select id="catalog-sort" aria-label="Сортировка предложений">
-          <option value="recommended">Рекомендуемые</option>
-          <option value="total_asc">Сначала дешевле</option>
-          <option value="total_desc">Сначала дороже</option>
-        </select>
+        <label class="catalog-tool-group sort-tool" for="catalog-sort">
+          <span class="catalog-tool-label">СОРТИРОВКА</span>
+          <select id="catalog-sort" aria-label="Сортировка предложений">
+            <option value="recommended">Популярные</option>
+            <option value="total_asc">Сначала дешевле</option>
+            <option value="total_desc">Сначала дороже</option>
+          </select>
+        </label>
       </div>
       <div class="catalog-list is-hidden" id="catalog-list"></div>
       <div class="empty-state" id="catalog-empty">
