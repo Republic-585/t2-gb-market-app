@@ -342,10 +342,10 @@
     volumeFilter.querySelectorAll("[data-volume]").forEach((item) => {
       const rect = item.getBoundingClientRect();
       const distance = Math.abs((rect.left + rect.width / 2) - center);
-      const normalized = Math.min(1, distance / Math.max(1, volumeFilter.clientWidth * .42));
-      const scale = 1.34 - normalized * .34;
+      const normalized = Math.min(1, distance / Math.max(1, volumeFilter.clientWidth * .48));
+      const scale = 1.52 - normalized * .52;
       item.style.setProperty("--wheel-scale", scale.toFixed(3));
-      item.style.setProperty("--wheel-opacity", (1 - normalized * .52).toFixed(3));
+      item.style.setProperty("--wheel-opacity", (1 - normalized * .58).toFixed(3));
       if (distance < nearestDistance) { nearestDistance = distance; nearest = item; }
     });
     if (nearest) setSelectedVolume(nearest, false);
