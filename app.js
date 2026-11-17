@@ -520,9 +520,7 @@
             const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ");
             const username = typeof user.username === "string" && user.username ? "@" + user.username : "";
             if (profileName) profileName.textContent = username || fullName || "Пользователь Telegram";
-            if (profileUsername) profileUsername.textContent = username && fullName
-              ? fullName + " · Аккаунт подтверждён"
-              : "Аккаунт Telegram подтверждён";
+            if (profileUsername) profileUsername.textContent = username && fullName ? fullName : "";
             renderTelegramAvatar(user.photo_url || previewUser?.photo_url, user.first_name || user.username);
             if (verifiedDot) {
               verifiedDot.style.background = "#6b9bff";
