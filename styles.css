@@ -1796,6 +1796,7 @@ body::-webkit-scrollbar {
 #profile-panel .profile-card {
   min-height: 92px;
   padding: 12px 18px;
+  border: 0 !important;
   border-radius: 999px !important;
 }
 #profile-panel .dm-notifications-card {
@@ -1806,7 +1807,7 @@ body::-webkit-scrollbar {
   gap: 14px;
   margin-top: 12px;
   padding: 11px 16px 11px 20px;
-  border: 1px solid var(--line);
+  border: 0 !important;
   border-radius: 999px;
   background: var(--surface);
 }
