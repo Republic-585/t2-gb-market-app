@@ -1666,8 +1666,8 @@ body::-webkit-scrollbar {
   width: calc((100% - 24px) / 4);
   border: 1px solid rgba(255,255,255,.07);
   border-radius: 21px;
-  background: rgba(255,255,255,.045);
-  box-shadow: none;
+  background: #343b44;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 1px 4px rgba(0,0,0,.16);
   transform: translateX(calc(var(--nav-index, 0) * (100% + 4px)));
   transition: transform .24s cubic-bezier(.2,.75,.25,1);
   pointer-events: none;
