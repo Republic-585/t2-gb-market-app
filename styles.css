@@ -1468,3 +1468,99 @@ html, body, button, input, textarea, select {
 @media (prefers-reduced-motion: reduce) {
   .volume-filter, .volume-filter-item { scroll-behavior: auto; transition: none; }
 }
+
+
+/* Refined catalog controls: compact iOS volume wheel + independent sorting */
+.catalog-tools-compact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(142px, 40%);
+  align-items: end;
+  gap: 12px;
+  margin: 4px 0 14px;
+}
+.catalog-tool-group {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+.catalog-tool-label {
+  color: rgba(220, 228, 236, .58);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  line-height: 1;
+}
+.volume-filter {
+  width: 100%;
+  min-width: 0;
+  height: 54px;
+  min-height: 54px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 15px;
+  background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+  scroll-padding-inline: 50%;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+}
+.volume-filter-item {
+  flex: 0 0 38px;
+  min-width: 38px;
+  width: 38px;
+  height: 42px;
+  margin: 0 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 11px;
+  background: transparent !important;
+  color: rgba(230,237,244,var(--wheel-opacity,.55)) !important;
+  font-size: 15px;
+  font-weight: 560;
+  line-height: 1;
+  transform: scale(var(--wheel-scale,.9));
+  transition: transform .18s cubic-bezier(.2,.75,.25,1), color .18s ease, opacity .18s ease;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+.volume-filter-item.is-selected {
+  color: #fff !important;
+  font-weight: 750;
+  background: transparent !important;
+  transform: scale(var(--wheel-scale,1.34));
+}
+.volume-filter::after {
+  width: 44px;
+  height: 42px;
+  border-color: rgba(255,255,255,.25);
+  background: linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.055));
+}
+.volume-current {
+  min-height: 11px;
+  color: rgba(220,228,236,.55);
+  font-size: 9px;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+.sort-tool select {
+  width: 100%;
+  min-width: 0;
+  height: 54px;
+  min-height: 54px;
+  padding: 0 11px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 15px;
+  background-color: rgba(255,255,255,.035);
+  color: #edf2f7;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+}
+@media (max-width: 360px) {
+  .catalog-tools-compact { grid-template-columns: minmax(0,1fr) minmax(128px,39%); gap: 8px; }
+  .sort-tool select { padding-inline: 8px; font-size: 10px; }
+}
