@@ -322,6 +322,10 @@
   function setSelectedVolume(button, shouldRender = true) {
     if (!button) return;
     selectedVolume = button.dataset.volume;
+    const currentLabel = document.getElementById("volume-current");
+    if (currentLabel) currentLabel.textContent = selectedVolume === "all"
+      ? "Все объёмы"
+      : selectedVolume + " ГБ выбрано";
     volumeFilter?.querySelectorAll("[data-volume]").forEach((item) => {
       const selected = item === button;
       item.classList.toggle("is-selected", selected);
@@ -351,7 +355,10 @@
     const button = event.target.closest("[data-volume]");
     if (!button) return;
     setSelectedVolume(button);
-    button.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    volumeFilter.scrollTo({
+      left: button.offsetLeft + button.offsetWidth / 2 - volumeFilter.clientWidth / 2,
+      behavior: "smooth"
+    });
   });
   volumeFilter?.addEventListener("scroll", updateVolumeWheelScale, { passive: true });
   window.addEventListener("resize", updateVolumeWheelScale, { passive: true });
