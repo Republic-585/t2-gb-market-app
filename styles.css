@@ -1114,3 +1114,118 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
   .online-presence { gap: 6px; padding: 0 9px; font-size: 9px; }
   .online-live-label { font-size: 8px; padding-left: 7px; }
 }
+
+/* Refined translucent graphite glass and Telegram-like spring feedback */
+.bottom-nav {
+  --graphite-glass: rgba(28, 31, 35, .30);
+  --graphite-glass-pressed: rgba(38, 42, 46, .43);
+  --graphite-edge: rgba(255, 255, 255, .12);
+  background: var(--graphite-glass) !important;
+  background-image: none !important;
+  border: .5px solid var(--graphite-edge) !important;
+  -webkit-backdrop-filter: blur(26px) saturate(135%) brightness(1.06) !important;
+  backdrop-filter: blur(26px) saturate(135%) brightness(1.06) !important;
+  transition:
+    transform .78s cubic-bezier(.18, 1.12, .25, 1),
+    background-color .68s ease,
+    border-color .68s ease,
+    box-shadow .78s ease,
+    -webkit-backdrop-filter .68s ease,
+    backdrop-filter .68s ease !important;
+}
+.bottom-nav:active,
+.bottom-nav.is-pressed {
+  background: var(--graphite-glass-pressed) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: blur(30px) saturate(145%) brightness(1.08) !important;
+  backdrop-filter: blur(30px) saturate(145%) brightness(1.08) !important;
+  transform: translateX(-50%) translateY(-2px) scale(1.035) !important;
+}
+.bottom-nav::before {
+  background: rgba(235, 239, 243, .085) !important;
+  background-image: none !important;
+  border: .5px solid rgba(255,255,255,.13) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 2px 8px rgba(0,0,0,.10) !important;
+  transition:
+    transform .78s cubic-bezier(.18, 1.16, .25, 1),
+    background-color .65s ease,
+    border-color .65s ease,
+    box-shadow .72s ease !important;
+}
+.bottom-nav:active::before,
+.bottom-nav.is-pressed::before {
+  background: rgba(245,247,249,.13) !important;
+  border-color: rgba(255,255,255,.17) !important;
+}
+.bottom-nav::after {
+  background: rgba(255,255,255,.012) !important;
+  background-image: none !important;
+  box-shadow: inset 0 0 0 .5px rgba(255,255,255,.025) !important;
+}
+.bottom-nav:active::after,
+.bottom-nav.is-pressed::after {
+  background: rgba(255,255,255,.025) !important;
+}
+.bottom-nav .nav-item {
+  transition:
+    color .58s ease,
+    opacity .58s ease,
+    transform .76s cubic-bezier(.18, 1.18, .25, 1) !important;
+}
+.bottom-nav .nav-item.is-active {
+  color: #fff !important;
+}
+.bottom-nav .nav-item svg {
+  transform-origin: 50% 55%;
+  transition: transform .76s cubic-bezier(.18, 1.18, .25, 1), filter .6s ease !important;
+}
+.bottom-nav .nav-item.is-bouncing {
+  animation: nav-tab-spring .78s cubic-bezier(.18, 1.22, .25, 1) both !important;
+}
+.bottom-nav .nav-item.is-bouncing svg {
+  animation: nav-icon-telegram .78s cubic-bezier(.18, 1.24, .25, 1) both !important;
+}
+@keyframes nav-tab-spring {
+  0% { transform: scale(1); }
+  34% { transform: scale(1.105); }
+  62% { transform: scale(.975); }
+  82% { transform: scale(1.025); }
+  100% { transform: scale(1); }
+}
+@keyframes nav-icon-telegram {
+  0% { transform: translateY(0) scale(1) rotate(0); }
+  32% { transform: translateY(-2px) scale(1.22) rotate(-7deg); }
+  56% { transform: translateY(1px) scale(.96) rotate(3deg); }
+  78% { transform: translateY(-.5px) scale(1.07) rotate(-1deg); }
+  100% { transform: translateY(0) scale(1.02) rotate(0); }
+}
+/* Green status light with a restrained periodic specular glint */
+.online-indicator.is-live {
+  position: relative;
+  overflow: visible;
+  background: #35d477 !important;
+  box-shadow: 0 0 0 2.5px rgba(53,212,119,.10), 0 0 8px rgba(53,212,119,.34) !important;
+  animation: none !important;
+}
+.online-indicator.is-live::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 1px;
+  left: 1px;
+  width: 3px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.92);
+  opacity: 0;
+  filter: blur(.15px);
+  transform: translate(0,0) scale(.75);
+  animation: online-surface-glint 3.8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes online-surface-glint {
+  0%, 62%, 100% { opacity: 0; transform: translate(0,0) scale(.75); }
+  68% { opacity: .9; transform: translate(0,0) scale(1); }
+  78% { opacity: .38; transform: translate(3px,2px) scale(.82); }
+  86% { opacity: 0; transform: translate(4px,2px) scale(.6); }
+}
