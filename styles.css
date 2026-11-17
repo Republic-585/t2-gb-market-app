@@ -2221,9 +2221,6 @@ body::-webkit-scrollbar {
   transition: transform .38s cubic-bezier(.22,.75,.25,1);
   will-change: transform;
 }
-.bottom-nav.is-scroll-hidden {
-  transform: translate(-50%, calc(100% + 24px));
-}
 .bottom-nav::before,
 .bottom-nav::after {
   content: none !important;
