@@ -113,6 +113,16 @@
   const verifiedDot = document.querySelector(".verified-dot");
   const toast = document.getElementById("toast");
   let toastTimer;
+  const dmNotificationsToggle = document.getElementById("dm-notifications-toggle");
+  let dmNotificationsEnabled = true;
+
+  function renderDmNotificationsToggle() {
+    if (!dmNotificationsToggle) return;
+    dmNotificationsToggle.setAttribute("aria-checked", String(dmNotificationsEnabled));
+    dmNotificationsToggle.setAttribute("aria-label", dmNotificationsEnabled
+      ? "Уведомления в личку включены"
+      : "Уведомления в личку выключены");
+  }
 
   const supportModal = document.getElementById("support-modal");
   const supportButton = document.getElementById("support-project");
@@ -275,6 +285,8 @@
 
   function renderDashboard(data) {
     dashboardData = data;
+    dmNotificationsEnabled = data.user?.dm_notifications_enabled !== false;
+    renderDmNotificationsToggle();
     const available = document.getElementById("wallet-available");
     const reserved = document.getElementById("wallet-reserved");
     const catalog = document.getElementById("catalog-list");
@@ -632,25 +644,25 @@
   }
 
 
-  // Persist the user's local preference for private-message notifications.
-  const dmNotificationsToggle = document.getElementById("dm-notifications-toggle");
+  // The preference is stored on the server and follows the Telegram account.
   if (dmNotificationsToggle) {
-    let dmNotificationsEnabled = true;
-    try {
-      const savedPreference = window.localStorage.getItem("t2gb_dm_notifications");
-      if (savedPreference === "0" || savedPreference === "1") dmNotificationsEnabled = savedPreference === "1";
-    } catch (_) {}
-    const renderDmNotificationsToggle = () => {
-      dmNotificationsToggle.setAttribute("aria-checked", String(dmNotificationsEnabled));
-      dmNotificationsToggle.setAttribute("aria-label", dmNotificationsEnabled
-        ? "Уведомления в личку включены"
-        : "Уведомления в личку выключены");
-    };
     renderDmNotificationsToggle();
-    dmNotificationsToggle.addEventListener("click", () => {
-      dmNotificationsEnabled = !dmNotificationsEnabled;
-      try { window.localStorage.setItem("t2gb_dm_notifications", dmNotificationsEnabled ? "1" : "0"); } catch (_) {}
+    dmNotificationsToggle.addEventListener("click", async () => {
+      const previousValue = dmNotificationsEnabled;
+      const nextValue = !previousValue;
+      dmNotificationsEnabled = nextValue;
+      dmNotificationsToggle.disabled = true;
       renderDmNotificationsToggle();
+      try {
+        await callMarketplaceApi("set_dm_notifications", { enabled: nextValue });
+        showToast(nextValue ? "Важные уведомления включены" : "Уведомления в личку выключены");
+      } catch (error) {
+        dmNotificationsEnabled = previousValue;
+        renderDmNotificationsToggle();
+        showToast(error.message || "Не удалось сохранить настройку");
+      } finally {
+        dmNotificationsToggle.disabled = false;
+      }
     });
   }
 
