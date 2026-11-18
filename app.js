@@ -306,6 +306,33 @@
     return card;
   }
 
+  function renderRatingStars(container, rating, size = 13) {
+    if (!container) return;
+    const score = Math.max(0, Math.min(5, Number(rating) || 0));
+    const filled = Math.round(score);
+    container.replaceChildren();
+    container.classList.add("rating-stars-svg");
+    for (let i = 0; i < 5; i += 1) {
+      const star = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      star.setAttribute("viewBox", "0 0 24 24");
+      star.setAttribute("width", String(size));
+      star.setAttribute("height", String(size));
+      star.setAttribute("aria-hidden", "true");
+      star.setAttribute("focusable", "false");
+      star.classList.add("rating-star-svg");
+      if (i >= filled) star.classList.add("is-unfilled");
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", "M12 2.6 14.9 8.5 21.5 9.4 16.7 14.1 17.8 20.7 12 17.6 6.2 20.7 7.3 14.1 2.5 9.4 9.1 8.5Z");
+      path.setAttribute("stroke", "currentColor");
+      path.setAttribute("stroke-width", "1.15");
+      path.setAttribute("stroke-linejoin", "round");
+      path.setAttribute("stroke-linecap", "round");
+      path.setAttribute("fill", "currentColor");
+      star.append(path);
+      container.append(star);
+    }
+  }
+
   function renderDashboard(data) {
     dashboardData = data;
     dmNotificationsEnabled = data.user?.dm_notifications_enabled !== false;
@@ -332,7 +359,7 @@
       Number.isFinite(reviewSummary.average_rating) ? Number(reviewSummary.average_rating).toFixed(1).replace(".", ",") : "—";
     if (ratingStarsNode) {
       const roundedRating = Number.isFinite(reviewSummary.average_rating) ? Math.round(reviewSummary.average_rating) : 0;
-      ratingStarsNode.textContent = "★".repeat(Math.max(0, Math.min(5, roundedRating))) + "☆".repeat(5 - Math.max(0, Math.min(5, roundedRating)));
+      renderRatingStars(ratingStarsNode, roundedRating, 13);
       ratingStarsNode.setAttribute("aria-label", reviewsCount ? "Средняя оценка " + reviewSummary.average_rating + " из 5" : "Нет оценок");
     }
     if (reviewsCountNode) {
@@ -360,7 +387,7 @@
           const rating = document.createElement("span");
           rating.className = "profile-review-stars";
           const score = Math.max(1, Math.min(5, Number(review.rating) || 0));
-          rating.textContent = "★".repeat(score) + "☆".repeat(5 - score);
+          renderRatingStars(rating, score, 12);
           const date = document.createElement("time");
           date.className = "profile-review-date";
           if (review.created_at) {
