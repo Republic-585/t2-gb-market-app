@@ -2150,10 +2150,10 @@ body::-webkit-scrollbar {
   border: 0 !important;
   border-radius: 9999px !important;
   -webkit-border-radius: 9999px !important;
-  background: #0088CC !important;
-  background-color: #0088CC !important;
-  color: #fff !important;
-  -webkit-text-fill-color: #fff !important;
+  background: var(--tg-theme-button-color, #2AABEE) !important;
+  background-color: var(--tg-theme-button-color, #2AABEE) !important;
+  color: var(--tg-theme-button-text-color, #fff) !important;
+  -webkit-text-fill-color: var(--tg-theme-button-text-color, #fff) !important;
   box-shadow: none !important;
   font: inherit !important;
   font-size: 12px !important;
