@@ -2070,10 +2070,21 @@ body::-webkit-scrollbar {
 }
 #profile-panel .profile-rating-stars,
 #profile-panel .profile-review-stars {
-  color: #f4c65e;
-  font-size: 12px;
-  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: #ffc83d;
+  line-height: 1;
   white-space: nowrap;
+}
+#profile-panel .rating-star-svg {
+  display: block;
+  flex: 0 0 auto;
+  color: #ffc83d;
+  overflow: visible;
+}
+#profile-panel .rating-star-svg.is-unfilled {
+  opacity: .22;
 }
 #profile-panel .profile-reviews-list {
   display: grid;
