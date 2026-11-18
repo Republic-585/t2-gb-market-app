@@ -2000,3 +2000,28 @@ body::-webkit-scrollbar {
   background: #35d477;
   box-shadow: 0 0 0 2.5px rgba(53,212,119,.10), 0 0 8px rgba(53,212,119,.34);
 }
+
+/* Match the profile avatar status light with the live-count status light */
+#profile-panel .avatar::after,
+.online-presence .online-indicator {
+  width: 11px;
+  height: 11px;
+  flex: 0 0 11px;
+  border-radius: 50%;
+}
+#profile-panel .avatar::after {
+  right: 0;
+  bottom: 0;
+  border: 1.5px solid var(--surface);
+  background: #ed4b55;
+  box-shadow: 0 0 0 2.5px rgba(237,75,85,.10), 0 0 8px rgba(237,75,85,.34);
+}
+#profile-panel .avatar.is-online::after,
+.online-presence .online-indicator.is-live {
+  background: #35d477 !important;
+  box-shadow: 0 0 0 2.5px rgba(53,212,119,.10), 0 0 8px rgba(53,212,119,.34) !important;
+}
+.online-presence .online-indicator:not(.is-live) {
+  background: #68727c;
+  box-shadow: none;
+}
