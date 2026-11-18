@@ -2150,3 +2150,30 @@ body::-webkit-scrollbar {
   align-items: stretch;
   gap: 9px;
 }
+
+
+/* Subtle Telegram-style shine on wallet capsule buttons */
+
+#profile-panel .wallet-actions .wallet-topup,
+#profile-panel .wallet-actions .wallet-withdraw {
+  background-image: linear-gradient(
+    110deg,
+    transparent 38%,
+    rgba(255,255,255,.30) 50%,
+    transparent 62%
+  ) !important;
+  background-size: 220% 100%;
+  background-position: 120% 0;
+  animation: wallet-button-shine 3.4s ease-in-out infinite;
+}
+@keyframes wallet-button-shine {
+  0%, 18% { background-position: 120% 0; }
+  62%, 100% { background-position: -120% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #profile-panel .wallet-actions .wallet-topup,
+  #profile-panel .wallet-actions .wallet-withdraw {
+    animation: none;
+    background-position: 0 0;
+  }
+}
