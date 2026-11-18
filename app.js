@@ -321,6 +321,65 @@
       }
       responseTimeNode.textContent = "Среднее время ответа · " + responseLabel;
     }
+    const reviewSummary = data.review_summary || {};
+    const averageRatingNode = document.getElementById("profile-average-rating");
+    const ratingStarsNode = document.getElementById("profile-rating-stars");
+    const reviewsCountNode = document.getElementById("profile-reviews-count");
+    const reviewsListNode = document.getElementById("profile-reviews-list");
+    const reviews = Array.isArray(data.reviews) ? data.reviews : [];
+    const reviewsCount = Number(reviewSummary.reviews_count || 0);
+    if (averageRatingNode) averageRatingNode.textContent =
+      Number.isFinite(reviewSummary.average_rating) ? Number(reviewSummary.average_rating).toFixed(1).replace(".", ",") : "—";
+    if (ratingStarsNode) {
+      const roundedRating = Number.isFinite(reviewSummary.average_rating) ? Math.round(reviewSummary.average_rating) : 0;
+      ratingStarsNode.textContent = "★".repeat(Math.max(0, Math.min(5, roundedRating))) + "☆".repeat(5 - Math.max(0, Math.min(5, roundedRating)));
+      ratingStarsNode.setAttribute("aria-label", reviewsCount ? "Средняя оценка " + reviewSummary.average_rating + " из 5" : "Нет оценок");
+    }
+    if (reviewsCountNode) {
+      const mod10 = reviewsCount % 10;
+      const mod100 = reviewsCount % 100;
+      const noun = mod10 === 1 && mod100 !== 11 ? "отзыв" :
+        mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? "отзыва" : "отзывов";
+      reviewsCountNode.textContent = reviewsCount ? reviewsCount + " " + noun : "Пока нет отзывов";
+    }
+    if (reviewsListNode) {
+      reviewsListNode.replaceChildren();
+      if (!reviews.length) {
+        const empty = document.createElement("div");
+        empty.className = "profile-reviews-empty";
+        empty.textContent = "Когда покупатели оставят отзывы после завершённых сделок, они появятся здесь";
+        reviewsListNode.append(empty);
+      } else {
+        reviews.forEach((review) => {
+          const card = document.createElement("article");
+          card.className = "profile-review-item";
+          const top = document.createElement("div");
+          top.className = "profile-review-top";
+          const author = document.createElement("strong");
+          author.textContent = "Покупатель T2";
+          const rating = document.createElement("span");
+          rating.className = "profile-review-stars";
+          const score = Math.max(1, Math.min(5, Number(review.rating) || 0));
+          rating.textContent = "★".repeat(score) + "☆".repeat(5 - score);
+          const date = document.createElement("time");
+          date.className = "profile-review-date";
+          if (review.created_at) {
+            date.dateTime = review.created_at;
+            const parsedDate = new Date(review.created_at);
+            date.textContent = Number.isNaN(parsedDate.getTime()) ? "" : parsedDate.toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+          }
+          top.append(author, rating, date);
+          card.append(top);
+          if (typeof review.comment === "string" && review.comment.trim()) {
+            const comment = document.createElement("p");
+            comment.className = "profile-review-comment";
+            comment.textContent = review.comment;
+            card.append(comment);
+          }
+          reviewsListNode.append(card);
+        });
+      }
+    }
     const available = document.getElementById("wallet-available");
     const reserved = document.getElementById("wallet-reserved");
     const catalog = document.getElementById("catalog-list");
