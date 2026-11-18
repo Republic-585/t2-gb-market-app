@@ -2164,3 +2164,10 @@ body::-webkit-scrollbar {
   -webkit-appearance: none !important;
   appearance: none !important;
 }
+
+
+/* Unified capsule shape for every button in the Mini App */
+.app-shell button {
+  border-radius: 9999px !important;
+  -webkit-border-radius: 9999px !important;
+}
