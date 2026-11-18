@@ -2151,7 +2151,9 @@ body::-webkit-scrollbar {
   border-radius: 9999px !important;
   -webkit-border-radius: 9999px !important;
   background: #229ED9 !important;
+  background-color: #229ED9 !important;
   color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
   box-shadow: none !important;
   font: inherit !important;
   font-size: 12px !important;
