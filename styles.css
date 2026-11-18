@@ -2025,3 +2025,92 @@ body::-webkit-scrollbar {
   background: #68727c;
   box-shadow: none;
 }
+
+
+/* Profile rating and reviews */
+#profile-panel .profile-reviews-card {
+  margin-top: 12px;
+  padding: 16px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--surface);
+}
+#profile-panel .profile-reviews-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+#profile-panel .profile-reviews-title {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+#profile-panel .profile-reviews-title strong {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 750;
+}
+#profile-panel .profile-reviews-title span {
+  color: var(--muted);
+  font-size: 10px;
+}
+#profile-panel .profile-rating-summary {
+  display: grid;
+  flex: 0 0 auto;
+  justify-items: end;
+  gap: 2px;
+}
+#profile-panel .profile-rating-summary > strong {
+  color: var(--ink);
+  font-size: 23px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -.04em;
+}
+#profile-panel .profile-rating-stars,
+#profile-panel .profile-review-stars {
+  color: #f4c65e;
+  font-size: 12px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+#profile-panel .profile-reviews-list {
+  display: grid;
+  gap: 0;
+  margin-top: 13px;
+}
+#profile-panel .profile-reviews-empty {
+  padding: 13px 0 2px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+#profile-panel .profile-review-item {
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+#profile-panel .profile-review-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+#profile-panel .profile-review-top strong {
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+#profile-panel .profile-review-date {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 9px;
+}
+#profile-panel .profile-review-comment {
+  margin: 8px 0 0;
+  color: #d2d8e0;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
